@@ -9,13 +9,160 @@
     android:backgroundTint="#33443C"
     tools:context=".findacc">
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/otp"
+        android:layout_width="347dp"
+        android:layout_height="314dp"
+        android:background="@drawable/round"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="19dp"
+            android:text="Enter Authentication Code"
+            android:textColor="#33443C"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="59dp"
+            android:layout_marginTop="20dp"
+            android:text="Your 4 Digit authentication code"
+            android:textColor="#33443C"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="47dp"
+            android:layout_marginTop="2dp"
+            android:text="was sent via SMS to your regitered"
+            android:textColor="#33443C"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="119dp"
+            android:layout_marginTop="2dp"
+            android:text="mobile number"
+            android:textColor="#33443C"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+        <EditText
+            android:id="@+id/editText5"
+            android:layout_width="40dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="186dp"
+            android:background="@drawable/otpbox"
+            android:inputType="number"
+            android:maxLength="1"
+            android:outlineAmbientShadowColor="#33443C"
+            android:outlineSpotShadowColor="#33443C"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="40dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="186dp"
+            android:background="@drawable/otpbox"
+            android:inputType="number"
+            android:maxLength="1"
+            android:outlineAmbientShadowColor="#33443C"
+            android:outlineSpotShadowColor="#33443C"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/editText5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/editText3"
+            android:layout_width="40dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="186dp"
+            android:background="@drawable/otpbox"
+            android:inputType="number"
+            android:maxLength="1"
+            android:outlineAmbientShadowColor="#33443C"
+            android:outlineSpotShadowColor="#33443C"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/editText"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="40dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="186dp"
+            android:background="@drawable/otpbox"
+            android:inputType="number"
+            android:maxLength="1"
+            android:outlineAmbientShadowColor="#33443C"
+            android:outlineSpotShadowColor="#33443C"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/editText3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/nextbt"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="53dp"
+            android:layout_marginTop="248dp"
+            android:layout_marginEnd="53dp"
+            android:backgroundTint="#33443C"
+            android:text=" Submit Code"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="349dp"
         android:layout_height="396dp"
         android:layout_marginStart="29dp"
         android:layout_marginTop="131dp"
         android:background="@drawable/round"
         android:orientation="vertical"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -86,7 +233,9 @@
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
