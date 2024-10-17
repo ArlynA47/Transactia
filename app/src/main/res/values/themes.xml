@@ -1,0 +1,14 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Transactia" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.Transactia" parent="Base.Theme.Transactia" />
+    <style name="Datetheme" parent="Theme.Material3.DayNight.Dialog">
+
+        <item name="colorAccent">#81A969</item>
+        <item name="android:textColorPrimary">#000000</item>
+    </style>
+</resources>

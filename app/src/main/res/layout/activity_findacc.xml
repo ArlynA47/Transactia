@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#81A969"
+    android:backgroundTint="#33443C"
+    tools:context=".findacc">
+
+    <LinearLayout
+        android:layout_width="349dp"
+        android:layout_height="396dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="131dp"
+        android:background="@drawable/round"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="297dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:text="Find your account"
+            android:textColor="#33443C"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Please enter your email or mobile number to search for your account"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/facc"
+            android:layout_width="269dp"
+            android:layout_height="30dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/acctx"
+            android:gravity="bottom|start"
+            android:hint="Email or Mobile Number"
+            android:inputType="text"
+            android:paddingStart="8dp"
+            android:textColor="@color/black"
+            android:textCursorDrawable="@drawable/cursor_black"
+            android:textSize="18sp" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="321dp"
+            android:layout_height="175dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/searchh"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="120dp"
+                android:layout_marginEnd="28dp"
+                android:backgroundTint="#33443C"
+                android:text="SEARCH"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="120dp"
+                android:backgroundTint="#808080"
+                android:text="CANCEL"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

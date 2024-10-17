@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1024877209100",
+    "project_id": "egoals-transactia",
+    "storage_bucket": "egoals-transactia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024877209100:android:91887afaab504326b43029",
+        "android_client_info": {
+          "package_name": "com.egls.transactia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeKLIfC8M4Z-SdE69AE9--B6Aicr7OpD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024877209100:android:fc07b196e55172a7b43029",
+        "android_client_info": {
+          "package_name": "com.example.transactia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeKLIfC8M4Z-SdE69AE9--B6Aicr7OpD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
