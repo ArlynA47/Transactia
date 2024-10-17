@@ -17,46 +17,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
-            android:id="@+id/holder"
-            android:layout_width="414dp"
-            android:layout_height="109dp"
-            android:layout_marginTop="740dp"
-            android:layout_marginEnd="2dp"
-            android:background="@drawable/bottombox"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/homemain"
-                android:layout_width="136dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/home" />
-
-            <ImageView
-                android:id="@+id/add"
-                android:layout_width="136dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/addg" />
-
-            <ImageView
-                android:id="@+id/prof"
-                android:layout_width="136dp"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/profile"
-                tools:srcCompat="@drawable/profile" />
-
-        </LinearLayout>
-
         <ImageView
             android:id="@+id/titlemain"
             android:layout_width="414dp"
             android:layout_height="259dp"
             android:layout_marginStart="1dp"
-            android:layout_marginBottom="632dp"
+            android:layout_marginBottom="602dp"
             android:backgroundTint="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -136,6 +102,42 @@
                 android:text="Get started"
                 android:textAllCaps="true"
                 android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/holder"
+            android:layout_width="414dp"
+            android:layout_height="89dp"
+            android:layout_marginTop="752dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/bottombox"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/homemain"
+                android:layout_width="136dp"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                app:srcCompat="@drawable/home" />
+
+            <ImageView
+                android:id="@+id/add"
+                android:layout_width="136dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/addg" />
+
+            <ImageView
+                android:id="@+id/prof"
+                android:layout_width="136dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/profile"
+                tools:srcCompat="@drawable/profile" />
 
         </LinearLayout>
 
