@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Transactia"
         tools:targetApi="31">
         <activity
+            android:name=".mainHome"
+            android:exported="false" />
+        <activity
             android:name=".pfppick"
             android:exported="false" />
         <activity
