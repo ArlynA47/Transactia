@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class signup extends AppCompatActivity {
 
@@ -77,18 +78,43 @@ public class signup extends AppCompatActivity {
 
                                 if(lengthPass > 6) {
 
-                                    //input all valid
-                                    auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if (task.isSuccessful()) {
-                                                Toast.makeText(signup.this, "SignUp Successful", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(signup.this, signuptwo.class));
-                                            } else {
-                                                Toast.makeText(signup.this, "SignUp Failed" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
+                                    // Create a new user with email verification enabled
+                                    auth.createUserWithEmailAndPassword(email, password)
+                                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    if (task.isSuccessful()) {
+                                                        // User creation successful
+                                                        FirebaseUser user = auth.getCurrentUser();
+                                                        if (user != null) {
+                                                            // Send email verification link
+                                                            user.sendEmailVerification()
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull
+                                                                                Task<Void> task) {
+                                                                            if (task.isSuccessful()) {
+                                                                                // Email verification link sent successfully
+                                                                                Toast.makeText(signup.this, "Verification email sent. Please check your inbox.", Toast.LENGTH_SHORT).show();
+                                                                                // Redirect to a verification page to wait for user confirmation
+                                                                                Intent intent = new Intent(signup.this, ConfirmEmail.class);
+                                                                                // Pass the FirebaseUser instance to the intent
+                                                                                intent.putExtra("firebaseUser", user);
+                                                                                startActivity(intent);
+                                                                                finish();
+                                                                            } else {
+                                                                                // Handle error sending verification email
+                                                                                Toast.makeText(signup.this, "Failed to send verification email: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        }
+                                                                    });
+                                                        }
+                                                    } else {
+                                                        // Handle error creating user
+                                                        Toast.makeText(signup.this, "SignUp Failed" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
 
                                 } else {
                                     passwordEditText.setError("Password should be more than 6 characters.");
