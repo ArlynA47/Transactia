@@ -36,23 +36,19 @@
             android:layout_marginTop="148dp"
             android:background="@drawable/searchtx"
 
-            android:drawablePadding="4dp"
-
+            android:drawablePadding="2dp"
             android:hint="Search"
+            app:drawableLeftCompat="@drawable/search"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"
             android:layout_width="414dp"
-            android:layout_height="522dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="117dp"
+            android:layout_height="752dp"
+            android:layout_marginBottom="88dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search"
-            app:layout_constraintVertical_bias="0.0"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
             android:id="@+id/pop"
