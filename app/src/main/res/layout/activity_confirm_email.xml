@@ -5,6 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#81A969"
+    android:backgroundTint="#33443C"
     tools:context=".ConfirmEmail">
 
     <LinearLayout
@@ -15,8 +17,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <Space
             android:layout_width="match_parent"
@@ -29,7 +33,18 @@
             android:text=" Please verify your email address to proceed."
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="#312E2E"
+            android:textColor="#81A969"
             android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="63dp" />
+
+        <ImageView
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="156dp"
+            app:srcCompat="@drawable/ikott" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

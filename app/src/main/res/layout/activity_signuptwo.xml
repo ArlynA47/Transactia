@@ -21,7 +21,7 @@
         android:background="@drawable/round"
         android:orientation="horizontal"
 
-        android:visibility="invisible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.42"
@@ -166,29 +166,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/emailaddtx"
-            android:layout_width="273dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/acctx"
-            android:gravity="bottom|start"
-            android:hint="Email Address"
-            android:importantForAccessibility="no"
-            android:inputType="textEmailAddress"
-            android:padding="1dp"
-            android:paddingStart="8dp"
-            android:textColor="@color/black"
-            android:textColorHint="#BDBDBD"
-            android:textCursorDrawable="@drawable/cursor_black"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/birthdatetx" />
-
-        <EditText
             android:id="@+id/birthdatetx"
             android:layout_width="273dp"
             android:layout_height="35dp"
@@ -211,29 +188,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/biotx" />
-
-        <EditText
-            android:id="@+id/provincetx"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/acctx"
-            android:hint="Province"
-            android:importantForAccessibility="no"
-            android:inputType="text"
-            android:padding="1dp"
-            android:paddingStart="8dp"
-            android:textColor="@color/black"
-            android:textColorHint="#BDBDBD"
-            android:textCursorDrawable="@drawable/cursor_black"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailaddtx" />
+            app:layout_constraintTop_toBottomOf="@+id/loctx" />
 
         <EditText
             android:id="@+id/loctx"
@@ -241,10 +196,10 @@
             android:layout_height="35dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="13dp"
-            android:focusable="false"
-            android:focusableInTouchMode="true"
             android:layout_marginEnd="30dp"
             android:background="@drawable/acctx"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
             android:hint="Location"
             android:importantForAccessibility="no"
             android:inputType="text"
@@ -257,11 +212,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/provincetx" />
+            app:layout_constraintTop_toBottomOf="@+id/biotx" />
 
         <EditText
             android:id="@+id/nametx"
-            android:layout_width="155dp"
+            android:layout_width="273dp"
             android:layout_height="35dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="260dp"
@@ -330,21 +285,21 @@
             android:layout_width="273dp"
             android:layout_height="35dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="313dp"
+            android:layout_marginTop="13dp"
             android:background="@drawable/acctx"
             android:gravity="bottom|start"
             android:hint="Contact Info"
             android:importantForAccessibility="no"
             android:inputType="number"
-            android:padding="1dp"
             android:maxLength="11"
+            android:padding="1dp"
             android:paddingStart="8dp"
             android:textColor="@color/black"
             android:textColorHint="#BDBDBD"
             android:textCursorDrawable="@drawable/cursor_black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/pfp" />
 
         <TextView
             android:id="@+id/textView7"
@@ -361,15 +316,16 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="117dp"
+            android:layout_width="207dp"
             android:layout_height="35dp"
-            android:layout_marginEnd="28dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="13dp"
             android:background="@drawable/acctx"
             app:boxBackgroundColor="@android:color/transparent"
             app:boxStrokeColor="@android:color/transparent"
-            app:hintTextColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addIMG">
+android:textColorHint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nametx">
 
             <AutoCompleteTextView
                 android:id="@+id/auto_complete_txt"

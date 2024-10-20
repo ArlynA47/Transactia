@@ -10,7 +10,7 @@
         <!-- Set the accent color for buttons -->
         <item name="colorAccent">#81A969</item>
         <!-- Set the background color for buttons -->
-        <item name="colorButtonNormal">#4CAF50</item> <!-- Darker green for better contrast -->
+        <item name="colorButtonNormal">#81A969</item> <!-- Darker green for better contrast -->
         <!-- Set the text color for buttons -->
         <item name="android:textColorPrimary">#000000</item> <!-- Button text color -->
         <item name="android:textColorSecondary">#4CAF50</item> <!-- Secondary text color -->
