@@ -236,14 +236,16 @@
             app:layout_constraintTop_toBottomOf="@+id/emailaddtx" />
 
         <EditText
-            android:id="@+id/citytx"
+            android:id="@+id/loctx"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="13dp"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
             android:layout_marginEnd="30dp"
             android:background="@drawable/acctx"
-            android:hint="City/Municipality"
+            android:hint="Location"
             android:importantForAccessibility="no"
             android:inputType="text"
             android:padding="1dp"

@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         });
         forgotPass.setOnClickListener(v -> {
             // Create an intent to start the FindAcc activity
-            Intent intent = new Intent(MainActivity.this, findacc.class);
+            Intent intent = new Intent(MainActivity.this, signuptwo.class);
             startActivity(intent);
         });
 

@@ -2,13 +2,17 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Transactia" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="Theme.Transactia" parent="Base.Theme.Transactia" />
-    <style name="Datetheme" parent="Theme.Material3.DayNight.Dialog">
 
+    <style name="Datetheme" parent="Theme.Material3.DayNight.Dialog">
+        <!-- Set the accent color for buttons -->
         <item name="colorAccent">#81A969</item>
-        <item name="android:textColorPrimary">#000000</item>
+        <!-- Set the background color for buttons -->
+        <item name="colorButtonNormal">#4CAF50</item> <!-- Darker green for better contrast -->
+        <!-- Set the text color for buttons -->
+        <item name="android:textColorPrimary">#000000</item> <!-- Button text color -->
+        <item name="android:textColorSecondary">#4CAF50</item> <!-- Secondary text color -->
     </style>
 </resources>

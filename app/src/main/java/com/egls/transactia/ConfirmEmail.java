@@ -56,8 +56,10 @@ public class ConfirmEmail extends AppCompatActivity {
                             verificationChecked = true;
                             emailIsConfirmedIndicate();
                             // Move to the next activity
-                            startActivity(new Intent(ConfirmEmail.this, signuptwo.class));
-                            finish();
+                                Intent intent = new Intent(ConfirmEmail.this, signuptwo.class);
+                                intent.putExtra("user", currentUser);
+                                startActivity(intent);
+                                finish();
                         }
                     } else {
                         Log.e("TAG", "Error reloading user", task.getException());
@@ -82,7 +84,10 @@ public class ConfirmEmail extends AppCompatActivity {
                         verificationChecked = true;
                         emailIsConfirmedIndicate();
                         // Proceed to the next activity
-                        startActivity(new Intent(ConfirmEmail.this, signuptwo.class));
+                        Intent intent = new Intent(ConfirmEmail.this, signuptwo.class);
+                        intent.putExtra("userId", user.getUid());
+                        Toast.makeText(ConfirmEmail.this, "ID" + user.getUid(), Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
                         finish();
                     } else {
                         verificationStatusText.setText("Please verify your email and return to the app.");
