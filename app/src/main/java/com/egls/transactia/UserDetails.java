@@ -7,6 +7,7 @@ public class UserDetails {
     private String contactInfo;
     private String birthdate;
     private String location;
+    private String imageUrl;
 
     // Default constructor for Firestore serialization
     public UserDetails() {
@@ -20,6 +21,7 @@ public class UserDetails {
         this.contactInfo = contactInfo;
         this.birthdate = birthdate;
         this.location = location;
+        this.imageUrl = imageUrl;
     }
 
     // Getters and setters
@@ -69,5 +71,14 @@ public class UserDetails {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    // Getter and setter for imageUrl
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl; // Define this method
     }
 }

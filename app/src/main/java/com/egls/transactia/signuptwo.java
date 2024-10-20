@@ -2,6 +2,7 @@
 
     import android.app.DatePickerDialog;
     import android.content.Intent;
+    import android.net.Uri;
     import android.os.Bundle;
     import android.view.View;
     import android.widget.ArrayAdapter;
@@ -22,6 +23,8 @@
     import com.google.firebase.auth.FirebaseUser;
     import com.google.firebase.firestore.DocumentSnapshot;
     import com.google.firebase.firestore.FirebaseFirestore;
+    import com.google.firebase.storage.FirebaseStorage;
+    import com.google.firebase.storage.StorageReference;
 
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
@@ -36,6 +39,10 @@
 
         String userID;
         FirebaseUser currUser;
+
+        private static final int PICK_IMAGE_REQUEST = 1;
+        private Uri imageUri;
+        private FirebaseStorage storage;
 
         String[] item = {"Male", "Female", "Preferred not to say"};
         AutoCompleteTextView autoCompleteTextView;
@@ -56,6 +63,11 @@
             EdgeToEdge.enable(this);
             setContentView(R.layout.activity_signuptwo);
 
+            // Retrieve the FirebaseUser instance from the intent
+            currUser = getIntent().getParcelableExtra("user");
+
+            // initialize Firebase Storage
+            storage = FirebaseStorage.getInstance();
 
             addIMG  = findViewById(R.id.addIMG);
             pfp  = findViewById(R.id.pfp);
@@ -68,9 +80,18 @@
             loctx.setOnClickListener(v -> {
                 showLocationPickerDialog();
             });
+            // OnClickListener for addIMG to open the gallery
+            addIMG.setOnClickListener(v -> openGallery());
 
-            // Retrieve the FirebaseUser instance from the intent
-            currUser = getIntent().getParcelableExtra("user");
+            pfp.setOnClickListener(v -> {
+                if (imageUri != null) {
+                    Intent fullScreenIntent = new Intent(signuptwo.this, FullScreenImageActivity.class);
+                    fullScreenIntent.putExtra("imageUri", imageUri.toString());
+                    startActivity(fullScreenIntent);
+                }
+            });
+
+
 
             // Set up gender AutoCompleteTextView
             autoCompleteTextView = findViewById(R.id.auto_complete_txt);
@@ -99,7 +120,6 @@
             });
 
             // Set up image click to show holder layout
-            ImageView addIMG = findViewById(R.id.addIMG);
             LinearLayout holder = findViewById(R.id.holder);
             holder.setVisibility(View.GONE);
             addIMG.setOnClickListener(v -> {
@@ -110,6 +130,24 @@
             // Cancel button click listener
             Button remob = findViewById(R.id.remob);
             remob.setOnClickListener(v -> holder.setVisibility(View.GONE));
+        }
+
+        // Function to open gallery
+        private void openGallery() {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        }
+
+        // Handle the result of the gallery selection
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+                imageUri = data.getData();
+                pfp.setImageURI(imageUri); // Display the selected image in pfp ImageView
+            }
         }
 
 
@@ -245,12 +283,10 @@
 
         private void saveUserDetails() {
             if (currUser.getUid() == null) {
-                // Handle the case where the user ID is null
                 Toast.makeText(this, "User ID is null, unable to save details", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Get data from the form
             String name = nametx.getText().toString().trim();
             String sex = autoCompleteTextView.getText().toString().trim();
             String bio = biotx.getText().toString().trim();
@@ -264,17 +300,40 @@
             // Firestore instance
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            // Save the user details
-            db.collection("UserDetails")
-                    .document(currUser.getUid())  // Use userId as the document ID
-                    .set(userDetails)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(this, "User details saved successfully!", Toast.LENGTH_SHORT).show();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Error saving user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+            // Firebase Storage reference
+            if (imageUri != null) {
+                StorageReference storageRef = storage.getReference().child("images/" + currUser.getUid() + ".jpg");
+                storageRef.putFile(imageUri)
+                        .addOnSuccessListener(taskSnapshot -> {
+                            storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                                // Save the user details along with the image URL
+                                userDetails.setImageUrl(downloadUri.toString()); // Assuming UserDetails has an imageUrl field
+                                db.collection("UserDetails")
+                                        .document(currUser.getUid())
+                                        .set(userDetails)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(this, "User details saved successfully!", Toast.LENGTH_SHORT).show();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(this, "Error saving user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
+                            });
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, "Error uploading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                // Save user details without image
+                db.collection("UserDetails")
+                        .document(currUser.getUid())
+                        .set(userDetails)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(this, "User details saved successfully!", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, "Error saving user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+            }
+
         }
-
-
     }
