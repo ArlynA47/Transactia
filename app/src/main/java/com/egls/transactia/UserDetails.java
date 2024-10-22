@@ -14,7 +14,7 @@ public class UserDetails {
     }
 
     // Constructor with all fields
-    public UserDetails(String name, String sex, String bio, String contactInfo, String birthdate, String location) {
+    public UserDetails(String name, String sex, String bio, String contactInfo, String birthdate, String location, String imageUrl) {
         this.name = name;
         this.sex = sex;
         this.bio = bio;

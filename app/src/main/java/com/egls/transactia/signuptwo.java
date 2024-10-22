@@ -119,17 +119,6 @@
                 return insets;
             });
 
-            // Set up image click to show holder layout
-            LinearLayout holder = findViewById(R.id.holder);
-            holder.setVisibility(View.GONE);
-            addIMG.setOnClickListener(v -> {
-                holder.setVisibility(View.VISIBLE);
-                holder.bringToFront();
-            });
-
-            // Cancel button click listener
-            Button remob = findViewById(R.id.remob);
-            remob.setOnClickListener(v -> holder.setVisibility(View.GONE));
         }
 
         // Function to open gallery
@@ -282,7 +271,7 @@
         }
 
         private void saveUserDetails() {
-            if (currUser.getUid() == null) {
+            if (currUser == null || currUser.getUid() == null) {
                 Toast.makeText(this, "User ID is null, unable to save details", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -294,46 +283,51 @@
             String birthdate = birthdateTx.getText().toString().trim();
             String location = loctx.getText().toString().trim();
 
-            // Create a new UserDetails object
-            UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location);
-
             // Firestore instance
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            // Firebase Storage reference
+            // Check if there's an image to upload
             if (imageUri != null) {
+                // Firebase Storage reference
                 StorageReference storageRef = storage.getReference().child("images/" + currUser.getUid() + ".jpg");
+
+                // Upload image to Firebase Storage
                 storageRef.putFile(imageUri)
                         .addOnSuccessListener(taskSnapshot -> {
+                            // Get the image's download URL
                             storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
-                                // Save the user details along with the image URL
-                                userDetails.setImageUrl(downloadUri.toString()); // Assuming UserDetails has an imageUrl field
-                                db.collection("UserDetails")
-                                        .document(currUser.getUid())
-                                        .set(userDetails)
-                                        .addOnSuccessListener(aVoid -> {
-                                            Toast.makeText(this, "User details saved successfully!", Toast.LENGTH_SHORT).show();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Toast.makeText(this, "Error saving user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        });
+                                // Create a new UserDetails object including image URL
+                                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, downloadUri.toString());
+
+                                // Save user details along with image URL to Firestore
+                                saveUserDetailsToFirestore(db, userDetails);
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(this, "Error getting image URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
                         })
                         .addOnFailureListener(e -> {
                             Toast.makeText(this, "Error uploading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
             } else {
-                // Save user details without image
-                db.collection("UserDetails")
-                        .document(currUser.getUid())
-                        .set(userDetails)
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(this, "User details saved successfully!", Toast.LENGTH_SHORT).show();
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(this, "Error saving user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        });
-            }
+                // If no image is provided, set null as the image URL
+                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, null);
 
+                // Save user details without image URL to Firestore
+                saveUserDetailsToFirestore(db, userDetails);
+            }
         }
+
+        // Helper method to save user details to Firestore
+        private void saveUserDetailsToFirestore(FirebaseFirestore db, UserDetails userDetails) {
+            db.collection("UserDetails")
+                    .document(currUser.getUid())
+                    .set(userDetails)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, "User details saved successfully!", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Error saving user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        }
+
     }
