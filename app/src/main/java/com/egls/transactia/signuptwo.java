@@ -44,7 +44,7 @@
         private Uri imageUri;
         private FirebaseStorage storage;
 
-        String[] item = {"Male", "Female", "Preferred not to say"};
+        String[] item = {"Male", "Female", "Other", "Preferred not to say"};
         AutoCompleteTextView autoCompleteTextView;
         ArrayAdapter<String> adapterItems;
         EditText birthdateTx;
@@ -91,8 +91,6 @@
                 }
             });
 
-
-
             // Set up gender AutoCompleteTextView
             autoCompleteTextView = findViewById(R.id.auto_complete_txt);
             adapterItems = new ArrayAdapter<>(this, R.layout.genderlist, item);
@@ -108,8 +106,6 @@
             Button signbt = findViewById(R.id.signbt);
             signbt.setOnClickListener(v -> {
                 saveUserDetails();
-                Intent intent = new Intent(signuptwo.this, MainActivity.class);
-                startActivity(intent);
             });
 
             // Set window insets for main layout
@@ -143,17 +139,19 @@
         private void showDatePickerDialog() {
             final Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
-
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                     this, R.style.Datetheme,
                     (view, selectedYear, selectedMonth, selectedDay) -> {
-                        // Format the date using SimpleDateFormat
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        String formattedDate = dateFormat.format(calendar.getTime());
+                        // Create a new calendar instance for the selected date
+                        Calendar selectedDate = Calendar.getInstance();
+                        selectedDate.set(selectedYear, selectedMonth, selectedDay);
 
+                        // Format the selected date using SimpleDateFormat
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                        String formattedDate = dateFormat.format(selectedDate.getTime());
 
                         // Set the formatted date to the EditText
                         birthdateTx.setText(formattedDate, TextView.BufferType.EDITABLE);
@@ -283,38 +281,60 @@
             String birthdate = birthdateTx.getText().toString().trim();
             String location = loctx.getText().toString().trim();
 
-            // Firestore instance
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            // Check if the required fields are filled
+            if(name.isEmpty() || sex.isEmpty() || contactInfo.isEmpty() || birthdate.isEmpty() || location.isEmpty()) {
 
-            // Check if there's an image to upload
-            if (imageUri != null) {
-                // Firebase Storage reference
-                StorageReference storageRef = storage.getReference().child("images/" + currUser.getUid() + ".jpg");
-
-                // Upload image to Firebase Storage
-                storageRef.putFile(imageUri)
-                        .addOnSuccessListener(taskSnapshot -> {
-                            // Get the image's download URL
-                            storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
-                                // Create a new UserDetails object including image URL
-                                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, downloadUri.toString());
-
-                                // Save user details along with image URL to Firestore
-                                saveUserDetailsToFirestore(db, userDetails);
-                            }).addOnFailureListener(e -> {
-                                Toast.makeText(this, "Error getting image URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            });
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(this, "Error uploading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        });
+                Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_LONG).show();
             } else {
-                // If no image is provided, set null as the image URL
-                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, null);
 
-                // Save user details without image URL to Firestore
-                saveUserDetailsToFirestore(db, userDetails);
+                // check if the user is at least 16 years old
+                AgeCheck ageCheck = new AgeCheck();
+
+                if (ageCheck.isAtLeast16YearsOld(birthdate)) {
+                    // Proceed with registration
+
+                    // Firestore instance
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                    // Check if there's an image to upload
+                    if (imageUri != null) {
+                        // Firebase Storage reference
+                        StorageReference storageRef = storage.getReference().child("images/" + currUser.getUid() + ".jpg");
+
+                        // Upload image to Firebase Storage
+                        storageRef.putFile(imageUri)
+                                .addOnSuccessListener(taskSnapshot -> {
+                                    // Get the image's download URL
+                                    storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                                        // Create a new UserDetails object including image URL
+                                        UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, downloadUri.toString());
+
+                                        // Save user details along with image URL to Firestore
+                                        saveUserDetailsToFirestore(db, userDetails);
+                                        Toast.makeText(this, "Account details added successfully.", Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(signuptwo.this, mainHome.class);
+                                        startActivity(intent);
+                                    }).addOnFailureListener(e -> {
+                                        Toast.makeText(this, "Error getting image URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Error uploading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    } else {
+                        // If no image is provided, set null as the image URL
+                        UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, null);
+
+                        // Save user details without image URL to Firestore
+                        saveUserDetailsToFirestore(db, userDetails);
+                    }
+                } else {
+                    // Show an error message
+                    Toast.makeText(this, "You must be at least 16 years old to register.", Toast.LENGTH_LONG).show();
+                }
             }
+
+
         }
 
         // Helper method to save user details to Firestore

@@ -174,7 +174,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="84dp"
-            android:layout_marginTop="324dp"
+            android:layout_marginTop="340dp"
             android:clickable="true"
             android:text="Don't have an account?"
             android:textColor="#3F3F3F"
