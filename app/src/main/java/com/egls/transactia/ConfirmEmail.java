@@ -114,7 +114,7 @@ public class ConfirmEmail extends AppCompatActivity {
                                 new Handler().postDelayed(() -> {
                                     // Move to the next activity after the image update
                                     Intent intent = new Intent(ConfirmEmail.this, signuptwo.class);
-                                    intent.putExtra("user", currentUser);
+                                    intent.putExtra("firebaseUser", currentUser);
                                     startActivity(intent);
                                     finish();
                                 }, 2000); // 2000ms = 2 seconds delay

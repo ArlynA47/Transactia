@@ -196,7 +196,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/acctx"
             android:gravity="bottom|start"
-            android:hint="Email or Mobile Number"
+            android:hint="Email address"
             android:inputType="text"
             android:paddingStart="8dp"
             android:textColor="@color/black"

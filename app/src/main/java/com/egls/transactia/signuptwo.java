@@ -64,7 +64,7 @@
             setContentView(R.layout.activity_signuptwo);
 
             // Retrieve the FirebaseUser instance from the intent
-            currUser = getIntent().getParcelableExtra("user");
+            currUser = getIntent().getParcelableExtra("firebaseUser");
 
             // initialize Firebase Storage
             storage = FirebaseStorage.getInstance();
@@ -333,8 +333,6 @@
                     Toast.makeText(this, "You must be at least 16 years old to register.", Toast.LENGTH_LONG).show();
                 }
             }
-
-
         }
 
         // Helper method to save user details to Firestore
