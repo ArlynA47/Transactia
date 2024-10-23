@@ -1,23 +1,24 @@
 package com.egls.transactia;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-public class hfrag extends Fragment {
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+public class NotificationsFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_hfrag, container, false);
+        // Inflate the correct layout for NotificationsFragment
+        View view = inflater.inflate(R.layout.fragment_notifications, container, false);
 
         // Find ImageViews by their IDs
         ImageView exchange = view.findViewById(R.id.exchange);
@@ -32,6 +33,13 @@ public class hfrag extends Fragment {
                 replaceFragment(new ExchangeFragment());
             }
         });
+        notifs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Replace the current fragment with MyTransactionsFragment
+                replaceFragment(new NotificationsFragment());
+            }
+        });
 
         mytransact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,13 +49,7 @@ public class hfrag extends Fragment {
             }
         });
 
-        notifs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Replace the current fragment with NotificationsFragment
-                replaceFragment(new NotificationsFragment());
-            }
-        });
+
 
         return view;
     }

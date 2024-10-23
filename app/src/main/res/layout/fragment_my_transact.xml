@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".hfrag">
+    android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/titlemain2"
+        android:id="@+id/titlemain3"
         android:layout_width="391dp"
         android:layout_height="259dp"
         android:layout_marginStart="1dp"
@@ -17,6 +15,34 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/greentransactiatext" />
+
+    <TextView
+        android:id="@+id/pendingbt"
+        android:layout_width="170dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="217dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button"
+        android:gravity="center"
+        android:text="PENDING"
+        android:textColor="#33443C"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/completedbt"
+        android:layout_width="170dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="217dp"
+        android:background="@drawable/button"
+        android:gravity="center"
+        android:text="COMPLETED"
+        android:textColor="#33443C"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/TOPBX"
@@ -42,7 +68,7 @@
             android:layout_marginTop="1dp"
             app:layout_constraintStart_toEndOf="@+id/exchange"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/exchange" />
+            app:srcCompat="@drawable/selecttrans" />
 
         <ImageView
             android:id="@+id/notifs"
@@ -89,4 +115,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/transactshow"
+        android:layout_width="391dp"
+        android:layout_height="439dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="168dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
