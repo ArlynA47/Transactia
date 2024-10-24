@@ -5,285 +5,111 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     tools:context=".mainHome">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/page"
-        android:layout_width="416dp"
-        android:layout_height="841dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="40dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="348dp"
-            android:layout_height="143dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="13dp"
-            android:layout_marginBottom="336dp"
-            android:background="@drawable/buttonhome"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            app:layout_constraintVertical_bias="0.571">
-
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="208dp"
-                android:layout_height="87dp"
-                android:layout_marginStart="219dp"
-                android:layout_marginTop="31dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/next" />
-
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="115dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/exchange" />
-
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="104dp"
-                android:text="Track your trade"
-                android:textColor="#3F3F3F"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="33dp"
-                android:layout_marginEnd="51dp"
-                android:text="My Transaction"
-                android:textColor="#33443C"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView6" />
-
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="130dp"
-                android:text="history here."
-                android:textColor="#3F3F3F"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView22" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ImageView
-            android:id="@+id/titlemain"
-            android:layout_width="414dp"
-            android:layout_height="259dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginBottom="602dp"
-            android:backgroundTint="@android:color/darker_gray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/greentransactiatext" />
-
-        <TextView
-            android:id="@+id/search"
-            android:layout_width="308dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="52dp"
-            android:layout_marginTop="148dp"
-            android:background="@drawable/searchtx"
-
-            android:drawablePadding="4dp"
-
-            android:hint="Search"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="348dp"
-            android:layout_height="143dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="13dp"
-            android:layout_marginBottom="148dp"
-            android:background="@drawable/buttonhome"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
-
-            <ImageView
-                android:id="@+id/imageView12"
-                android:layout_width="208dp"
-                android:layout_height="87dp"
-                android:layout_marginStart="219dp"
-                android:layout_marginTop="31dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/next" />
-
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="62dp"
-                android:text="new offers and deals."
-                android:textColor="#3F3F3F"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView24" />
-
-            <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="115dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/notif" />
-
-            <TextView
-                android:id="@+id/textView24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="100dp"
-                android:text="Stay updated on"
-                android:textColor="#3F3F3F"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="33dp"
-                android:layout_marginEnd="76dp"
-                android:text="Notifications"
-                android:textColor="#33443C"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView7" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="348dp"
-            android:layout_height="143dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="196dp"
-            android:background="@drawable/buttonhome"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="115dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/exchangee" />
-
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="81dp"
-                android:text="swap oppurtunities!"
-                android:textColor="#3F3F3F"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="33dp"
-                android:layout_marginEnd="121dp"
-                android:text="Exchange"
-                android:textColor="#33443C"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView2" />
-
-            <TextView
-                android:id="@+id/textView20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="102dp"
-                android:text="Discover endless"
-                android:textColor="#3F3F3F"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="208dp"
-                android:layout_height="87dp"
-                android:layout_marginStart="219dp"
-                android:layout_marginTop="31dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/next" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
             android:id="@+id/holder"
-            android:layout_width="414dp"
-            android:layout_height="89dp"
-            android:layout_marginTop="752dp"
-            android:layout_marginEnd="2dp"
+            android:layout_width="397dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="715dp"
             android:background="@drawable/bottombox"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/homemain"
-                android:layout_width="136dp"
+                android:id="@+id/homemain2"
+                android:layout_width="101dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ghome" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/selecthome" />
 
             <ImageView
-                android:id="@+id/add"
-                android:layout_width="136dp"
+                android:id="@+id/add2"
+                android:layout_width="101dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/addg" />
+                app:layout_constraintStart_toEndOf="@+id/homemain2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/hanap" />
 
             <ImageView
-                android:id="@+id/prof"
-                android:layout_width="136dp"
+                android:id="@+id/message"
+                android:layout_width="101dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/add2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/message" />
+
+            <ImageView
+                android:id="@+id/prof2"
+                android:layout_width="101dp"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toEndOf="@+id/message"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/profile"
                 tools:srcCompat="@drawable/profile" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="65dp"
+                android:text="HOME"
+                android:textColor="#33443C"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="124dp"
+                android:layout_marginTop="65dp"
+                android:text="SEARCH"
+                android:textColor="#33443C"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="220dp"
+                android:layout_marginTop="65dp"
+                android:text="MESSAGES"
+                android:textColor="#33443C"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="325dp"
+                android:layout_marginTop="65dp"
+                android:text="PROFILE"
+                android:textColor="#33443C"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.egls.transactia.hfrag"
+        android:layout_width="397dp"
+        android:layout_height="764dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_hfrag" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,11 +4,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".hfrag">
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/notificationsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="508dp"
+        android:text="This is the Notifications Fragment"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
-        android:id="@+id/titlemain2"
+        android:id="@+id/titlemain4"
         android:layout_width="391dp"
         android:layout_height="259dp"
         android:layout_marginStart="1dp"
@@ -51,7 +61,7 @@
             android:layout_marginTop="1dp"
             app:layout_constraintStart_toEndOf="@+id/mytransact"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/notif" />
+            app:srcCompat="@drawable/selectnotif" />
 
         <TextView
             android:id="@+id/textView33"
@@ -89,4 +99,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

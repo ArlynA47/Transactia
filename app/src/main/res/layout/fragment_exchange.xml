@@ -4,11 +4,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".hfrag">
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/offersbt2"
+        android:layout_width="170dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="217dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/button"
+        android:gravity="center"
+        android:text="MY OFFERS"
+        android:textColor="#33443C"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/needsbt2"
+        android:layout_width="170dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="217dp"
+        android:background="@drawable/button"
+        android:gravity="center"
+        android:text="MY NEEDS"
+        android:textColor="#33443C"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/titlemain2"
+        android:id="@+id/titlemain5"
         android:layout_width="391dp"
         android:layout_height="259dp"
         android:layout_marginStart="1dp"
@@ -33,7 +60,7 @@
             android:layout_height="97dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/exchangee" />
+            app:srcCompat="@drawable/selectexchaneg" />
 
         <ImageView
             android:id="@+id/mytransact"
@@ -89,4 +116,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/thisshow"
+        android:layout_width="390dp"
+        android:layout_height="439dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="168dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titlemain5">
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
