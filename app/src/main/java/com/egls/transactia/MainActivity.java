@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
@@ -27,6 +28,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView tgwhite, tggreen;
@@ -86,40 +90,90 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         loginbt.setOnClickListener(v -> {
+            String email = usernameEditText.getText().toString().trim();
+            String pass = passwordEditText.getText().toString().trim();
 
-            String email = usernameEditText.getText().toString();
-            String pass = passwordEditText.getText().toString();
+            if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (!pass.isEmpty()) {
+                    auth.signInWithEmailAndPassword(email, pass)
+                            .addOnSuccessListener(authResult -> {
+                                FirebaseUser user = authResult.getUser();
+                                if (user != null) {
+                                    if (!user.isEmailVerified()) {
+                                        // Show dialog box with options
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                        builder.setTitle("Email Verification");
+                                        builder.setMessage("A verification email was sent when you registered. Would you like to send another verification email?");
+                                        builder.setPositiveButton("Send another verification link", (dialog, which) -> {
+                                            // Send a new verification email if the user requests it
+                                            user.sendEmailVerification().addOnCompleteListener(task -> {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(MainActivity.this, "New verification email sent. Please check your inbox.", Toast.LENGTH_SHORT).show();
+                                                    // Redirect to ConfirmEmail screen
+                                                    Intent intent = new Intent(MainActivity.this, ConfirmEmail.class);
+                                                    intent.putExtra("firebaseUser", user);
+                                                    startActivity(intent);
+                                                    finish();
+                                                } else {
+                                                    Toast.makeText(MainActivity.this, "Failed to send verification email: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        });
+                                        builder.setNegativeButton("Use the old verification link", (dialog, which) -> {
+                                            // Do nothing, just dismiss the dialog
+                                            dialog.dismiss();
+                                            // Redirect to ConfirmEmail screen
+                                            Intent intent = new Intent(MainActivity.this, ConfirmEmail.class);
+                                            intent.putExtra("firebaseUser", user);
+                                            startActivity(intent);
+                                            finish();
+                                        });
 
-                    if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                        if (!pass.isEmpty()) {
-                            auth.signInWithEmailAndPassword(email, pass)
-                                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                                        @Override
-                                        public void onSuccess(AuthResult authResult) {
-                                            Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(MainActivity.this, mainHome.class));
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        } else {
-                            passwordEditText.setError("Empty fields are not allowed");
-                        }
-                    } else if (email.isEmpty()) {
-                        usernameEditText.setError("Empty fields are not allowed");
-                    } else {
-                        usernameEditText.setError("Please enter correct email");
-                    }
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
 
+                                    } else {
+                                        // Check if user has details in Firestore
+                                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                        DocumentReference userDoc = db.collection("UserDetails").document(user.getUid());
 
-
+                                        userDoc.get().addOnSuccessListener(documentSnapshot -> {
+                                            if (documentSnapshot.exists()) {
+                                                // UserDetails exists, redirect to mainHome
+                                                Intent intent = new Intent(MainActivity.this, mainHome.class);
+                                                // intent.putExtra("firebaseUser", user);
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                // No UserDetails, redirect to signuptwo
+                                                Toast.makeText(MainActivity.this, "Please add your account details.", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(MainActivity.this, signuptwo.class);
+                                                intent.putExtra("firebaseUser", user);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        }).addOnFailureListener(e -> {
+                                            Toast.makeText(MainActivity.this, "Failed to check user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
+                                    }
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(MainActivity.this, "Login Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                } else {
+                    passwordEditText.setError("Empty fields are not allowed");
+                }
+            } else if (email.isEmpty()) {
+                usernameEditText.setError("Empty fields are not allowed");
+            } else {
+                usernameEditText.setError("Please enter correct email");
+            }
         });
+
         forgotPass.setOnClickListener(v -> {
             // Create an intent to start the FindAcc activity
-            Intent intent = new Intent(MainActivity.this, signuptwo.class);
+            Intent intent = new Intent(MainActivity.this, findacc.class);
             startActivity(intent);
         });
 

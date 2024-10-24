@@ -2,6 +2,7 @@
 
     import android.app.DatePickerDialog;
     import android.content.Intent;
+    import android.net.Uri;
     import android.os.Bundle;
     import android.view.View;
     import android.widget.ArrayAdapter;
@@ -22,6 +23,8 @@
     import com.google.firebase.auth.FirebaseUser;
     import com.google.firebase.firestore.DocumentSnapshot;
     import com.google.firebase.firestore.FirebaseFirestore;
+    import com.google.firebase.storage.FirebaseStorage;
+    import com.google.firebase.storage.StorageReference;
 
     import java.text.SimpleDateFormat;
     import java.util.ArrayList;
@@ -37,7 +40,11 @@
         String userID;
         FirebaseUser currUser;
 
-        String[] item = {"Male", "Female", "Preferred not to say"};
+        private static final int PICK_IMAGE_REQUEST = 1;
+        private Uri imageUri;
+        private FirebaseStorage storage;
+
+        String[] item = {"Male", "Female", "Other", "Preferred not to say"};
         AutoCompleteTextView autoCompleteTextView;
         ArrayAdapter<String> adapterItems;
         EditText birthdateTx;
@@ -56,6 +63,11 @@
             EdgeToEdge.enable(this);
             setContentView(R.layout.activity_signuptwo);
 
+            // Retrieve the FirebaseUser instance from the intent
+            currUser = getIntent().getParcelableExtra("firebaseUser");
+
+            // initialize Firebase Storage
+            storage = FirebaseStorage.getInstance();
 
             addIMG  = findViewById(R.id.addIMG);
             pfp  = findViewById(R.id.pfp);
@@ -68,9 +80,16 @@
             loctx.setOnClickListener(v -> {
                 showLocationPickerDialog();
             });
+            // OnClickListener for addIMG to open the gallery
+            addIMG.setOnClickListener(v -> openGallery());
 
-            // Retrieve the FirebaseUser instance from the intent
-            currUser = getIntent().getParcelableExtra("user");
+            pfp.setOnClickListener(v -> {
+                if (imageUri != null) {
+                    Intent fullScreenIntent = new Intent(signuptwo.this, FullScreenImageActivity.class);
+                    fullScreenIntent.putExtra("imageUri", imageUri.toString());
+                    startActivity(fullScreenIntent);
+                }
+            });
 
             // Set up gender AutoCompleteTextView
             autoCompleteTextView = findViewById(R.id.auto_complete_txt);
@@ -87,8 +106,6 @@
             Button signbt = findViewById(R.id.signbt);
             signbt.setOnClickListener(v -> {
                 saveUserDetails();
-                Intent intent = new Intent(signuptwo.this, MainActivity.class);
-                startActivity(intent);
             });
 
             // Set window insets for main layout
@@ -98,35 +115,43 @@
                 return insets;
             });
 
-            // Set up image click to show holder layout
-            ImageView addIMG = findViewById(R.id.addIMG);
-            LinearLayout holder = findViewById(R.id.holder);
-            holder.setVisibility(View.GONE);
-            addIMG.setOnClickListener(v -> {
-                holder.setVisibility(View.VISIBLE);
-                holder.bringToFront();
-            });
+        }
 
-            // Cancel button click listener
-            Button remob = findViewById(R.id.remob);
-            remob.setOnClickListener(v -> holder.setVisibility(View.GONE));
+        // Function to open gallery
+        private void openGallery() {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        }
+
+        // Handle the result of the gallery selection
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+                imageUri = data.getData();
+                pfp.setImageURI(imageUri); // Display the selected image in pfp ImageView
+            }
         }
 
 
         private void showDatePickerDialog() {
             final Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
-
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                     this, R.style.Datetheme,
                     (view, selectedYear, selectedMonth, selectedDay) -> {
-                        // Format the date using SimpleDateFormat
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        String formattedDate = dateFormat.format(calendar.getTime());
+                        // Create a new calendar instance for the selected date
+                        Calendar selectedDate = Calendar.getInstance();
+                        selectedDate.set(selectedYear, selectedMonth, selectedDay);
 
+                        // Format the selected date using SimpleDateFormat
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                        String formattedDate = dateFormat.format(selectedDate.getTime());
 
                         // Set the formatted date to the EditText
                         birthdateTx.setText(formattedDate, TextView.BufferType.EDITABLE);
@@ -244,13 +269,11 @@
         }
 
         private void saveUserDetails() {
-            if (currUser.getUid() == null) {
-                // Handle the case where the user ID is null
+            if (currUser == null || currUser.getUid() == null) {
                 Toast.makeText(this, "User ID is null, unable to save details", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Get data from the form
             String name = nametx.getText().toString().trim();
             String sex = autoCompleteTextView.getText().toString().trim();
             String bio = biotx.getText().toString().trim();
@@ -258,15 +281,64 @@
             String birthdate = birthdateTx.getText().toString().trim();
             String location = loctx.getText().toString().trim();
 
-            // Create a new UserDetails object
-            UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location);
+            // Check if the required fields are filled
+            if(name.isEmpty() || sex.isEmpty() || contactInfo.isEmpty() || birthdate.isEmpty() || location.isEmpty()) {
 
-            // Firestore instance
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_LONG).show();
+            } else {
 
-            // Save the user details
+                // check if the user is at least 16 years old
+                AgeCheck ageCheck = new AgeCheck();
+
+                if (ageCheck.isAtLeast16YearsOld(birthdate)) {
+                    // Proceed with registration
+
+                    // Firestore instance
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                    // Check if there's an image to upload
+                    if (imageUri != null) {
+                        // Firebase Storage reference
+                        StorageReference storageRef = storage.getReference().child("images/" + currUser.getUid() + ".jpg");
+
+                        // Upload image to Firebase Storage
+                        storageRef.putFile(imageUri)
+                                .addOnSuccessListener(taskSnapshot -> {
+                                    // Get the image's download URL
+                                    storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                                        // Create a new UserDetails object including image URL
+                                        UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, downloadUri.toString());
+
+                                        // Save user details along with image URL to Firestore
+                                        saveUserDetailsToFirestore(db, userDetails);
+                                        Toast.makeText(this, "Account details added successfully.", Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(signuptwo.this, mainHome.class);
+                                        startActivity(intent);
+                                    }).addOnFailureListener(e -> {
+                                        Toast.makeText(this, "Error getting image URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Error uploading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    } else {
+                        // If no image is provided, set null as the image URL
+                        UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, null);
+
+                        // Save user details without image URL to Firestore
+                        saveUserDetailsToFirestore(db, userDetails);
+                    }
+                } else {
+                    // Show an error message
+                    Toast.makeText(this, "You must be at least 16 years old to register.", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+        // Helper method to save user details to Firestore
+        private void saveUserDetailsToFirestore(FirebaseFirestore db, UserDetails userDetails) {
             db.collection("UserDetails")
-                    .document(currUser.getUid())  // Use userId as the document ID
+                    .document(currUser.getUid())
                     .set(userDetails)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(this, "User details saved successfully!", Toast.LENGTH_SHORT).show();
@@ -275,6 +347,5 @@
                         Toast.makeText(this, "Error saving user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         }
-
 
     }
