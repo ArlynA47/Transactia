@@ -43,17 +43,52 @@
                 app:srcCompat="@drawable/greentransactiatext" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- First Dropdown (Spinner) -->
+
+        <!-- Second Dropdown (Spinner) -->
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="12dp"
+            android:spinnerMode="dropdown"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView13" />
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:spinnerMode="dropdown"
+            app:layout_constraintStart_toStartOf="@id/spinner1"
+            app:layout_constraintTop_toBottomOf="@id/spinner1" />
+
+        <!-- Third Dropdown (Spinner) -->
+        <Spinner
+            android:id="@+id/spinner3"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:spinnerMode="dropdown"
+            app:layout_constraintStart_toStartOf="@id/spinner2"
+            app:layout_constraintTop_toBottomOf="@id/spinner2" />
+
         <TextView
             android:id="@+id/textView20"
             android:layout_width="150dp"
             android:layout_height="45dp"
+            android:layout_marginStart="121dp"
+            android:layout_marginTop="571dp"
             android:background="@drawable/button"
             android:gravity="center"
             android:text="Search"
             android:textAlignment="gravity"
             android:textSize="16sp"
-            tools:layout_editor_absoluteX="121dp"
-            tools:layout_editor_absoluteY="571dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
