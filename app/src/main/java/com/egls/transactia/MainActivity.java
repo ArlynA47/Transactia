@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView; // Import TextView
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -108,14 +107,14 @@ public class MainActivity extends AppCompatActivity {
                                             // Send a new verification email if the user requests it
                                             user.sendEmailVerification().addOnCompleteListener(task -> {
                                                 if (task.isSuccessful()) {
-                                                    Toast.makeText(MainActivity.this, "New verification email sent. Please check your inbox.", Toast.LENGTH_SHORT).show();
+                                                    CustomToast.show(MainActivity.this, "New verification email sent. Please check your inbox.");
                                                     // Redirect to ConfirmEmail screen
                                                     Intent intent = new Intent(MainActivity.this, ConfirmEmail.class);
                                                     intent.putExtra("firebaseUser", user);
                                                     startActivity(intent);
                                                     finish();
                                                 } else {
-                                                    Toast.makeText(MainActivity.this, "Failed to send verification email: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                    CustomToast.show(MainActivity.this, "Failed to send verification email: " + task.getException().getMessage());
                                                 }
                                             });
                                         });
@@ -141,25 +140,25 @@ public class MainActivity extends AppCompatActivity {
                                             if (documentSnapshot.exists()) {
                                                 // UserDetails exists, redirect to mainHome
                                                 Intent intent = new Intent(MainActivity.this, mainHome.class);
-                                                // intent.putExtra("firebaseUser", user);
+                                                intent.putExtra("firebaseUser", user);
                                                 startActivity(intent);
                                                 finish();
                                             } else {
                                                 // No UserDetails, redirect to signuptwo
-                                                Toast.makeText(MainActivity.this, "Please add your account details.", Toast.LENGTH_SHORT).show();
+                                                CustomToast.show(MainActivity.this, "Please add your account details.");
                                                 Intent intent = new Intent(MainActivity.this, signuptwo.class);
                                                 intent.putExtra("firebaseUser", user);
                                                 startActivity(intent);
                                                 finish();
                                             }
                                         }).addOnFailureListener(e -> {
-                                            Toast.makeText(MainActivity.this, "Failed to check user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            CustomToast.show(MainActivity.this, "Failed to check user details: " + e.getMessage());
                                         });
                                     }
                                 }
                             })
                             .addOnFailureListener(e -> {
-                                Toast.makeText(MainActivity.this, "Login Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                CustomToast.show(MainActivity.this, "Login Failed: " + e.getMessage());
                             });
                 } else {
                     passwordEditText.setError("Empty fields are not allowed");

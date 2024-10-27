@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -95,7 +94,7 @@ public class signup extends AppCompatActivity {
                                                                                 Task<Void> task) {
                                                                             if (task.isSuccessful()) {
                                                                                 // Email verification link sent successfully
-                                                                                Toast.makeText(signup.this, "Verification email sent. Please check your inbox.", Toast.LENGTH_SHORT).show();
+                                                                                CustomToast.show(signup.this, "Verification email sent. Please check your inbox.");
                                                                                 // Redirect to a verification page to wait for user confirmation
                                                                                 Intent intent = new Intent(signup.this, ConfirmEmail.class);
                                                                                 // Pass the FirebaseUser instance to the intent
@@ -104,14 +103,14 @@ public class signup extends AppCompatActivity {
                                                                                 finish();
                                                                             } else {
                                                                                 // Handle error sending verification email
-                                                                                Toast.makeText(signup.this, "Failed to send verification email: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                                                CustomToast.show(signup.this, "Failed to send verification email: " + task.getException().getMessage());
                                                                             }
                                                                         }
                                                                     });
                                                         }
                                                     } else {
                                                         // Handle error creating user
-                                                        Toast.makeText(signup.this, "SignUp Failed" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                        CustomToast.show(signup.this, "SignUp Failed" + task.getException().getMessage());
                                                     }
                                                 }
                                             });

@@ -12,7 +12,6 @@
     import android.widget.ImageView;
     import android.widget.LinearLayout;
     import android.widget.TextView;
-    import android.widget.Toast;
 
     import androidx.activity.EdgeToEdge;
     import androidx.appcompat.app.AppCompatActivity;
@@ -270,7 +269,7 @@
 
         private void saveUserDetails() {
             if (currUser == null || currUser.getUid() == null) {
-                Toast.makeText(this, "User ID is null, unable to save details", Toast.LENGTH_SHORT).show();
+                CustomToast.show(this, "User ID is null, unable to save details");
                 return;
             }
 
@@ -284,7 +283,7 @@
             // Check if the required fields are filled
             if(name.isEmpty() || sex.isEmpty() || contactInfo.isEmpty() || birthdate.isEmpty() || location.isEmpty()) {
 
-                Toast.makeText(this, "Please fill in all required fields.", Toast.LENGTH_LONG).show();
+                CustomToast.show(this, "Please fill in all required fields.");
             } else {
 
                 // check if the user is at least 16 years old
@@ -311,15 +310,16 @@
 
                                         // Save user details along with image URL to Firestore
                                         saveUserDetailsToFirestore(db, userDetails);
-                                        Toast.makeText(this, "Account details added successfully.", Toast.LENGTH_LONG).show();
+                                        CustomToast.show(this, "Account details added successfully.");
                                         Intent intent = new Intent(signuptwo.this, mainHome.class);
+                                        intent.putExtra("firebaseUser", currUser);
                                         startActivity(intent);
                                     }).addOnFailureListener(e -> {
-                                        Toast.makeText(this, "Error getting image URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        CustomToast.show(this, "Error getting image URL: " + e.getMessage());
                                     });
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(this, "Error uploading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    CustomToast.show(this, "Error uploading image: " + e.getMessage());
                                 });
                     } else {
                         // If no image is provided, set null as the image URL
@@ -330,7 +330,7 @@
                     }
                 } else {
                     // Show an error message
-                    Toast.makeText(this, "You must be at least 16 years old to register.", Toast.LENGTH_LONG).show();
+                    CustomToast.show(this, "You must be at least 16 years old to register.");
                 }
             }
         }
@@ -341,10 +341,10 @@
                     .document(currUser.getUid())
                     .set(userDetails)
                     .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(this, "User details saved successfully!", Toast.LENGTH_SHORT).show();
+                        CustomToast.show(this, "User details saved successfully!");
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Error saving user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        CustomToast.show(this, "Error saving user details: " + e.getMessage());
                     });
         }
 

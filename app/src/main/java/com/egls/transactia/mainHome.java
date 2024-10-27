@@ -11,11 +11,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseUser;
 
 
-    public class mainHome extends AppCompatActivity {
+public class mainHome extends AppCompatActivity {
 
         private boolean isFragmentTransitioning = false;
+
+        FirebaseUser currUser;
 
         // Declare ImageViews
         private ImageView homeMain2;
@@ -35,6 +38,9 @@ import androidx.fragment.app.Fragment;
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;  // Return the insets to propagate them
             });
+
+            // Retrieve the FirebaseUser instance from the intent
+            currUser = getIntent().getParcelableExtra("firebaseUser");
 
             // Initialize ImageViews
             homeMain2 = findViewById(R.id.homemain2);
@@ -65,6 +71,12 @@ import androidx.fragment.app.Fragment;
                 if (!isFragmentTransitioning) {
                     updateSelectedImage(prof2, "selectprof");
                     loadFragment(new ProfileFragment());
+
+
+                    // UPDATE USER DETAILS TESTING
+                    //BackendTest backendTest = new BackendTest();
+                    //backendTest.createListing(currUser);
+
                 }
             });
         }
