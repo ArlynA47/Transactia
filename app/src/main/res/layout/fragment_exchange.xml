@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -119,13 +118,14 @@
 
     <FrameLayout
         android:id="@+id/thisshow"
-        android:layout_width="390dp"
-        android:layout_height="439dp"
+        android:layout_width="397dp"
+        android:layout_height="574dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="168dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlemain5">
+        app:layout_constraintTop_toBottomOf="@+id/titlemain5"
+        app:layout_constraintVertical_bias="0.496">
 
     </FrameLayout>
 
