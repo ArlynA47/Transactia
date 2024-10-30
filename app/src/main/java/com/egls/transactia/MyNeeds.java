@@ -1,7 +1,10 @@
 package com.egls.transactia;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,10 +20,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.IOException;
+
 public class MyNeeds extends AppCompatActivity {
 
     private ImageView currentlySelectedImageView = null;
     private View hiddenLayout; // Reference to the hidden layout
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private ImageView ShowGal;
+    private ImageView selectedImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +43,15 @@ public class MyNeeds extends AppCompatActivity {
             return insets;
         });
 
-        // Initialize hidden layout
+        // Initialize hidden layout and ShowGal ImageView
         hiddenLayout = findViewById(R.id.savepop);
+        ShowGal = findViewById(R.id.ShowGal);
+
+        // ImageView to display the selected image from the gallery
+        selectedImageView = findViewById(R.id.selectedImageView);
+
+        // Set OnClickListener for ShowGal to open the gallery
+        ShowGal.setOnClickListener(v -> openGallery());
 
         // Find the TextView by its ID and set an OnClickListener to show the dropdown menu
         TextView changeTextView = findViewById(R.id.change);
@@ -55,6 +70,31 @@ public class MyNeeds extends AppCompatActivity {
         skillsImageView.setOnClickListener(v -> handleImageClick(skillsImageView, R.drawable.skillsel_add, R.drawable.skill_add));
         favorsImageView.setOnClickListener(v -> handleImageClick(favorsImageView, R.drawable.favorsel_add, R.drawable.favor_add));
         itemsImageView.setOnClickListener(v -> handleImageClick(itemsImageView, R.drawable.itemsel_add, R.drawable.item_add));
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            try {
+                // Get the selected image as a Bitmap
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+
+                // Set the Bitmap to the ImageView
+                selectedImageView.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void showHiddenLayout() {

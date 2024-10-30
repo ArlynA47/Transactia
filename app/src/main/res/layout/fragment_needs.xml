@@ -26,14 +26,16 @@
             android:id="@+id/List"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="288dp"
-            android:layout_marginTop="488dp"
+            android:layout_marginStart="292dp"
+            android:layout_marginTop="508dp"
             android:clickable="true"
             android:src="@drawable/baseline_add_24"
-            android:tint="#ffffff"
+            android:tint="@android:color/white"
             app:backgroundTint="#33443C"
+            app:fabSize="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

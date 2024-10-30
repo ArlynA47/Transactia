@@ -174,30 +174,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="76dp"
+                android:layout_marginBottom="20dp"
                 android:text="SKILLS"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/skills" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textView24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="53dp"
+                android:layout_marginStart="57dp"
+                android:layout_marginBottom="20dp"
                 android:text="FAVORS"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/textView23"
-                app:layout_constraintTop_toBottomOf="@+id/favors" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView23" />
 
             <TextView
                 android:id="@+id/textView25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="58dp"
+                android:layout_marginStart="54dp"
+                android:layout_marginBottom="20dp"
                 android:text="ITEMS"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@+id/textView24"
-                app:layout_constraintTop_toBottomOf="@+id/items" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView24" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -224,7 +227,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
         <EditText
-            android:id="@+id/Contenttitle"
+            android:id="@+id/searchbar"
             android:layout_width="340dp"
             android:layout_height="40dp"
             android:layout_marginStart="27dp"
@@ -247,7 +250,7 @@
             android:paddingStart="8dp"
             android:textColorHint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Contenttitle" />
+            app:layout_constraintTop_toBottomOf="@+id/searchbar" />
 
         <EditText
             android:id="@+id/contentdesc"
@@ -279,19 +282,37 @@
             android:id="@+id/constraintLayout2"
             android:layout_width="340dp"
             android:layout_height="186dp"
-            android:layout_marginStart="26dp"
+            android:layout_marginStart="27dp"
             android:layout_marginTop="3dp"
             android:background="@drawable/offerstx"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/contentdesc">
 
             <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/selectedImageView"
+
+                android:layout_width="340dp"
+                android:layout_height="186dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="1dp"
+                android:contentDescription="Selected image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/galleryicon" />
+                app:srcCompat="@drawable/gallery_message" />
+
+            <ImageView
+                android:id="@+id/ShowGal"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="268dp"
+                android:layout_marginTop="112dp"
+                android:background="@drawable/round"
+                android:clipToOutline="true"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/add_icon" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
