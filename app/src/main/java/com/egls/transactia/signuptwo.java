@@ -105,6 +105,7 @@
             Button signbt = findViewById(R.id.signbt);
             signbt.setOnClickListener(v -> {
                 saveUserDetails();
+
             });
 
             // Set window insets for main layout
@@ -342,6 +343,10 @@
                     .set(userDetails)
                     .addOnSuccessListener(aVoid -> {
                         CustomToast.show(this, "User details saved successfully!");
+                        Intent intent = new Intent(signuptwo.this, mainHome.class);
+                        intent.putExtra("firebaseUser", currUser);
+                        startActivity(intent);
+                        finish(); // Close current activity
                     })
                     .addOnFailureListener(e -> {
                         CustomToast.show(this, "Error saving user details: " + e.getMessage());

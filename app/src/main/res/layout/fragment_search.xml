@@ -10,6 +10,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <EditText
+            android:id="@+id/searchbar"
+            android:layout_width="340dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/graysearch"
+            android:drawableLeft="@android:drawable/ic_menu_search"
+            android:hint="Search"
+            android:paddingStart="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
         <TextView
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
@@ -17,6 +32,7 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="138dp"
             android:text="Filters"
+            android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -53,7 +69,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="12dp"
             android:spinnerMode="dropdown"
-
+              android:background="@drawable/graysearch"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView13" />
 
@@ -63,6 +79,7 @@
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
             android:spinnerMode="dropdown"
+            android:background="@drawable/graysearch"
             app:layout_constraintStart_toStartOf="@id/spinner1"
             app:layout_constraintTop_toBottomOf="@id/spinner1" />
 
@@ -72,6 +89,7 @@
             android:layout_width="300dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
+            android:background="@drawable/graysearch"
             android:spinnerMode="dropdown"
             app:layout_constraintStart_toStartOf="@id/spinner2"
             app:layout_constraintTop_toBottomOf="@id/spinner2" />
@@ -86,6 +104,7 @@
             android:gravity="center"
             android:text="Search"
             android:textAlignment="gravity"
+            android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
