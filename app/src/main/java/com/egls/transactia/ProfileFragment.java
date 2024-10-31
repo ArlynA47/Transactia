@@ -1,5 +1,6 @@
 package com.egls.transactia;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +8,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 public class ProfileFragment extends Fragment {
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -16,6 +19,21 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        // Find the ImageView by ID
+        ImageView accsets = view.findViewById(R.id.accsets);
+
+        // Set a click listener on accsets ImageView
+        accsets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start Account_Settings activity
+                Intent intent = new Intent(getActivity(), Account_Settings.class);
+                startActivity(intent);
+            }
+        });
+
+        return view;
     }
 }

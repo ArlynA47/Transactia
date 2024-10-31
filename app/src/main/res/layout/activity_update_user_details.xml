@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Update_User_Details">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/savepop"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="286dp"
+        android:background="@drawable/round"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="37dp"
+            android:text="Save Changes"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="8dp"
+            android:text="Are you sure you wanted to save these"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="-1dp"
+            android:text="changes? Unsaved changes will be lost"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+        <Button
+            android:id="@+id/cancelbt"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="#808080"
+            android:text="CANCEL"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView28" />
+
+        <Button
+            android:id="@+id/savebt"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="150dp"
+            android:backgroundTint="#33443C"
+            android:text="SAVE"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/cancelbt"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout7"
+        android:layout_width="405dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="-9dp"
+        android:layout_marginTop="-10dp"
+        android:background="@drawable/bottombox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView36"
+            android:layout_width="391dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:backgroundTint="#33443C"
+            android:gravity="start"
+            android:paddingStart="70dp"
+            android:text="Update User Details"
+            android:textColor="#33443C"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <ImageView
+            android:id="@+id/accsets"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-15dp"
+            android:layout_marginTop="1dp"
+            android:src="@drawable/back_profile"
+            app:layout_constraintStart_toEndOf="@+id/textView36"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/savetxx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="326dp"
+            android:layout_marginTop="28dp"
+            android:text="SAVE"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="357dp"
+        android:layout_height="672dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="18dp"
+        android:background="@drawable/bottombox"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+
+        <ImageView
+            android:id="@+id/pfp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="121dp"
+            android:layout_marginTop="15dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circle_shape"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/pfpdef" />
+
+        <TextView
+            android:id="@+id/errorTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="14dp"
+            android:text="Please fill in all the required fields *"
+            android:textColor="#EB3A3A"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pfp" />
+
+        <EditText
+            android:id="@+id/nametx"
+            android:layout_width="273dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/acctx"
+            android:hint="Name *"
+            android:inputType="text"
+            android:padding="1dp"
+            android:paddingStart="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="#BDBDBD"
+            android:textCursorDrawable="@drawable/cursor_black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/errorTv" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sextx"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="273dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/acctx"
+            android:textColorHint="@color/black"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxStrokeColor="@android:color/transparent"
+            app:endIconMode="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nametx">
+
+            <AutoCompleteTextView
+                android:id="@+id/sexAutoComp_txt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:hint="Sex *"
+                android:inputType="none"
+                android:padding="0dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <EditText
+            android:id="@+id/birthdatetx"
+            android:layout_width="273dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/acctx"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
+            android:hint="Birthdate *"
+            android:inputType="none"
+            android:padding="1dp"
+            android:paddingStart="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="#BDBDBD"
+            android:textCursorDrawable="@drawable/cursor_black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contacttx" />
+
+        <EditText
+            android:id="@+id/loctx"
+            android:layout_width="273dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/acctx"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
+            android:hint="Location *"
+            android:inputType="text"
+            android:padding="1dp"
+            android:paddingStart="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="#BDBDBD"
+            android:textCursorDrawable="@drawable/cursor_black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/birthdatetx" />
+
+        <EditText
+            android:id="@+id/contacttx"
+            android:layout_width="273dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/acctx"
+            android:hint="Contact Info *"
+            android:inputType="number"
+            android:maxLength="11"
+            android:padding="1dp"
+            android:paddingStart="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="#BDBDBD"
+            android:textCursorDrawable="@drawable/cursor_black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/biotx" />
+
+        <EditText
+            android:id="@+id/biotx"
+            android:layout_width="273dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/acctx"
+            android:gravity="top"
+            android:hint="Bio"
+            android:padding="1dp"
+            android:paddingStart="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="#BDBDBD"
+            android:textCursorDrawable="@drawable/cursor_black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sextx" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout8"
+            android:layout_width="243dp"
+            android:layout_height="137dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/acctx"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loctx">
+
+            <ImageView
+                android:id="@+id/selectedImageView"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="1dp"
+                android:contentDescription="Selected image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/gallery_message" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/ShowGal"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/round"
+            android:clipToOutline="true"
+            android:padding="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toEndOf="@+id/constraintLayout8"
+            app:layout_constraintTop_toBottomOf="@+id/loctx"
+            app:srcCompat="@drawable/add_icon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
