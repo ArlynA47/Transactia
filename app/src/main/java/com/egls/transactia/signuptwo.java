@@ -1,16 +1,18 @@
     package com.egls.transactia;
 
+    import android.annotation.SuppressLint;
     import android.app.DatePickerDialog;
     import android.content.Intent;
+    import android.graphics.drawable.Drawable;
     import android.net.Uri;
     import android.os.Bundle;
+    import android.view.MotionEvent;
     import android.view.View;
     import android.widget.ArrayAdapter;
     import android.widget.AutoCompleteTextView;
     import android.widget.Button;
     import android.widget.EditText;
     import android.widget.ImageView;
-    import android.widget.LinearLayout;
     import android.widget.TextView;
 
     import androidx.activity.EdgeToEdge;
@@ -19,6 +21,7 @@
     import androidx.core.view.ViewCompat;
     import androidx.core.view.WindowInsetsCompat;
 
+    import com.google.android.material.textfield.TextInputLayout;
     import com.google.firebase.auth.FirebaseUser;
     import com.google.firebase.firestore.DocumentSnapshot;
     import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,15 +39,18 @@
 
     public class signuptwo extends AppCompatActivity {
 
-        String userID;
         FirebaseUser currUser;
+
+        // user details string holders
+        String name, sex, bio, birthdate, contactInfo, location;
 
         private static final int PICK_IMAGE_REQUEST = 1;
         private Uri imageUri;
         private FirebaseStorage storage;
 
-        String[] item = {"Male", "Female", "Other", "Preferred not to say"};
-        AutoCompleteTextView autoCompleteTextView;
+        String[] item = {"Male", "Female", "Prefer not to say"};
+        TextInputLayout sextxCont;
+        AutoCompleteTextView sextx;
         ArrayAdapter<String> adapterItems;
         EditText birthdateTx;
 
@@ -55,7 +61,13 @@
         EditText biotx; //userbio
         EditText loctx; // user location
 
+        // Error text for unfilled fields
+        TextView errorTv;
 
+        // Save the default backgrounds to revert back (if no error)
+        Drawable defaultBgET;
+
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -68,38 +80,63 @@
             // initialize Firebase Storage
             storage = FirebaseStorage.getInstance();
 
-            addIMG  = findViewById(R.id.addIMG);
-            pfp  = findViewById(R.id.pfp);
-            nametx  = findViewById(R.id.nametx);
-            contacttx  = findViewById(R.id.contacttx);
-            biotx  = findViewById(R.id.biotx);
-            loctx  = findViewById(R.id.loctx);
+            addIMG  = findViewById(R.id.addIMG); // imageview
+            pfp  = findViewById(R.id.pfp); // imageview icon
+            errorTv  = findViewById(R.id.errorTv); // TextView
+            nametx  = findViewById(R.id.nametx); // EditText
+            sextx = findViewById(R.id.sexAutoComp_txt); // AutoCompleteTextView
+            sextxCont = findViewById(R.id.sextx); // Sex EditText Container
+            birthdateTx = findViewById(R.id.birthdatetx); // EditText
+            loctx  = findViewById(R.id.loctx); // EditText
+            contacttx  = findViewById(R.id.contacttx); //EditText
+            biotx  = findViewById(R.id.biotx); // EditText
 
-            // location onclick listener / set location
-            loctx.setOnClickListener(v -> {
-                showLocationPickerDialog();
-            });
+            // Background drawables
+            defaultBgET = nametx.getBackground();
+
+            // ----------------------- ONCLICK LISTENERS ------------------------------------
+
             // OnClickListener for addIMG to open the gallery
             addIMG.setOnClickListener(v -> openGallery());
 
+            // OnClickListener to view the image in full screen
             pfp.setOnClickListener(v -> {
-                if (imageUri != null) {
-                    Intent fullScreenIntent = new Intent(signuptwo.this, FullScreenImageActivity.class);
-                    fullScreenIntent.putExtra("imageUri", imageUri.toString());
-                    startActivity(fullScreenIntent);
-                }
+                imgFullScreen();
             });
 
             // Set up gender AutoCompleteTextView
-            autoCompleteTextView = findViewById(R.id.auto_complete_txt);
-            adapterItems = new ArrayAdapter<>(this, R.layout.genderlist, item);
-            autoCompleteTextView.setAdapter(adapterItems);
-            autoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> {
+            ArrayAdapter<String> adapterItems = new ArrayAdapter<>(this, R.layout.genderlist, item);
+            sextx.setAdapter(adapterItems);
+
+            // Set the OnClickListener for sextx and call the new method
+            sextx.setOnClickListener(v -> handleSexClick());
+            sextx.setOnFocusChangeListener((v, hasFocus) -> {
+                handleSexClick();
             });
 
-            // Initialize the birthdate EditText
-            birthdateTx = findViewById(R.id.birthdatetx);
-            birthdateTx.setOnClickListener(v -> showDatePickerDialog());
+            // Set the OnClickListener for birthdateTx and call the new method
+            birthdateTx.setOnClickListener(v -> handleBirthdateClick());
+            birthdateTx.setOnFocusChangeListener((v, hasFocus) -> {
+                handleBirthdateClick();
+            });
+
+            // Set the OnClickListener for loctx and call the new method
+            loctx.setOnClickListener(v -> handleLocationClick());
+            loctx.setOnFocusChangeListener((v, hasFocus) -> {
+                handleLocationClick();
+            });
+
+            // Set the OnClickListener for contacttx and call the new method
+            contacttx.setOnClickListener(v -> handleContactClick());
+            contacttx.setOnFocusChangeListener((v, hasFocus) -> {
+                handleContactClick();
+            });
+
+            // Set the OnClickListener for biotx and call the new method
+            biotx.setOnClickListener(v -> handleBioClick());
+            biotx.setOnFocusChangeListener((v, hasFocus) -> {
+                handleBioClick();
+            });
 
             // Sign up button click listener
             Button signbt = findViewById(R.id.signbt);
@@ -116,6 +153,82 @@
             });
 
         }
+
+        // Separate methods to handle each field's action
+        private void handleSexClick() {
+
+            sextx.dismissDropDown();
+            // Check if nametx is empty
+            if (nametx.getText().toString().trim().isEmpty()) {
+                sextx.dismissDropDown();
+                // Set red border when validation fails
+                nametx.setBackgroundResource(R.drawable.edittext_red_border);
+                nametx.requestFocus();
+                errorTv.setVisibility(View.VISIBLE);
+            } else {
+                // Reset to default background after valid input
+                nametx.setBackground(defaultBgET);
+                errorTv.setVisibility(View.INVISIBLE);
+                sextx.showDropDown();  // Show dropdown if conditions are met
+            }
+        }
+
+
+        private void handleBirthdateClick() {
+            if (sextx.getText().toString().trim().isEmpty()) {
+                // Set red border when validation fails
+                sextxCont.setBackgroundResource(R.drawable.edittext_red_border);
+                handleSexClick();
+                birthdateTx.clearFocus();
+                errorTv.setVisibility(View.VISIBLE);
+            } else {
+                sextxCont.setBackground(defaultBgET);
+                showDatePickerDialog();
+                errorTv.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        private void handleLocationClick() {
+            if (birthdateTx.getText().toString().trim().isEmpty()) {
+                // Set red border when validation fails
+                birthdateTx.setBackgroundResource(R.drawable.edittext_red_border);
+                handleBirthdateClick();
+                loctx.clearFocus();
+                errorTv.setVisibility(View.VISIBLE);
+                errorTv.setVisibility(View.INVISIBLE);
+            } else {
+                birthdateTx.setBackground(defaultBgET);
+                showLocationPickerDialog();
+                errorTv.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        private void handleContactClick() {
+            if (loctx.getText().toString().trim().isEmpty()) {
+                // Set red border when validation fails
+                loctx.setBackgroundResource(R.drawable.edittext_red_border);
+                loctx.requestFocus();
+                contacttx.clearFocus();
+                errorTv.setVisibility(View.VISIBLE);
+            } else {
+                loctx.setBackground(defaultBgET);
+                errorTv.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        private void handleBioClick() {
+            if (contacttx.getText().toString().trim().isEmpty()) {
+                // Set red border when validation fails
+                contacttx.setBackgroundResource(R.drawable.edittext_red_border);
+                contacttx.requestFocus();
+                biotx.clearFocus();
+                errorTv.setVisibility(View.VISIBLE);
+            } else {
+                contacttx.setBackground(defaultBgET);
+                errorTv.setVisibility(View.INVISIBLE);
+            }
+        }
+
 
         // Function to open gallery
         private void openGallery() {
@@ -135,6 +248,14 @@
             }
         }
 
+        // Show Image on full screen
+        private void imgFullScreen() {
+            if (imageUri != null) {
+                Intent fullScreenIntent = new Intent(signuptwo.this, FullScreenImageActivity.class);
+                fullScreenIntent.putExtra("imageUri", imageUri.toString());
+                startActivity(fullScreenIntent);
+            }
+        }
 
         private void showDatePickerDialog() {
             final Calendar calendar = Calendar.getInstance();
@@ -153,12 +274,20 @@
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                         String formattedDate = dateFormat.format(selectedDate.getTime());
 
-                        // Set the formatted date to the EditText
-                        birthdateTx.setText(formattedDate, TextView.BufferType.EDITABLE);
+                        // check if the user is at least 16 years old
+                        AgeCheck ageCheck = new AgeCheck();
+
+                        if (ageCheck.isAtLeast16YearsOld(formattedDate)) {
+                            // Set the formatted date to the EditText
+                            birthdateTx.setText(formattedDate, TextView.BufferType.EDITABLE);
+                        } else {
+                            birthdateTx.setText("");
+                            // Show an error message
+                            CustomToast.show(this, "You must be at least 16 years old to register.");
+                        }
                     },
                     year, month, day
             );
-
             datePickerDialog.show();
         }
 
@@ -274,24 +403,19 @@
                 return;
             }
 
-            String name = nametx.getText().toString().trim();
-            String sex = autoCompleteTextView.getText().toString().trim();
-            String bio = biotx.getText().toString().trim();
-            String contactInfo = contacttx.getText().toString().trim();
-            String birthdate = birthdateTx.getText().toString().trim();
-            String location = loctx.getText().toString().trim();
+            // get the strings from edit texts
+            name = nametx.getText().toString().trim();
+            sex = sextx.getText().toString().trim();
+            bio = biotx.getText().toString().trim();
+            contactInfo = contacttx.getText().toString().trim();
+            birthdate = birthdateTx.getText().toString().trim();
+            location = loctx.getText().toString().trim();
 
             // Check if the required fields are filled
             if(name.isEmpty() || sex.isEmpty() || contactInfo.isEmpty() || birthdate.isEmpty() || location.isEmpty()) {
-
+                handleBioClick();
                 CustomToast.show(this, "Please fill in all required fields.");
             } else {
-
-                // check if the user is at least 16 years old
-                AgeCheck ageCheck = new AgeCheck();
-
-                if (ageCheck.isAtLeast16YearsOld(birthdate)) {
-                    // Proceed with registration
 
                     // Firestore instance
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -329,10 +453,6 @@
                         // Save user details without image URL to Firestore
                         saveUserDetailsToFirestore(db, userDetails);
                     }
-                } else {
-                    // Show an error message
-                    CustomToast.show(this, "You must be at least 16 years old to register.");
-                }
             }
         }
 

@@ -45,10 +45,10 @@ public class findacc extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             // Successfully sent reset email
-                            Toast.makeText(findacc.this, "Password reset email sent.", Toast.LENGTH_SHORT).show();
+                            CustomToast.show(this, "Password reset email sent.");
                         } else {
                             // Failed to send reset email
-                            Toast.makeText(findacc.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            CustomToast.show(this, "Error: " + task.getException().getMessage());
                         }
                     });
 
