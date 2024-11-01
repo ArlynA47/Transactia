@@ -18,14 +18,23 @@
             android:layout_marginStart="1dp"
             android:backgroundTint="#33443C"
             android:gravity="start"
-            android:text="Profile"
             android:paddingStart="30dp"
+            android:text="Profile"
             android:textSize="38sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
+
+        <ImageView
+            android:id="@+id/accsets"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="304dp"
+            android:src="@drawable/burger"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -144,13 +153,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
-        <FrameLayout
-            android:layout_width="392dp"
-            android:layout_height="363dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="338dp"
+            android:layout_height="309dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="1dp"
+            android:background="@drawable/bottombox"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView42">
 
-        </FrameLayout>
+            <FrameLayout
+                android:id="@+id/profileFrame"
+                android:layout_width="336dp"
+                android:layout_height="307dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
