@@ -13,6 +13,7 @@
     import android.widget.Button;
     import android.widget.EditText;
     import android.widget.ImageView;
+    import android.widget.ProgressBar;
     import android.widget.TextView;
 
     import androidx.activity.EdgeToEdge;
@@ -417,42 +418,60 @@
                 CustomToast.show(this, "Please fill in all required fields.");
             } else {
 
-                    // Firestore instance
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                // Firestore instance
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                    // Check if there's an image to upload
-                    if (imageUri != null) {
-                        // Firebase Storage reference
-                        StorageReference storageRef = storage.getReference().child("images/" + currUser.getUid() + ".jpg");
+                // Reference to the ProgressBar
+                ProgressBar progressBar = findViewById(R.id.progressBar);
 
-                        // Upload image to Firebase Storage
-                        storageRef.putFile(imageUri)
-                                .addOnSuccessListener(taskSnapshot -> {
-                                    // Get the image's download URL
-                                    storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
-                                        // Create a new UserDetails object including image URL
-                                        UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, downloadUri.toString());
+                // Check if there's an image to upload
+                if (imageUri != null) {
+                    // Show the progress bar
+                    progressBar.setVisibility(View.VISIBLE);
 
-                                        // Save user details along with image URL to Firestore
-                                        saveUserDetailsToFirestore(db, userDetails);
-                                        CustomToast.show(this, "Account details added successfully.");
-                                        Intent intent = new Intent(signuptwo.this, mainHome.class);
-                                        intent.putExtra("firebaseUser", currUser);
-                                        startActivity(intent);
-                                    }).addOnFailureListener(e -> {
-                                        CustomToast.show(this, "Error getting image URL: " + e.getMessage());
-                                    });
-                                })
-                                .addOnFailureListener(e -> {
-                                    CustomToast.show(this, "Error uploading image: " + e.getMessage());
+                    // Create a unique listing ID if needed
+                    String listingId = db.collection("Listings").document().getId(); // Ensure listingId is unique and consistent
+
+                    // Firebase Storage reference with listing ID subfolder
+                    StorageReference storageRef = storage.getReference().child("images/listings/" + listingId + "/image.jpg");
+
+                    // Upload image to Firebase Storage
+                    storageRef.putFile(imageUri)
+                            .addOnSuccessListener(taskSnapshot -> {
+                                // Get the image's download URL
+                                storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                                    // Create a new UserDetails object including image URL
+                                    UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, downloadUri.toString());
+
+                                    // Save user details along with image URL to Firestore
+                                    saveUserDetailsToFirestore(db, userDetails);
+                                    CustomToast.show(this, "Account details added successfully.");
+                                    Intent intent = new Intent(signuptwo.this, mainHome.class);
+                                    intent.putExtra("newLogin", true);
+                                    intent.putExtra("firebaseUser", currUser);
+                                    startActivity(intent);
+                                }).addOnFailureListener(e -> {
+                                    CustomToast.show(this, "Error getting image URL: " + e.getMessage());
+                                }).addOnCompleteListener(task -> {
+                                    // Hide the progress bar when done
+                                    progressBar.setVisibility(View.GONE);
                                 });
-                    } else {
-                        // If no image is provided, set null as the image URL
-                        UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, null);
+                            })
+                            .addOnFailureListener(e -> {
+                                CustomToast.show(this, "Error uploading image: " + e.getMessage());
+                                progressBar.setVisibility(View.GONE); // Hide the progress bar on failure
+                            });
+                } else {
+                    // If no image is provided, set null as the image URL
+                    UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, null);
 
-                        // Save user details without image URL to Firestore
-                        saveUserDetailsToFirestore(db, userDetails);
-                    }
+                    // Show the progress bar for saving user details
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    // Save user details without image URL to Firestore
+                    saveUserDetailsToFirestore(db, userDetails);
+                    progressBar.setVisibility(View.GONE); // Hide after saving
+                }
             }
         }
 

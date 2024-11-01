@@ -1,5 +1,6 @@
 package com.egls.transactia;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -8,40 +9,80 @@ import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyNeeds extends AppCompatActivity {
 
     private ImageView currentlySelectedImageView = null;
     private View hiddenLayout; // Reference to the hidden layout
+
     private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri imageUri;
+    private FirebaseStorage storage;
+
+    String fireBUserID;
+
     private ImageView ShowGal;
     private ImageView selectedImageView;
 
+
+    // Listing Detail holders
+    String title;
+    String listingType = "Need";
+    String listingCategory;
+    String listingDescription;
+    double listingValue;
+    String selectedTitleAndType;
+    String selectedListingId;
+
+
+    ImageView skillsImageView;
+    ImageView favorsImageView;
+    ImageView itemsImageView;
+    EditText listingTitle;
+    EditText listvalue;
+    EditText listingdesc;
+    EditText inexchange;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my_needs);
 
-        // Set padding for system bars
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
+        fireBUserID = dbHelper.getUserId();
+
+        // ImageViews for skills, favors, and items
+        skillsImageView = findViewById(R.id.skills);
+        favorsImageView = findViewById(R.id.favors);
+        itemsImageView = findViewById(R.id.items);
+
+        listingTitle = findViewById(R.id.listingTitle);
+        listvalue = findViewById(R.id.listvalue);
+        listingdesc = findViewById(R.id.listingdesc);
+        inexchange = findViewById(R.id.inexchange);
 
         // Initialize hidden layout and ShowGal ImageView
         hiddenLayout = findViewById(R.id.savepop);
@@ -53,6 +94,13 @@ public class MyNeeds extends AppCompatActivity {
         // Set OnClickListener for ShowGal to open the gallery
         ShowGal.setOnClickListener(v -> openGallery());
 
+        // OnClickListener to view the image in full screen
+        selectedImageView.setOnClickListener(v -> {
+            imgFullScreen();
+        });
+
+        inexchange.setOnClickListener(v -> fetchInExchangeOptions(fireBUserID));
+
         // Find the TextView by its ID and set an OnClickListener to show the dropdown menu
         TextView changeTextView = findViewById(R.id.change);
         changeTextView.setOnClickListener(v -> showDropdownMenu(v));
@@ -61,17 +109,23 @@ public class MyNeeds extends AppCompatActivity {
         TextView saveTextView = findViewById(R.id.savetx);
         saveTextView.setOnClickListener(v -> showHiddenLayout());
 
-        // ImageViews for skills, favors, and items
-        ImageView skillsImageView = findViewById(R.id.skills);
-        ImageView favorsImageView = findViewById(R.id.favors);
-        ImageView itemsImageView = findViewById(R.id.items);
+        // select "Item" category by default
+        handleImageClick(itemsImageView, R.drawable.itemsel_add, R.drawable.item_add);
 
         // Set OnClickListener for each ImageView
         skillsImageView.setOnClickListener(v -> handleImageClick(skillsImageView, R.drawable.skillsel_add, R.drawable.skill_add));
         favorsImageView.setOnClickListener(v -> handleImageClick(favorsImageView, R.drawable.favorsel_add, R.drawable.favor_add));
         itemsImageView.setOnClickListener(v -> handleImageClick(itemsImageView, R.drawable.itemsel_add, R.drawable.item_add));
+
+        // Set padding for system bars
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
     }
 
+    // Function to open gallery
     private void openGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -79,21 +133,22 @@ public class MyNeeds extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
+    // Handle the result of the gallery selection
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri imageUri = data.getData();
-            try {
-                // Get the selected image as a Bitmap
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            imageUri = data.getData();
+            selectedImageView.setImageURI(imageUri); // Display the selected image in pfp ImageView
+        }
+    }
 
-                // Set the Bitmap to the ImageView
-                selectedImageView.setImageBitmap(bitmap);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    // Show Image on full screen
+    private void imgFullScreen() {
+        if (imageUri != null) {
+            Intent fullScreenIntent = new Intent(MyNeeds.this, FullScreenImageActivity.class);
+            fullScreenIntent.putExtra("imageUri", imageUri.toString());
+            startActivity(fullScreenIntent);
         }
     }
 
@@ -160,6 +215,15 @@ public class MyNeeds extends AppCompatActivity {
         // Set the clicked ImageView to the selected image
         imageView.setImageResource(selectedImageResId);
         currentlySelectedImageView = imageView;
+
+        if (imageView == skillsImageView) {
+            listingCategory = "Skill";
+        } else if (imageView == favorsImageView) {
+            listingCategory = "Favor";
+        } else if (imageView == itemsImageView) {
+            listingCategory = "Item";
+        }
+
     }
 
     private int getDefaultImageResource(ImageView imageView) {
@@ -172,4 +236,43 @@ public class MyNeeds extends AppCompatActivity {
         }
         return 0; // Default or error case
     }
+
+    private void fetchInExchangeOptions(String currentUserId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Listings")
+                .whereEqualTo("listingType", "Offer")
+                .whereEqualTo("userId", currentUserId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<String> titleAndTypeList = new ArrayList<>();
+                    List<String> listingIdList = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        String title = document.getString("title");
+                        String category = document.getString("listingCategory");
+                        String listingId = document.getId();
+
+                        String titleAndType = title + " [" + category + "]";
+                        titleAndTypeList.add(titleAndType);
+                        listingIdList.add(listingId);
+                    }
+
+                    // Show dialog to select inExchange option
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Select In Exchange")
+                            .setItems(titleAndTypeList.toArray(new String[0]), (dialog, which) -> {
+                                selectedTitleAndType = titleAndTypeList.get(which);
+                                selectedListingId = listingIdList.get(which);
+
+                                // Assign selected values to inExchange fields
+                                inexchange.setText(selectedTitleAndType);
+                            })
+                            .show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error fetching listings: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
 }

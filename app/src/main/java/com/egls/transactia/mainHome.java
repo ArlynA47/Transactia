@@ -1,5 +1,6 @@
 package com.egls.transactia;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +16,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 public class mainHome extends AppCompatActivity {
+
+    boolean newLogin;
 
         private boolean isFragmentTransitioning = false;
 
@@ -39,8 +42,16 @@ public class mainHome extends AppCompatActivity {
                 return insets;  // Return the insets to propagate them
             });
 
-            // Retrieve the FirebaseUser instance from the intent
-            currUser = getIntent().getParcelableExtra("firebaseUser");
+            newLogin = getIntent().getBooleanExtra("newLogin", false);
+
+            if(newLogin) {
+                // Retrieve the FirebaseUser instance from the intent
+                currUser = getIntent().getParcelableExtra("firebaseUser");
+                // Save the user id into sqlite db
+                UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
+                dbHelper.saveUserId(currUser.getUid());
+            }
+
 
             // Initialize ImageViews
             homeMain2 = findViewById(R.id.homemain2);
@@ -65,6 +76,15 @@ public class mainHome extends AppCompatActivity {
                 if (!isFragmentTransitioning) {
                     updateSelectedImage(message, "selectmessage");
                     loadFragment(new MessageFragment());
+
+
+                    // makeshift log out
+                    UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
+                    dbHelper.deleteUserId();
+                    Intent intent = new Intent(mainHome.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+
                 }
             });
             prof2.setOnClickListener(view -> {

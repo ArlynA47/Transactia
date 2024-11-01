@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -52,36 +53,35 @@ public class signup extends AppCompatActivity {
         signupbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Get reference to the ProgressBar
+                ProgressBar progressBar = findViewById(R.id.progressBar);
 
                 String email = emailEditText.getText().toString().trim();
                 String p1 = passwordEditText.getText().toString().trim();
                 String p2 = confirmPasswordEditText.getText().toString().trim();
 
-                // Checkbox to toggle password visibility
-
-
-                // check if the email field is not empty
-                if(!email.isEmpty()  && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-
-                    // check if the password field is not empty
-                    if(!p1.isEmpty()) {
-
-                        if(!p2.isEmpty()) {
-
-                            // check if the passwords match
-                            if(p1.equals(p2)) {
-
+                // Check if the email field is not empty and valid
+                if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    // Check if the password field is not empty
+                    if (!p1.isEmpty()) {
+                        if (!p2.isEmpty()) {
+                            // Check if the passwords match
+                            if (p1.equals(p2)) {
                                 String password = p1;
-
                                 int lengthPass = password.length();
 
-                                if(lengthPass > 6) {
+                                if (lengthPass > 6) {
+                                    // Show the progress bar
+                                    progressBar.setVisibility(View.VISIBLE);
 
                                     // Create a new user with email verification enabled
                                     auth.createUserWithEmailAndPassword(email, password)
                                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    // Hide the progress bar once the task is complete
+                                                    progressBar.setVisibility(View.GONE);
+
                                                     if (task.isSuccessful()) {
                                                         // User creation successful
                                                         FirebaseUser user = auth.getCurrentUser();
@@ -90,8 +90,7 @@ public class signup extends AppCompatActivity {
                                                             user.sendEmailVerification()
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
-                                                                        public void onComplete(@NonNull
-                                                                                Task<Void> task) {
+                                                                        public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()) {
                                                                                 // Email verification link sent successfully
                                                                                 CustomToast.show(signup.this, "Verification email sent. Please check your inbox.");
@@ -110,32 +109,28 @@ public class signup extends AppCompatActivity {
                                                         }
                                                     } else {
                                                         // Handle error creating user
-                                                        CustomToast.show(signup.this, "SignUp Failed" + task.getException().getMessage());
+                                                        CustomToast.show(signup.this, "SignUp Failed: " + task.getException().getMessage());
                                                     }
                                                 }
                                             });
-
                                 } else {
                                     passwordEditText.setError("Password should be more than 6 characters.");
                                 }
-
                             } else {
                                 confirmPasswordEditText.setError("Passwords do not match.");
                             }
-
                         } else {
                             confirmPasswordEditText.setError("Field cannot be empty.");
                         }
-
                     } else {
                         passwordEditText.setError("Field cannot be empty.");
                     }
-
                 } else {
                     emailEditText.setError("Please enter a correct email.");
                 }
             }
         });
+
 
         // Apply window insets for the main layout
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

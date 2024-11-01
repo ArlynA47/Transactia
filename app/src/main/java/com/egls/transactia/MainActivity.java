@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView; // Import TextView
 
 import androidx.activity.EdgeToEdge;
@@ -47,7 +48,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
+        String userId = dbHelper.getUserId();
 
+        // If the user is already logged in
+        if (userId != null) {
+            Intent intent = new Intent(MainActivity.this, mainHome.class);
+            intent.putExtra("newLogin", false);
+            startActivity(intent);
+        }
 
         // Assuming you have an EdgeToEdge helper class, if not remove this line
         EdgeToEdge.enable(this);
@@ -89,11 +98,19 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
         loginbt.setOnClickListener(v -> {
+            // Get references to UI elements
+            ProgressBar progressBar = findViewById(R.id.progressBar);
+
+            // Get email and password
             String email = usernameEditText.getText().toString().trim();
             String pass = passwordEditText.getText().toString().trim();
 
+            // Check if email is valid
             if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 if (!pass.isEmpty()) {
+                    // Show the progress bar
+                    progressBar.setVisibility(View.VISIBLE);
+
                     auth.signInWithEmailAndPassword(email, pass)
                             .addOnSuccessListener(authResult -> {
                                 FirebaseUser user = authResult.getUser();
@@ -104,12 +121,12 @@ public class MainActivity extends AppCompatActivity {
                                         builder.setTitle("Email Verification");
                                         builder.setMessage("A verification email was sent when you registered. Would you like to send another verification email?");
                                         builder.setPositiveButton("Send another verification link", (dialog, which) -> {
-                                            // Send a new verification email if the user requests it
                                             user.sendEmailVerification().addOnCompleteListener(task -> {
                                                 if (task.isSuccessful()) {
                                                     CustomToast.show(MainActivity.this, "New verification email sent. Please check your inbox.");
                                                     // Redirect to ConfirmEmail screen
                                                     Intent intent = new Intent(MainActivity.this, ConfirmEmail.class);
+                                                    intent.putExtra("newLogin", true);
                                                     intent.putExtra("firebaseUser", user);
                                                     startActivity(intent);
                                                     finish();
@@ -119,9 +136,7 @@ public class MainActivity extends AppCompatActivity {
                                             });
                                         });
                                         builder.setNegativeButton("Use the old verification link", (dialog, which) -> {
-                                            // Do nothing, just dismiss the dialog
                                             dialog.dismiss();
-                                            // Redirect to ConfirmEmail screen
                                             Intent intent = new Intent(MainActivity.this, ConfirmEmail.class);
                                             intent.putExtra("firebaseUser", user);
                                             startActivity(intent);
@@ -137,10 +152,14 @@ public class MainActivity extends AppCompatActivity {
                                         DocumentReference userDoc = db.collection("UserDetails").document(user.getUid());
 
                                         userDoc.get().addOnSuccessListener(documentSnapshot -> {
+                                            // Hide the progress bar before navigating
+                                            progressBar.setVisibility(View.GONE);
+
                                             if (documentSnapshot.exists()) {
                                                 // UserDetails exists, redirect to mainHome
                                                 Intent intent = new Intent(MainActivity.this, mainHome.class);
                                                 intent.putExtra("firebaseUser", user);
+                                                intent.putExtra("newLogin", true);
                                                 startActivity(intent);
                                                 finish();
                                             } else {
@@ -152,12 +171,14 @@ public class MainActivity extends AppCompatActivity {
                                                 finish();
                                             }
                                         }).addOnFailureListener(e -> {
+                                            progressBar.setVisibility(View.GONE); // Hide on failure
                                             CustomToast.show(MainActivity.this, "Failed to check user details: " + e.getMessage());
                                         });
                                     }
                                 }
                             })
                             .addOnFailureListener(e -> {
+                                progressBar.setVisibility(View.GONE); // Hide on failure
                                 CustomToast.show(MainActivity.this, "Login Failed: " + e.getMessage());
                             });
                 } else {
@@ -169,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 usernameEditText.setError("Please enter correct email");
             }
         });
+
 
         forgotPass.setOnClickListener(v -> {
             // Create an intent to start the FindAcc activity

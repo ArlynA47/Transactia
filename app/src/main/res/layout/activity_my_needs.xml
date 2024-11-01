@@ -1,319 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#292B2D30"
-    tools:context=".MyNeeds">
+    android:background="@color/extrawhite">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/savepop"
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="286dp"
-        android:background="@drawable/round"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView19"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="37dp"
-            android:text="Save Changes"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="8dp"
-            android:text="Are you sure you wanted to save these"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-        <TextView
-            android:id="@+id/textView28"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="-1dp"
-            android:text="changes? Unsaved changes will be lost"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-        <Button
-            android:id="@+id/cancelbt"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="28dp"
-            android:backgroundTint="#808080"
-            android:text="CANCEL"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView28" />
-
-        <Button
-            android:id="@+id/savebt"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="150dp"
-            android:backgroundTint="#33443C"
-            android:text="SAVE"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toEndOf="@+id/cancelbt"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="61dp"
-            android:layout_marginTop="37dp"
-            android:text="MY NEEDS"
-            android:textColor="@color/black"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="56dp"
-            android:text="CHANGE"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/textView14"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/savetx"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="31dp"
-            android:layout_marginTop="43dp"
-            android:text="SAVE"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/change"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        android:background="@color/extrawhite"
+        tools:context=".MyNeeds">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout5"
-            android:layout_width="400dp"
-            android:layout_height="182dp"
-            android:layout_marginTop="17dp"
-            android:background="@drawable/listbox"
+            android:id="@+id/savepop"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="286dp"
+            android:background="@drawable/acctx"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView22"
+                android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="77dp"
-                android:layout_marginTop="16dp"
-                android:text="Select Listing Category"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="37dp"
+                android:text="Save Changes"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/skills"
-                android:layout_width="103dp"
-                android:layout_height="103dp"
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
-                android:layout_marginTop="6dp"
-
+                android:layout_marginTop="8dp"
+                android:text="Are you sure you wanted to save these"
+                android:textColor="@color/black"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView22"
-                app:srcCompat="@drawable/skill_add" />
-
-            <ImageView
-                android:id="@+id/favors"
-                android:layout_width="103dp"
-                android:layout_height="103dp"
-                android:layout_marginTop="6dp"
-                app:layout_constraintStart_toEndOf="@+id/skills"
-                app:layout_constraintTop_toBottomOf="@+id/textView22"
-                app:srcCompat="@drawable/favor_add" />
-
-            <ImageView
-                android:id="@+id/items"
-                android:layout_width="103dp"
-                android:layout_height="103dp"
-                android:layout_marginTop="6dp"
-                app:layout_constraintStart_toEndOf="@+id/favors"
-                app:layout_constraintTop_toBottomOf="@+id/textView22"
-                app:srcCompat="@drawable/item_add" />
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
             <TextView
-                android:id="@+id/textView23"
+                android:id="@+id/textView28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="76dp"
-                android:layout_marginBottom="20dp"
-                android:text="SKILLS"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="-1dp"
+                android:text="changes? Unsaved changes will be lost"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
-            <TextView
-                android:id="@+id/textView24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="57dp"
-                android:layout_marginBottom="20dp"
-                android:text="FAVORS"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView23" />
+            <Button
+                android:id="@+id/cancelbt"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="28dp"
+                android:backgroundTint="#808080"
+                android:text="CANCEL"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
-            <TextView
-                android:id="@+id/textView25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="54dp"
-                android:layout_marginBottom="20dp"
-                android:text="ITEMS"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView24" />
+            <Button
+                android:id="@+id/savebt"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="150dp"
+                android:backgroundTint="#33443C"
+                android:text="SAVE"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toEndOf="@+id/cancelbt"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/textView26"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="27dp"
-            android:layout_marginTop="18dp"
-            android:text="My Need Detail Content"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
-
-        <TextView
-            android:id="@+id/textView27"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="27dp"
-            android:text="Insert your Need Content"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView26" />
-
-        <EditText
-            android:id="@+id/contenttitle"
-            android:layout_width="340dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="27dp"
-            android:layout_marginTop="21dp"
-            android:background="@drawable/offerstx"
-            android:hint="Content Title"
-            android:paddingStart="8dp"
-            android:textColorHint="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView27" />
-
-        <EditText
-            android:id="@+id/listvalue"
-            android:layout_width="340dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="27dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/offerstx"
-            android:hint="Listing Value"
-            android:paddingStart="8dp"
-            android:textColorHint="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contenttitle" />
-
-        <EditText
-            android:id="@+id/contentdesc"
-            android:layout_width="340dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="27dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/offerstx"
-            android:hint="Content Description"
-            android:paddingStart="8dp"
-            android:textColorHint="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listvalue" />
-
-        <EditText
-            android:id="@+id/inexchange"
-            android:layout_width="340dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="27dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/offerstx"
-            android:hint="In exchange of"
-            android:paddingStart="8dp"
-            android:textColorHint="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="340dp"
-            android:layout_height="186dp"
-            android:layout_marginStart="27dp"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/offerstx"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contentdesc">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/extrawhite"
+            >
 
-            <ImageView
-                android:id="@+id/selectedImageView"
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="61dp"
+                android:layout_marginTop="37dp"
+                android:text="ADD NEED"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="56dp"
+                android:text="CHANGE"
+                android:textColor="@color/grey"
+                app:layout_constraintStart_toEndOf="@+id/textView14"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/savetx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="31dp"
+                android:layout_marginTop="43dp"
+                android:text="SAVE"
+                android:textColor="@color/lightgreen"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/change"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="182dp"
+                android:layout_marginTop="17dp"
+                android:elevation="8dp"
+                android:background="@drawable/listbox"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="77dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Select Listing Category"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/skills"
+                    android:layout_width="103dp"
+                    android:layout_height="103dp"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="6dp"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView22"
+                    app:srcCompat="@drawable/skill_add" />
+
+                <ImageView
+                    android:id="@+id/favors"
+                    android:layout_width="103dp"
+                    android:layout_height="103dp"
+                    android:layout_marginTop="6dp"
+                    app:layout_constraintStart_toEndOf="@+id/skills"
+                    app:layout_constraintTop_toBottomOf="@+id/textView22"
+                    app:srcCompat="@drawable/favor_add" />
+
+                <ImageView
+                    android:id="@+id/items"
+                    android:layout_width="103dp"
+                    android:layout_height="103dp"
+                    android:layout_marginTop="6dp"
+                    app:layout_constraintStart_toEndOf="@+id/favors"
+                    app:layout_constraintTop_toBottomOf="@+id/textView22"
+                    app:srcCompat="@drawable/item_add" />
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="76dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="SKILL"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="57dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="FAVOR"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView23" />
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="54dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="ITEM"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView24" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="27dp"
+                android:layout_marginTop="18dp"
+                android:text="Listing Details"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/listingTitle"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="27dp"
+                android:text="Insert your Need Content"
+                android:textColor="@color/lightgreen"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/listingTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+            <EditText
+                android:id="@+id/listingTitle"
+                android:layout_width="340dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="21dp"
+                android:background="@drawable/offerstx"
+                android:hint="Listing Title *"
+                android:paddingStart="8dp"
+                android:textColorHint="@color/grey"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView27" />
+
+            <EditText
+                android:id="@+id/listingdesc"
+                android:layout_width="340dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/offerstx"
+                android:hint="Listing Description *"
+                android:paddingStart="8dp"
+                android:textColorHint="@color/grey"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listingTitle" />
+
+            <EditText
+                android:id="@+id/listvalue"
+                android:layout_width="340dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/offerstx"
+                android:hint="Listing Value"
+                android:paddingStart="8dp"
+                android:textColorHint="@color/grey"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listingdesc" />
+
+            <EditText
+                android:id="@+id/inexchange"
+                android:layout_width="340dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/offerstx"
+                android:hint="In exchange of"
+                android:focusable="false"
+                android:paddingStart="8dp"
+                android:textColorHint="@color/grey"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
                 android:layout_width="340dp"
                 android:layout_height="186dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="1dp"
-                android:contentDescription="Selected image"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/gallery_message" />
+                android:layout_marginTop="10dp"
+                android:background="@drawable/offerstx"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listvalue">
 
-            <ImageView
-                android:id="@+id/ShowGal"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="268dp"
-                android:layout_marginTop="112dp"
-                android:background="@drawable/round"
-                android:clipToOutline="true"
-                android:padding="0dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/add_icon" />
+                <ImageView
+                    android:id="@+id/selectedImageView"
+                    android:layout_width="340dp"
+                    android:layout_height="186dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="1dp"
+                    android:contentDescription="Selected image"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/gallery_message" />
+
+                <ImageView
+                    android:id="@+id/ShowGal"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="268dp"
+                    android:layout_marginTop="112dp"
+                    android:background="@drawable/round"
+                    android:clipToOutline="true"
+                    android:padding="0dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/add_icon" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -236,7 +236,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
         <EditText
-            android:id="@+id/contenttitle"
+            android:id="@+id/listingTitle"
             android:layout_width="340dp"
             android:layout_height="40dp"
             android:layout_marginStart="27dp"
@@ -259,10 +259,10 @@
             android:paddingStart="8dp"
             android:textColorHint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contenttitle" />
+            app:layout_constraintTop_toBottomOf="@+id/listingTitle" />
 
         <EditText
-            android:id="@+id/contentdesc"
+            android:id="@+id/listingdesc"
             android:layout_width="340dp"
             android:layout_height="40dp"
             android:layout_marginStart="27dp"
@@ -295,7 +295,7 @@
             android:layout_marginTop="3dp"
             android:background="@drawable/offerstx"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/contentdesc">
+            app:layout_constraintTop_toBottomOf="@+id/listingdesc">
 
             <ImageView
                 android:id="@+id/selectedImageView"
