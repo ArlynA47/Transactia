@@ -32,16 +32,17 @@ public class ExchangeFragment extends Fragment {
         needsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (getActivity() instanceof mainHome) {
+                    ((mainHome) getActivity()).onNeedsButtonClicked(); // Call the method in the activity
+                }
+
                 // Change background for needsButton and reset offersButton
                 needsButton.setBackgroundResource(R.drawable.greenbt);
-                needsButton.setText("MY NEEDS");
                 needsButton.setTextColor(getResources().getColor(R.color.white));
                 offersButton.setBackgroundResource(R.drawable.button);
-                offersButton.setText("MY OFFERS");
                 offersButton.setTextColor(Color.parseColor("#33443C"));
 
-                // Replace the container with NeedsFragment
-                //replaceFragment(new NeedsFragment(), R.id.thisshow);
             }
         });
 
@@ -50,25 +51,15 @@ public class ExchangeFragment extends Fragment {
             public void onClick(View v) {
                 // Change background for offersButton and reset needsButton
                 offersButton.setBackgroundResource(R.drawable.greenbt);
-                offersButton.setText("MY OFFERS");
                 offersButton.setTextColor(getResources().getColor(R.color.white));
                 needsButton.setBackgroundResource(R.drawable.button);
-                needsButton.setText("MY NEEDS");
                 needsButton.setTextColor(Color.parseColor("#33443C"));
-                // Replace the container with OffersFragment
-                //replaceFragment(new OffersFragment(), R.id.thisshow);
+
             }
         });
 
         return view;
     }
 
-    // Helper method to replace fragments
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getParentFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainerView, fragment); // Replace with your fragment container ID
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
+
 }

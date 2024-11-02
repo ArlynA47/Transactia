@@ -2,6 +2,7 @@ package com.egls.transactia;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,17 +12,31 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class mainHome extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private MyNeedsAdapter adapter;
+    private List<Listing> listings = new ArrayList<>();
 
     boolean newLogin;
 
         private boolean isFragmentTransitioning = false;
 
         FirebaseUser currUser;
+        String fireBUserID;
+
+        UserDatabaseHelper dbHelper;
 
         // Declare ImageViews
         private ImageView homeMain2;
@@ -50,21 +65,23 @@ public class mainHome extends AppCompatActivity {
                 // Save the user id into sqlite db
                 UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
                 dbHelper.saveUserId(currUser.getUid());
+                fireBUserID = dbHelper.getUserId();
+            } else {
+                dbHelper = new UserDatabaseHelper(this);
+                fireBUserID = dbHelper.getUserId();
             }
-
 
             // Initialize ImageViews
             homeMain2 = findViewById(R.id.homemain2);
             add2 = findViewById(R.id.add2);
             message = findViewById(R.id.message);
             prof2 = findViewById(R.id.prof2);
+            recyclerView = findViewById(R.id.recyclerView);
+
 
             // Set up click listeners for fragment switching and image updating
             homeMain2.setOnClickListener(view -> {
-                if (!isFragmentTransitioning) {
-                    updateSelectedImage(homeMain2, "selecthome");
-                    loadFragment(new HomeFragment());
-                }
+                displayHome();
             });
             add2.setOnClickListener(view -> {
                 if (!isFragmentTransitioning) {
@@ -99,6 +116,28 @@ public class mainHome extends AppCompatActivity {
 
                 }
             });
+
+
+        }
+
+        private void displayHome() {
+            if (!isFragmentTransitioning) {
+                updateSelectedImage(homeMain2, "selecthome");
+                loadFragment(new HomeFragment());
+            }
+        }
+
+        public void onNeedsButtonClicked() {
+            showMyNeeds(); // Call your existing showMyNeeds method
+        }
+
+        public void showMyNeeds() {
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            adapter = new MyNeedsAdapter(this, listings, fireBUserID);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setVisibility(View.VISIBLE); // Make RecyclerView visible
+            loadListings();
         }
 
         // Method to load fragments
@@ -123,4 +162,22 @@ public class mainHome extends AppCompatActivity {
             // Set the selected image to its active state
             selectedImageView.setImageResource(getResources().getIdentifier(selectedImageResource, "drawable", getPackageName()));
         }
+
+    private void loadListings() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Listings")
+                .whereEqualTo("listingType", "Need")
+                .whereEqualTo("userId", fireBUserID)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    listings.clear();
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        Listing listing = doc.toObject(Listing.class);
+                        listing.setListingId(doc.getId());
+                        listings.add(listing);
+                    }
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error loading listings", e));
+    }
     }
