@@ -27,6 +27,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -58,10 +59,12 @@ public class MyNeeds extends AppCompatActivity {
 
     ProgressBar progressBar;
 
+    private String imageUrl;
 
     // Listing Detail holders
     String title;
     String listingType = "Need";
+    String counterListingType = "Offer";
     String listingCategory;
     String listingDescription;
     String listingValue;
@@ -69,7 +72,7 @@ public class MyNeeds extends AppCompatActivity {
     String selectedListingId;
 
     TextView textView23, textView24, textView25;
-
+    TextView textView14, textView27;
 
     ImageView skillsImageView;
     ImageView favorsImageView;
@@ -82,6 +85,11 @@ public class MyNeeds extends AppCompatActivity {
     Drawable defaultBgET;
 
     TextView changeTextView;
+    TextView saveTextView;
+
+    boolean newListing;
+    boolean isNeed;
+    String listingId = null;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -123,7 +131,27 @@ public class MyNeeds extends AppCompatActivity {
         // Initialize hidden layout and ShowGal ImageView
         hiddenLayout = findViewById(R.id.savepop);
 
+        textView27 = findViewById(R.id.textView27);
+        textView14 = findViewById(R.id.textView14);
+
         changeTextView = findViewById(R.id.change);
+        saveTextView = findViewById(R.id.savetx);
+
+        newListing = getIntent().getBooleanExtra("newListing", false);
+
+        if(newListing) {
+            isNeed = getIntent().getBooleanExtra("isNeed", true);
+            if(isNeed) {
+                inNeedPage();
+            } else {
+                inOfferPage();
+            }
+        } else {
+            listingId = getIntent().getStringExtra("listingId");
+            textView14.setText("");
+            textView27.setText("");
+            loadListingData();
+        }
 
         // ONLCICK LISTENERS
 
@@ -194,15 +222,16 @@ public class MyNeeds extends AppCompatActivity {
 
         // Save
         changeTextView.setOnClickListener(v -> {
-            boolean allowShow = handleNotRequiredFieldClick();
-            if(allowShow) {
                 showDropdownMenu(v);
-            }
         });
 
         // Find the TextView for saving and set OnClickListener
-        TextView saveTextView = findViewById(R.id.savetx);
-        saveTextView.setOnClickListener(v -> showHiddenLayout());
+        saveTextView.setOnClickListener(v -> {
+            boolean allowShow = handleNotRequiredFieldClick();
+            if(allowShow) {
+                showHiddenLayout();
+            }
+        });
 
         // select "Item" category by default
         handleImageClick(itemsImageView, R.drawable.itemsel_add, R.drawable.item_add);
@@ -274,10 +303,14 @@ public class MyNeeds extends AppCompatActivity {
 
     // Show Image on full screen
     private void imgFullScreen() {
+
+        Intent fullScreenIntent = new Intent(MyNeeds.this, FullScreenImageActivity.class);
         if (imageUri != null) {
-            Intent fullScreenIntent = new Intent(MyNeeds.this, FullScreenImageActivity.class);
+            // Pass imageUri for newly selected images
             fullScreenIntent.putExtra("imageUri", imageUri.toString());
-            startActivity(fullScreenIntent);
+        } else if (imageUrl != null) {
+            // Pass imageUrl for images loaded from Firestore
+            fullScreenIntent.putExtra("imageUrl", imageUrl);
         }
     }
 
@@ -321,14 +354,28 @@ public class MyNeeds extends AppCompatActivity {
 
     private boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.myneeds) {
-            return true; // Stay in MyNeeds Activity
+            inNeedPage();
+            return true;
         } else if (item.getItemId() == R.id.myoffers) {
-            // Navigate to MyOffers Activity
-            startActivity(new Intent(this, MyOffers.class));
+            inOfferPage();
             return true;
         } else {
             return false; // Return false for unhandled menu items
         }
+    }
+
+    private void inNeedPage() {
+        listingType = "Need";
+        counterListingType ="Offer";
+        textView14.setText("My Need");
+        textView27.setText("Enter your Need Details");
+    }
+
+    private void inOfferPage() {
+        listingType = "Offer";
+        counterListingType = "Need";
+        textView14.setText("My Offer");
+        textView27.setText("Enter your Offer Details");
     }
 
     private void handleImageClick(ImageView imageView, int selectedImageResId, int defaultImageResId) {
@@ -374,7 +421,7 @@ public class MyNeeds extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("Listings")
-                .whereEqualTo("listingType", "Offer")
+                .whereEqualTo("listingType", counterListingType)
                 .whereEqualTo("userId", currentUserId)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
@@ -408,26 +455,137 @@ public class MyNeeds extends AppCompatActivity {
                 });
     }
 
+    private void fetchTitleAndCategoryById(String listingId) {
+        // Set listingId to empty string if it is null
+        if (listingId == null) {
+            listingId = ""; // Set to empty string
+        }
+
+        // Check if the listingId is still empty before proceeding
+        if (listingId.isEmpty()) {
+            inexchange.setText(""); // Optionally clear the EditText if no ID is available
+            return; // Early exit, as we can't fetch anything with an empty ID
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Fetch the document from Firestore using the valid listingId
+        db.collection("Listings").document(listingId)
+                .get()
+                .addOnSuccessListener(document -> {
+                    if (document.exists()) {
+                        String title = document.getString("title");
+                        String category = document.getString("listingCategory");
+
+                        // Format the title and category for display
+                        String titleAndType = title + " - " + category;
+
+                        // Display the title and category in the inExchange EditText
+                        inexchange.setText(titleAndType);
+                    } else {
+                        // If the document doesn't exist, you might want to handle this case
+                        Toast.makeText(this, "Listing not found.", Toast.LENGTH_SHORT).show();
+                        inexchange.setText(""); // Clear the EditText if the listing is not found
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle the error gracefully
+                    Toast.makeText(this, "Error fetching listing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    inexchange.setText(""); // Clear the EditText in case of an error
+                });
+    }
+
+
+
+    private void loadListingData() {
+        if (listingId == null || listingId.isEmpty()) {
+            return; // No listingId to load
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Fetch the listing document from Firestore
+        db.collection("Listings").document(listingId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Populate fields with the fetched data
+                        title = documentSnapshot.getString("title");
+                        listingType = documentSnapshot.getString("listingType");
+                        listingCategory = documentSnapshot.getString("listingCategory");
+                        listingDescription = documentSnapshot.getString("listingDescription");
+                        listingValue = documentSnapshot.getString("listingValue");
+                        selectedListingId = documentSnapshot.getString("inExchange");
+                        fetchTitleAndCategoryById(selectedListingId);
+
+                        if(listingType.equals("Need")) {
+                            inNeedPage();
+                        } else if(listingType.equals("Offer")) {
+                            inOfferPage();
+                        }
+
+                        // Populate UI fields
+                        listingTitle.setText(title);
+                        listingdesc.setText(listingDescription);
+
+                        // Format listingValue as currency
+                        if (listingValue != null && !listingValue.isEmpty()) {
+                            double parsedValue = Double.parseDouble(listingValue.replaceAll("[^\\d.]", ""));
+                            String formattedValue = NumberFormat.getCurrencyInstance(Locale.getDefault()).format(parsedValue);
+                            listvalue.setText(formattedValue);
+                        } else {
+                            String noVal = "0";
+                            double parsedValue = Double.parseDouble(noVal); // No need to replace anything here
+                            String formattedValue = NumberFormat.getCurrencyInstance(Locale.getDefault()).format(parsedValue);
+                            listvalue.setText(formattedValue);
+                        }
+
+                        // Set the selected category
+                        switch (listingCategory) {
+                            case "Skill":
+                                handleImageClick(skillsImageView, R.drawable.skillsel_add, R.drawable.skill_add);
+                                break;
+                            case "Favor":
+                                handleImageClick(favorsImageView, R.drawable.favorsel_add, R.drawable.favor_add);
+                                break;
+                            case "Item":
+                                handleImageClick(itemsImageView, R.drawable.itemsel_add, R.drawable.item_add);
+                                break;
+                        }
+
+                        // Load listing image if available
+                        imageUrl = documentSnapshot.getString("listingImage");
+                        if (imageUrl != null) {
+                            // Load image with your preferred image loading library (e.g., Glide)
+                            Glide.with(this).load(imageUrl).into(selectedImageView);
+                        }
+                    } else {
+                        Toast.makeText(this, "Listing not found", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to load listing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+
     // save listing to firebase method
     public void createListing(String fireBUserID) {
         title = listingTitle.getText().toString().trim();
         listingDescription = listingdesc.getText().toString().trim();
-        listingValue = listvalue.getText().toString().trim();
+        listingValue = listvalue.getText().toString().replaceAll("[^\\d.]", ""); // Remove currency symbols
 
         if (fireBUserID == null || fireBUserID.isEmpty()) {
             return;
         }
 
-        // Show the progress bar
         progressBar.setVisibility(View.VISIBLE);
 
-        // Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Create a unique ID for the listing
-        String listingId = db.collection("Listings").document().getId();
+        // Use existing listingId for updates or generate a new one
+        String idToUse = (listingId != null) ? listingId : db.collection("Listings").document().getId();
 
-        // Create a map of the listing fields
         Map<String, Object> listingData = new HashMap<>();
         listingData.put("title", title);
         listingData.put("listingType", listingType);
@@ -435,41 +593,30 @@ public class MyNeeds extends AppCompatActivity {
         listingData.put("listingDescription", listingDescription);
         listingData.put("listingValue", listingValue);
         listingData.put("inExchange", selectedListingId);
-        listingData.put("userId", fireBUserID); // Store the user ID in the document
+        listingData.put("userId", fireBUserID);
 
-        // Handle image upload if there is a listing image
         if (imageUri != null) {
-            StorageReference storageRef = storage.getReference().child("images/listing/" + listingId + ".jpg");
-
-            // Upload the listing image to Firebase Storage
+            StorageReference storageRef = storage.getReference().child("images/listing/" + idToUse + ".jpg");
             storageRef.putFile(imageUri)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        // Get the image's download URL
-                        storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
-                            // Add the image URL to the listing data
-                            listingData.put("listingImage", downloadUri.toString());
-                            // Save the listing data to Firestore
-                            saveListingToFirestore(db, listingId, listingData);
-                        }).addOnFailureListener(e -> {
-                            // Handle failure to get download URL
-                            CustomToast.show(this, "Error getting image URL: " + e.getMessage());
-                            progressBar.setVisibility(View.GONE); // Hide progress bar on failure
-                        });
-                    })
+                    .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl()
+                            .addOnSuccessListener(downloadUri -> {
+                                listingData.put("listingImage", downloadUri.toString());
+                                saveListingToFirestore(db, idToUse, listingData);
+                            })
+                            .addOnFailureListener(e -> {
+                                CustomToast.show(this, "Error getting image URL: " + e.getMessage());
+                                progressBar.setVisibility(View.GONE);
+                            }))
                     .addOnFailureListener(e -> {
-                        // Handle failure to upload image
                         CustomToast.show(this, "Error uploading image: " + e.getMessage());
-                        progressBar.setVisibility(View.GONE); // Hide progress bar on failure
+                        progressBar.setVisibility(View.GONE);
                     });
-
         } else {
-            // If no image is provided, set the image URL to null
             listingData.put("listingImage", null);
-
-            // Save the listing data to Firestore without image URL
-            saveListingToFirestore(db, listingId, listingData);
+            saveListingToFirestore(db, idToUse, listingData);
         }
     }
+
 
     private void saveListingToFirestore(FirebaseFirestore db, String listingId, Map<String, Object> listingData) {
         db.collection("Listings")

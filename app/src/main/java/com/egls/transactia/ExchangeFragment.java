@@ -28,6 +28,16 @@ public class ExchangeFragment extends Fragment {
         needsButton = view.findViewById(R.id.needsbt2);
         offersButton = view.findViewById(R.id.offersbt2);
 
+        // show the needs recyclerview by default
+        if (getActivity() instanceof mainHome) {
+            ((mainHome) getActivity()).onNeedsButtonClicked(); // Call the method in the activity
+        }
+        // Change background for needsButton and reset offersButton
+        needsButton.setBackgroundResource(R.drawable.greenbt);
+        needsButton.setTextColor(getResources().getColor(R.color.white));
+        offersButton.setBackgroundResource(R.drawable.button);
+        offersButton.setTextColor(Color.parseColor("#33443C"));
+
         // Set onClick listeners for the TextViews (needsbt2 and offersbt2) to change backgrounds and replace fragments
         needsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +59,10 @@ public class ExchangeFragment extends Fragment {
         offersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (getActivity() instanceof mainHome) {
+                    ((mainHome) getActivity()).onOffersButtonClicked(); // Call the method in the activity
+                }
                 // Change background for offersButton and reset needsButton
                 offersButton.setBackgroundResource(R.drawable.greenbt);
                 offersButton.setTextColor(getResources().getColor(R.color.white));

@@ -24,6 +24,9 @@ public class hfrag extends Fragment {
         ImageView mytransact = view.findViewById(R.id.mytransact);
         ImageView notifs = view.findViewById(R.id.notifs);
 
+        // set the exchange tab by default
+        replaceFragment(new ExchangeFragment());
+
         // Set onClick listeners for each ImageView
         exchange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +59,7 @@ public class hfrag extends Fragment {
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainerView, fragment); // Replace with your fragment container ID
+        fragmentTransaction.replace(R.id.fragmentContainerHome, fragment); // Replace with your fragment container ID
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

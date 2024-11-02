@@ -66,6 +66,7 @@ public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHo
         // Handle CardView click to navigate to MyNeeds activity
         holder.cardView.setOnClickListener(v -> {
             Intent intent = new Intent(context, MyNeeds.class);
+            intent.putExtra("newListing", false);
             intent.putExtra("listingId", listing.getListingId());
             context.startActivity(intent);
         });

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +31,7 @@ public class mainHome extends AppCompatActivity {
     private List<Listing> listings = new ArrayList<>();
 
     boolean newLogin;
+    boolean isNeed;
 
         private boolean isFragmentTransitioning = false;
 
@@ -43,6 +45,7 @@ public class mainHome extends AppCompatActivity {
         private ImageView add2;
         private ImageView message;
         private ImageView prof2;
+        FloatingActionButton listButton;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +120,19 @@ public class mainHome extends AppCompatActivity {
                 }
             });
 
+            listButton = findViewById(R.id.List);
+
+            // Set an OnClickListener for the floating button
+            listButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Start MyNeeds activity when the button is clicked
+                    Intent intent = new Intent(mainHome.this, MyNeeds.class);
+                    intent.putExtra("newListing", true);
+                    intent.putExtra("isNeed", isNeed);
+                    startActivity(intent);
+                }
+            });
 
         }
 
@@ -129,18 +145,41 @@ public class mainHome extends AppCompatActivity {
 
         public void onNeedsButtonClicked() {
             showMyNeeds(); // Call your existing showMyNeeds method
+            isNeed = true;
         }
 
-        public void showMyNeeds() {
+        public void onOffersButtonClicked() {
+            showMyOffers();
+            isNeed = false;
+        }
 
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    public void showMyNeeds() {
+        // Only set the adapter if it's null
+        if (adapter == null) {
             adapter = new MyNeedsAdapter(this, listings, fireBUserID);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(adapter);
-            recyclerView.setVisibility(View.VISIBLE); // Make RecyclerView visible
-            loadListings();
         }
+        recyclerView.setVisibility(View.VISIBLE); // Make RecyclerView visible
+        loadListings("Need"); // Load "Need" listings
+    }
 
-        // Method to load fragments
+    // Show My Offers
+    public void showMyOffers() {
+        // Only set the adapter if it's null
+        if (adapter == null) {
+            adapter = new MyNeedsAdapter(this, listings, fireBUserID);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
+        }
+        recyclerView.setVisibility(View.VISIBLE); // Make RecyclerView visible
+        loadListings("Offer"); // Load "Offer" listings
+    }
+
+
+
+
+    // Method to load fragments
         private void loadFragment(Fragment fragment) {
             isFragmentTransitioning = true;
             getSupportFragmentManager().beginTransaction()
@@ -163,21 +202,22 @@ public class mainHome extends AppCompatActivity {
             selectedImageView.setImageResource(getResources().getIdentifier(selectedImageResource, "drawable", getPackageName()));
         }
 
-    private void loadListings() {
+    private void loadListings(String lType) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Listings")
-                .whereEqualTo("listingType", "Need")
+                .whereEqualTo("listingType", lType)
                 .whereEqualTo("userId", fireBUserID)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    listings.clear();
+                    listings.clear(); // Clear existing listings
                     for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                         Listing listing = doc.toObject(Listing.class);
                         listing.setListingId(doc.getId());
                         listings.add(listing);
                     }
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged(); // Notify the adapter of data changes
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error loading listings", e));
     }
+
     }
