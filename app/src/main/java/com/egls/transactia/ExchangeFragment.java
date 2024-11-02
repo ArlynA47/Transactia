@@ -24,39 +24,9 @@ public class ExchangeFragment extends Fragment {
         // Inflate the correct layout for ExchangeFragment
         View view = inflater.inflate(R.layout.fragment_exchange, container, false);
 
-        // Find ImageViews by their IDs
-        ImageView exchange = view.findViewById(R.id.exchange);
-        ImageView mytransact = view.findViewById(R.id.mytransact);
-        ImageView notifs = view.findViewById(R.id.notifs);
-
         // Find TextViews by their IDs
         needsButton = view.findViewById(R.id.needsbt2);
         offersButton = view.findViewById(R.id.offersbt2);
-
-        // Set onClick listeners for each ImageView to replace fragments in fragmentContainerView
-        exchange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Replace the current fragment with ExchangeFragment
-                replaceFragment(new ExchangeFragment(), R.id.fragmentContainerView);
-            }
-        });
-
-        notifs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Replace the current fragment with NotificationsFragment
-                replaceFragment(new NotificationsFragment(), R.id.fragmentContainerView);
-            }
-        });
-
-        mytransact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Replace the current fragment with MyTransactFragment
-                replaceFragment(new MyTransactFragment(), R.id.fragmentContainerView);
-            }
-        });
 
         // Set onClick listeners for the TextViews (needsbt2 and offersbt2) to change backgrounds and replace fragments
         needsButton.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +41,7 @@ public class ExchangeFragment extends Fragment {
                 offersButton.setTextColor(Color.parseColor("#33443C"));
 
                 // Replace the container with NeedsFragment
-                replaceFragment(new NeedsFragment(), R.id.thisshow);
+                //replaceFragment(new NeedsFragment(), R.id.thisshow);
             }
         });
 
@@ -86,7 +56,7 @@ public class ExchangeFragment extends Fragment {
                 needsButton.setText("MY NEEDS");
                 needsButton.setTextColor(Color.parseColor("#33443C"));
                 // Replace the container with OffersFragment
-                replaceFragment(new OffersFragment(), R.id.thisshow);
+                //replaceFragment(new OffersFragment(), R.id.thisshow);
             }
         });
 
@@ -94,10 +64,10 @@ public class ExchangeFragment extends Fragment {
     }
 
     // Helper method to replace fragments
-    private void replaceFragment(Fragment fragment, int containerId) {
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(containerId, fragment); // Use the specified container ID
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment); // Replace with your fragment container ID
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

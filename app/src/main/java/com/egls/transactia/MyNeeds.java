@@ -3,15 +3,19 @@ package com.egls.transactia;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,10 +30,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class MyNeeds extends AppCompatActivity {
 
@@ -42,8 +51,12 @@ public class MyNeeds extends AppCompatActivity {
 
     String fireBUserID;
 
+    TextView errorTv;
+
     private ImageView ShowGal;
     private ImageView selectedImageView;
+
+    ProgressBar progressBar;
 
 
     // Listing Detail holders
@@ -51,9 +64,11 @@ public class MyNeeds extends AppCompatActivity {
     String listingType = "Need";
     String listingCategory;
     String listingDescription;
-    double listingValue;
+    String listingValue;
     String selectedTitleAndType;
     String selectedListingId;
+
+    TextView textView23, textView24, textView25;
 
 
     ImageView skillsImageView;
@@ -64,12 +79,18 @@ public class MyNeeds extends AppCompatActivity {
     EditText listingdesc;
     EditText inexchange;
 
+    Drawable defaultBgET;
+
+    TextView changeTextView;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my_needs);
+
+        storage = FirebaseStorage.getInstance();
 
         UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
         fireBUserID = dbHelper.getUserId();
@@ -79,31 +100,105 @@ public class MyNeeds extends AppCompatActivity {
         favorsImageView = findViewById(R.id.favors);
         itemsImageView = findViewById(R.id.items);
 
+        textView23 = findViewById(R.id.textView23);
+        textView24 = findViewById(R.id.textView24);
+        textView25 = findViewById(R.id.textView25);
+
+        errorTv = findViewById(R.id.errorTv);
+
         listingTitle = findViewById(R.id.listingTitle);
         listvalue = findViewById(R.id.listvalue);
         listingdesc = findViewById(R.id.listingdesc);
         inexchange = findViewById(R.id.inexchange);
 
-        // Initialize hidden layout and ShowGal ImageView
-        hiddenLayout = findViewById(R.id.savepop);
+        defaultBgET = listingTitle.getBackground();
+
         ShowGal = findViewById(R.id.ShowGal);
 
         // ImageView to display the selected image from the gallery
         selectedImageView = findViewById(R.id.selectedImageView);
 
-        // Set OnClickListener for ShowGal to open the gallery
-        ShowGal.setOnClickListener(v -> openGallery());
+        progressBar = findViewById(R.id.progressBar);
+
+        // Initialize hidden layout and ShowGal ImageView
+        hiddenLayout = findViewById(R.id.savepop);
+
+        changeTextView = findViewById(R.id.change);
+
+        // ONLCICK LISTENERS
 
         // OnClickListener to view the image in full screen
         selectedImageView.setOnClickListener(v -> {
             imgFullScreen();
         });
 
-        inexchange.setOnClickListener(v -> fetchInExchangeOptions(fireBUserID));
+        listingdesc.setOnClickListener(v -> handleDescClick());
+        listingdesc.setOnFocusChangeListener((v, hasFocus) -> {
+            handleDescClick();
+        });
 
-        // Find the TextView by its ID and set an OnClickListener to show the dropdown menu
-        TextView changeTextView = findViewById(R.id.change);
-        changeTextView.setOnClickListener(v -> showDropdownMenu(v));
+        ShowGal.setOnClickListener(v -> {
+            boolean allowShow = handleNotRequiredFieldClick();
+            if(allowShow) {
+                openGallery();
+            }
+        });
+        ShowGal.setOnFocusChangeListener((v, hasFocus) -> {
+            boolean allowShow = handleNotRequiredFieldClick();
+            if(allowShow) {
+                openGallery();
+            }
+        });
+
+        listvalue.setOnClickListener(v -> handleNotRequiredFieldClick());
+        listvalue.setOnFocusChangeListener((v, hasFocus) -> {
+            handleNotRequiredFieldClick();
+        });
+        listvalue.addTextChangedListener(new TextWatcher() {
+            private String current = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // When the user types, remove the formatting
+                if (!s.toString().equals(current)) {
+                    String cleanString = s.toString().replaceAll("[^\\d]", "");
+                    double parsed = Double.parseDouble(cleanString);
+                    String formatted = NumberFormat.getCurrencyInstance(Locale.getDefault()).format(parsed / 100);
+                    current = formatted;
+                    listvalue.setText(formatted);
+                    listvalue.setSelection(formatted.length()); // Set cursor at the end
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        inexchange.setOnClickListener(v -> {
+            boolean allowShow = handleNotRequiredFieldClick();
+            if(allowShow) {
+                fetchInExchangeOptions(fireBUserID);
+            }
+        });
+        inexchange.setOnFocusChangeListener((v, hasFocus) -> {
+            boolean allowShow = handleNotRequiredFieldClick();
+            if(allowShow) {
+                fetchInExchangeOptions(fireBUserID);
+            }
+        });
+
+        // Save
+        changeTextView.setOnClickListener(v -> {
+            boolean allowShow = handleNotRequiredFieldClick();
+            if(allowShow) {
+                showDropdownMenu(v);
+            }
+        });
 
         // Find the TextView for saving and set OnClickListener
         TextView saveTextView = findViewById(R.id.savetx);
@@ -124,6 +219,40 @@ public class MyNeeds extends AppCompatActivity {
             return insets;
         });
     }
+
+
+    // Separate methods to handle each field's action
+    private void handleDescClick() {
+
+        if (listingTitle.getText().toString().trim().isEmpty()) {
+            // Set red border when validation fails
+            listingTitle.setBackgroundResource(R.drawable.edittext_red_border);
+            listingTitle.requestFocus();
+            listingdesc.clearFocus();
+            errorTv.setVisibility(View.VISIBLE);
+        } else {
+            // Reset to default background after valid input
+            listingTitle.setBackground(defaultBgET);
+            errorTv.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+    private boolean handleNotRequiredFieldClick() {
+        if (listingdesc.getText().toString().trim().isEmpty()) {
+            // Set red border when validation fails
+            listingdesc.setBackgroundResource(R.drawable.edittext_red_border);
+            listingdesc.requestFocus();
+            errorTv.setVisibility(View.VISIBLE);
+            return false;
+        } else {
+            listingdesc.setBackground(defaultBgET);
+            errorTv.setVisibility(View.INVISIBLE);
+            return true;
+        }
+    }
+
+
 
     // Function to open gallery
     private void openGallery() {
@@ -169,11 +298,7 @@ public class MyNeeds extends AppCompatActivity {
 
         // Save button click listener
         saveButton.setOnClickListener(v -> {
-            // Display a toast message
-            Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show();
-
-            // Navigate to MyOffers Activity
-            startActivity(new Intent(this, mainHome.class));
+            createListing(fireBUserID);
         });
 
         // Cancel button click listener
@@ -218,12 +343,20 @@ public class MyNeeds extends AppCompatActivity {
 
         if (imageView == skillsImageView) {
             listingCategory = "Skill";
+            textView23.setTextColor(getResources().getColor(R.color.lightgreen));
+            textView24.setTextColor(getResources().getColor(R.color.black));
+            textView25.setTextColor(getResources().getColor(R.color.black));
         } else if (imageView == favorsImageView) {
             listingCategory = "Favor";
+            textView23.setTextColor(getResources().getColor(R.color.black));
+            textView24.setTextColor(getResources().getColor(R.color.lightgreen));
+            textView25.setTextColor(getResources().getColor(R.color.black));
         } else if (imageView == itemsImageView) {
             listingCategory = "Item";
+            textView23.setTextColor(getResources().getColor(R.color.black));
+            textView24.setTextColor(getResources().getColor(R.color.black));
+            textView25.setTextColor(getResources().getColor(R.color.lightgreen));
         }
-
     }
 
     private int getDefaultImageResource(ImageView imageView) {
@@ -253,7 +386,7 @@ public class MyNeeds extends AppCompatActivity {
                         String category = document.getString("listingCategory");
                         String listingId = document.getId();
 
-                        String titleAndType = title + " [" + category + "]";
+                        String titleAndType = title + " - " + category;
                         titleAndTypeList.add(titleAndType);
                         listingIdList.add(listingId);
                     }
@@ -274,5 +407,84 @@ public class MyNeeds extends AppCompatActivity {
                     Toast.makeText(this, "Error fetching listings: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
+
+    // save listing to firebase method
+    public void createListing(String fireBUserID) {
+        title = listingTitle.getText().toString().trim();
+        listingDescription = listingdesc.getText().toString().trim();
+        listingValue = listvalue.getText().toString().trim();
+
+        if (fireBUserID == null || fireBUserID.isEmpty()) {
+            return;
+        }
+
+        // Show the progress bar
+        progressBar.setVisibility(View.VISIBLE);
+
+        // Firestore instance
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Create a unique ID for the listing
+        String listingId = db.collection("Listings").document().getId();
+
+        // Create a map of the listing fields
+        Map<String, Object> listingData = new HashMap<>();
+        listingData.put("title", title);
+        listingData.put("listingType", listingType);
+        listingData.put("listingCategory", listingCategory);
+        listingData.put("listingDescription", listingDescription);
+        listingData.put("listingValue", listingValue);
+        listingData.put("inExchange", selectedListingId);
+        listingData.put("userId", fireBUserID); // Store the user ID in the document
+
+        // Handle image upload if there is a listing image
+        if (imageUri != null) {
+            StorageReference storageRef = storage.getReference().child("images/listing/" + listingId + ".jpg");
+
+            // Upload the listing image to Firebase Storage
+            storageRef.putFile(imageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        // Get the image's download URL
+                        storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                            // Add the image URL to the listing data
+                            listingData.put("listingImage", downloadUri.toString());
+                            // Save the listing data to Firestore
+                            saveListingToFirestore(db, listingId, listingData);
+                        }).addOnFailureListener(e -> {
+                            // Handle failure to get download URL
+                            CustomToast.show(this, "Error getting image URL: " + e.getMessage());
+                            progressBar.setVisibility(View.GONE); // Hide progress bar on failure
+                        });
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failure to upload image
+                        CustomToast.show(this, "Error uploading image: " + e.getMessage());
+                        progressBar.setVisibility(View.GONE); // Hide progress bar on failure
+                    });
+
+        } else {
+            // If no image is provided, set the image URL to null
+            listingData.put("listingImage", null);
+
+            // Save the listing data to Firestore without image URL
+            saveListingToFirestore(db, listingId, listingData);
+        }
+    }
+
+    private void saveListingToFirestore(FirebaseFirestore db, String listingId, Map<String, Object> listingData) {
+        db.collection("Listings")
+                .document(listingId)
+                .set(listingData)
+                .addOnSuccessListener(aVoid -> {
+                    CustomToast.show(this, "Listing added successfully.");
+                    progressBar.setVisibility(View.GONE); // Hide progress bar on success
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    CustomToast.show(this, "Error creating listing: " + e.getMessage());
+                    progressBar.setVisibility(View.GONE); // Hide progress bar on failure
+                });
+    }
+
 
 }

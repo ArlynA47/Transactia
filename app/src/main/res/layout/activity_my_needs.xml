@@ -15,13 +15,15 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/savepop"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.75"
             android:layout_height="200dp"
-            android:layout_marginTop="286dp"
             android:background="@drawable/acctx"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:id="@+id/textView19"
@@ -98,7 +100,7 @@
                 android:layout_marginTop="37dp"
                 android:text="ADD NEED"
                 android:textColor="@color/black"
-                android:textSize="30sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -112,19 +114,18 @@
                 android:text="CHANGE"
                 android:textColor="@color/grey"
                 app:layout_constraintStart_toEndOf="@+id/textView14"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@+id/textView14" />
 
             <TextView
                 android:id="@+id/savetx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="31dp"
-                android:layout_marginTop="43dp"
+                android:layout_marginEnd="30dp"
                 android:text="SAVE"
                 android:textColor="@color/lightgreen"
                 android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@+id/change"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textView14" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout5"
@@ -155,7 +156,6 @@
                     android:layout_height="103dp"
                     android:layout_marginStart="48dp"
                     android:layout_marginTop="6dp"
-
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView22"
                     app:srcCompat="@drawable/skill_add" />
@@ -182,41 +182,37 @@
                     android:id="@+id/textView23"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="76dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="SKILL"
+                    android:text="Skill"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="@+id/skills"
+                    app:layout_constraintLeft_toLeftOf="@+id/skills"
+                    app:layout_constraintRight_toRightOf="@+id/skills"/>
 
                 <TextView
                     android:id="@+id/textView24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="57dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="FAVOR"
+                    android:text="Favor"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView23" />
+                    app:layout_constraintBottom_toBottomOf="@+id/favors"
+                    app:layout_constraintLeft_toLeftOf="@+id/favors"
+                    app:layout_constraintRight_toRightOf="@+id/favors" />
 
                 <TextView
                     android:id="@+id/textView25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="54dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="ITEM"
+                    android:text="Item"
                     android:textColor="@color/black"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView24" />
+                    app:layout_constraintBottom_toBottomOf="@+id/items"
+                    app:layout_constraintLeft_toLeftOf="@+id/items"
+                    app:layout_constraintRight_toRightOf="@+id/items" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/textView26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="27dp"
                 android:layout_marginTop="18dp"
                 android:text="Listing Details"
                 android:textColor="@color/black"
@@ -228,35 +224,47 @@
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="27dp"
-                android:text="Insert your Need Content"
+                android:text="Enter your Need Details"
                 android:textColor="@color/lightgreen"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/listingTitle"
                 app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
+            <TextView
+                android:id="@+id/errorTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Please fill in all the required fields *"
+                android:textColor="#EB3A3A"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/listingTitle"
+                app:layout_constraintTop_toBottomOf="@id/textView27" />
+
             <EditText
                 android:id="@+id/listingTitle"
                 android:layout_width="340dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="21dp"
+                android:layout_marginTop="7dp"
                 android:background="@drawable/offerstx"
                 android:hint="Listing Title *"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView27" />
+                app:layout_constraintTop_toBottomOf="@+id/errorTv" />
 
             <EditText
                 android:id="@+id/listingdesc"
                 android:layout_width="340dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/offerstx"
                 android:hint="Listing Description *"
-                android:paddingStart="8dp"
+                android:padding="8dp"
                 android:textColorHint="@color/grey"
+                android:inputType="textMultiLine"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/listingTitle" />
@@ -270,6 +278,7 @@
                 android:hint="Listing Value"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
+                android:inputType="numberDecimal"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/listingdesc" />
@@ -324,6 +333,18 @@
                     app:srcCompat="@drawable/add_icon" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:visibility="gone"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
