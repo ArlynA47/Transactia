@@ -224,7 +224,7 @@
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enter your Need Details"
+                android:text="Enter your need details."
                 android:textColor="@color/lightgreen"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@+id/listingTitle"

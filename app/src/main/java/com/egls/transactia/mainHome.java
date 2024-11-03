@@ -97,14 +97,6 @@ public class mainHome extends AppCompatActivity {
                     updateSelectedImage(message, "selectmessage");
                     loadFragment(new MessageFragment());
 
-
-                    // makeshift log out
-                    UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
-                    dbHelper.deleteUserId();
-                    Intent intent = new Intent(mainHome.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-
                 }
             });
             prof2.setOnClickListener(view -> {

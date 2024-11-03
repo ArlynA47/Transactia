@@ -430,10 +430,10 @@
                     progressBar.setVisibility(View.VISIBLE);
 
                     // Create a unique listing ID if needed
-                    String listingId = db.collection("Listings").document().getId(); // Ensure listingId is unique and consistent
+                    String udid = db.collection("UserDetails").document().getId(); // Ensure listingId is unique and consistent
 
                     // Firebase Storage reference with listing ID subfolder
-                    StorageReference storageRef = storage.getReference().child("images/listings/" + listingId + "/image.jpg");
+                    StorageReference storageRef = storage.getReference().child("images/pfp/" + udid + "/image.jpg");
 
                     // Upload image to Firebase Storage
                     storageRef.putFile(imageUri)

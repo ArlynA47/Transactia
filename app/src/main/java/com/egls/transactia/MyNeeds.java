@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -312,6 +313,7 @@ public class MyNeeds extends AppCompatActivity {
             // Pass imageUrl for images loaded from Firestore
             fullScreenIntent.putExtra("imageUrl", imageUrl);
         }
+        startActivity(fullScreenIntent);
     }
 
     private void showHiddenLayout() {
@@ -331,18 +333,17 @@ public class MyNeeds extends AppCompatActivity {
 
         // Save button click listener
         saveButton.setOnClickListener(v -> {
+            hiddenLayout.setVisibility(View.GONE);
+            findViewById(R.id.main).setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent)); // Reset background
             createListing(fireBUserID);
         });
 
         // Cancel button click listener
         cancelButton.setOnClickListener(v -> {
-            // Display a toast message
-            Toast.makeText(this, "Changes not saved", Toast.LENGTH_SHORT).show();
-
-            // Optionally, you can hide the layout again
             hiddenLayout.setVisibility(View.GONE);
             findViewById(R.id.main).setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent)); // Reset background
         });
+
     }
 
     private void showDropdownMenu(View anchor) {
@@ -368,14 +369,14 @@ public class MyNeeds extends AppCompatActivity {
         listingType = "Need";
         counterListingType ="Offer";
         textView14.setText("My Need");
-        textView27.setText("Enter your Need Details");
+        textView27.setText("Enter your need details.");
     }
 
     private void inOfferPage() {
         listingType = "Offer";
         counterListingType = "Need";
         textView14.setText("My Offer");
-        textView27.setText("Enter your Offer Details");
+        textView27.setText("Enter your offer details.");
     }
 
     private void handleImageClick(ImageView imageView, int selectedImageResId, int defaultImageResId) {
@@ -483,8 +484,7 @@ public class MyNeeds extends AppCompatActivity {
                         // Display the title and category in the inExchange EditText
                         inexchange.setText(titleAndType);
                     } else {
-                        // If the document doesn't exist, you might want to handle this case
-                        Toast.makeText(this, "Listing not found.", Toast.LENGTH_SHORT).show();
+                        // Case 01A: If the document doesn't exist, you might want to handle this case
                         inexchange.setText(""); // Clear the EditText if the listing is not found
                     }
                 })
@@ -501,6 +501,8 @@ public class MyNeeds extends AppCompatActivity {
         if (listingId == null || listingId.isEmpty()) {
             return; // No listingId to load
         }
+
+        progressBar.setVisibility(View.VISIBLE);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -559,11 +561,14 @@ public class MyNeeds extends AppCompatActivity {
                             // Load image with your preferred image loading library (e.g., Glide)
                             Glide.with(this).load(imageUrl).into(selectedImageView);
                         }
+                        progressBar.setVisibility(View.GONE);
                     } else {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(this, "Listing not found", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(this, "Failed to load listing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
@@ -632,6 +637,63 @@ public class MyNeeds extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE); // Hide progress bar on failure
                 });
     }
+
+    private void deleteListing(String listingId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Check if this listingId exists in the "inExchange" field of other listings
+        db.collection("Listings")
+                .whereEqualTo("inExchange", listingId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    boolean isInExchange = !querySnapshot.isEmpty();
+
+                    // Create the alert dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Confirm Deletion");
+
+                    // Check if the listing is used in other listings' inExchange fields
+                    if (isInExchange) {
+                        builder.setMessage("This listing is referenced as 'In Exchange' by another user. Are you sure you want to delete it? The reference will be cleared.");
+                    } else {
+                        builder.setMessage("Are you sure you want to delete this listing?");
+                    }
+
+                    builder.setPositiveButton("Delete", (dialog, which) -> {
+                        if (isInExchange) {
+                            // Clear the inExchange references before deletion
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                document.getReference().update("inExchange", "")
+                                        .addOnSuccessListener(aVoid -> Log.d("Firestore", "Cleared inExchange field for listing: " + document.getId()))
+                                        .addOnFailureListener(e -> Log.e("Firestore", "Error clearing inExchange field: " + e.getMessage()));
+                            }
+                        }
+
+                        // Now proceed with deleting the listing
+                        db.collection("Listings").document(listingId)
+                                .delete()
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.makeText(this, "Listing deleted successfully", Toast.LENGTH_SHORT).show();
+                                    // Optionally refresh your listings view here
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Error deleting listing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                });
+                    });
+
+                    builder.setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.dismiss(); // User canceled, do nothing
+                    });
+
+                    // Show the dialog
+                    builder.create().show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error checking listings: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+
 
 
 }

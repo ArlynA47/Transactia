@@ -31,7 +31,8 @@ public class FullScreenImageActivity extends AppCompatActivity {
 
         // Get the image URI from the intent
         Intent intent = getIntent();
-        String imageUrl = intent.getStringExtra("imageUri");
+        String imageUri = intent.getStringExtra("imageUri");
+        String imageUrl = intent.getStringExtra("imageUrl");
 
         // Debugging: log the image URL to check its value
         Log.d("FullScreenImageActivity", "Image URL: " + imageUrl);
@@ -39,14 +40,12 @@ public class FullScreenImageActivity extends AppCompatActivity {
         // Find the ImageView and load the image using Glide
         ImageView fullImageView = findViewById(R.id.full_image_view);
 
-        // Load the image using Glide, with error handling
-        if (imageUrl != null) {
-            Glide.with(this)
-                    .load(imageUrl)
-                    .into(fullImageView);
-        } else {
-            // Handle the case where the image URL is null
-            Log.e("FullScreenImageActivity", "Image URL is null");
+        // Use Glide to load the image
+        if (imageUri != null) {
+            Uri imageU = Uri.parse(imageUri);
+            Glide.with(this).load(imageUri).into(fullImageView);
+        } else if (imageUrl != null) {
+            Glide.with(this).load(imageUrl).into(fullImageView);
         }
     }
 }
