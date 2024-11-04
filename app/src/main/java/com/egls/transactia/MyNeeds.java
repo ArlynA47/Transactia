@@ -3,6 +3,7 @@ package com.egls.transactia;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -103,7 +104,7 @@ public class MyNeeds extends AppCompatActivity {
 
         UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
         fireBUserID = dbHelper.getUserId();
-
+        boolean fromAdapter = getIntent().getBooleanExtra("fromAdapter", false);
         // ImageViews for skills, favors, and items
         skillsImageView = findViewById(R.id.skills);
         favorsImageView = findViewById(R.id.favors);
@@ -128,14 +129,13 @@ public class MyNeeds extends AppCompatActivity {
         selectedImageView = findViewById(R.id.selectedImageView);
 
         progressBar = findViewById(R.id.progressBar);
-
+        TextView changeTextView = findViewById(R.id.change);
         // Initialize hidden layout and ShowGal ImageView
         hiddenLayout = findViewById(R.id.savepop);
 
         textView27 = findViewById(R.id.textView27);
         textView14 = findViewById(R.id.textView14);
 
-        changeTextView = findViewById(R.id.change);
         saveTextView = findViewById(R.id.savetx);
 
         newListing = getIntent().getBooleanExtra("newListing", false);
@@ -155,7 +155,9 @@ public class MyNeeds extends AppCompatActivity {
         }
 
         // ONLCICK LISTENERS
-
+        if (fromAdapter) {
+            changeTextView.setVisibility(View.GONE);
+        }
         // OnClickListener to view the image in full screen
         selectedImageView.setOnClickListener(v -> {
             imgFullScreen();
@@ -331,10 +333,51 @@ public class MyNeeds extends AppCompatActivity {
         Button saveButton = hiddenLayout.findViewById(R.id.savebt);
         Button cancelButton = hiddenLayout.findViewById(R.id.cancelbt);
 
+        // Decrease the opacity of each ImageView
+        ImageView[] imageViews = {
+                findViewById(R.id.favors),
+                findViewById(R.id.skills),
+                findViewById(R.id.items) // Add other ImageViews as needed
+        };
+        TextView[] textViews = {
+                findViewById(R.id.textView23),
+                findViewById(R.id.textView24),
+                findViewById(R.id.textView25),
+                findViewById(R.id.savetx),
+                findViewById(R.id.change),
+                findViewById(R.id.textView14),
+                findViewById(R.id.textView22),
+                findViewById(R.id.textView26),
+                findViewById(R.id.textView27)
+        };
+
+        for (ImageView imageView : imageViews) {
+            if (imageView != null) {
+                imageView.setAlpha(0.4f); // Set to 50% opacity (0.0 to 1.0)
+            }
+        }
+        for (TextView textView : textViews) {
+            if (textView != null) {
+                textView.setAlpha(0.4f); // Set to 50% opacity (0.0 to 1.0)
+            }
+        }
+
         // Save button click listener
         saveButton.setOnClickListener(v -> {
             hiddenLayout.setVisibility(View.GONE);
             findViewById(R.id.main).setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent)); // Reset background
+
+            // Reset opacity of each ImageView after hiding the layout
+            for (ImageView imageView : imageViews) {
+                if (imageView != null) {
+                    imageView.setAlpha(1.0f); // Reset to 100% opacity
+                }
+            }
+            for (TextView textView : textViews) {
+                if (textView != null) {
+                    textView.setAlpha(1.0f); // Reset to 100% opacity
+                }
+            }
             createListing(fireBUserID);
         });
 
@@ -342,9 +385,21 @@ public class MyNeeds extends AppCompatActivity {
         cancelButton.setOnClickListener(v -> {
             hiddenLayout.setVisibility(View.GONE);
             findViewById(R.id.main).setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent)); // Reset background
-        });
 
+            // Reset opacity of each ImageView on cancel
+            for (ImageView imageView : imageViews) {
+                if (imageView != null) {
+                    imageView.setAlpha(1.0f); // Reset to 100% opacity
+                }
+            }
+            for (TextView textView : textViews) {
+                if (textView != null) {
+                    textView.setAlpha(1.0f); // Reset to 100% opacity
+                }
+            }
+        });
     }
+
 
     private void showDropdownMenu(View anchor) {
         PopupMenu popupMenu = new PopupMenu(this, anchor);

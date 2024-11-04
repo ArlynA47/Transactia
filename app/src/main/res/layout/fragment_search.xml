@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".SearchFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,8 +69,8 @@
             android:layout_height="45dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="12dp"
+            android:background="@drawable/graysearch"
             android:spinnerMode="dropdown"
-              android:background="@drawable/graysearch"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView13" />
 
@@ -78,8 +79,8 @@
             android:layout_width="300dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
-            android:spinnerMode="dropdown"
             android:background="@drawable/graysearch"
+            android:spinnerMode="dropdown"
             app:layout_constraintStart_toStartOf="@id/spinner1"
             app:layout_constraintTop_toBottomOf="@id/spinner1" />
 
