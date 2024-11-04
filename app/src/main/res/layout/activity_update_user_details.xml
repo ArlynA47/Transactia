@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/extrawhite"
     tools:context=".Update_User_Details">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,7 +104,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.68"/>
+            app:layout_constraintVertical_bias="0.68" />
 
         <TextView
             android:id="@+id/savetxx"
@@ -117,27 +118,22 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/extrawhite"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
-        >
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="357dp"
-        android:layout_height="672dp"
+        android:layout_height="650dp"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="18dp"
+        android:layout_marginTop="35dp"
         android:background="@drawable/bottombox"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ScrollView>
 
         <ImageView
             android:id="@+id/pfp"
@@ -170,7 +166,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="42dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="14dp"
             android:text="Please fill in all the required fields *"
             android:textColor="#EB3A3A"
             android:textSize="12sp"
@@ -182,8 +178,8 @@
             android:id="@+id/nametx"
             android:layout_width="273dp"
             android:layout_height="35dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="44dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/acctx"
             android:hint="Name *"
@@ -195,22 +191,25 @@
             android:textCursorDrawable="@drawable/cursor_black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.352"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pfp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/sextx"
-            app:endIconMode="none"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="273dp"
             android:layout_height="35dp"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="30dp"
             android:background="@drawable/acctx"
             android:textColorHint="@color/black"
             app:boxBackgroundColor="@android:color/transparent"
             app:boxStrokeColor="@android:color/transparent"
+            app:endIconMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/nametx">
 
@@ -233,8 +232,8 @@
             android:id="@+id/birthdatetx"
             android:layout_width="273dp"
             android:layout_height="35dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/acctx"
             android:focusable="false"
@@ -248,7 +247,7 @@
             android:textCursorDrawable="@drawable/cursor_black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.47"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sextx" />
 
@@ -256,8 +255,8 @@
             android:id="@+id/loctx"
             android:layout_width="273dp"
             android:layout_height="35dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/acctx"
             android:focusable="false"
             android:focusableInTouchMode="true"
@@ -270,7 +269,7 @@
             android:textCursorDrawable="@drawable/cursor_black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.17"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/birthdatetx" />
 
@@ -278,8 +277,8 @@
             android:id="@+id/contacttx"
             android:layout_width="273dp"
             android:layout_height="35dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/acctx"
             android:hint="Contact Info *"
             android:inputType="number"
@@ -291,7 +290,7 @@
             android:textCursorDrawable="@drawable/cursor_black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.191"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/loctx" />
 
@@ -299,19 +298,19 @@
             android:id="@+id/biotx"
             android:layout_width="273dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/acctx"
             android:gravity="top"
             android:hint="Bio"
-            android:padding="8dp"
             android:inputType="textMultiLine"
+            android:padding="8dp"
             android:textColor="@color/black"
             android:textColorHint="#BDBDBD"
             android:textCursorDrawable="@drawable/cursor_black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.17"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/contacttx" />
 
@@ -320,7 +319,7 @@
             android:layout_width="243dp"
             android:layout_height="137dp"
             android:layout_marginStart="38dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/acctx"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/biotx">
@@ -353,15 +352,16 @@
             app:layout_constraintStart_toEndOf="@+id/constraintLayout8"
             app:layout_constraintTop_toTopOf="@+id/constraintLayout8"
             app:srcCompat="@drawable/add_icon" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:visibility="gone"
         android:indeterminate="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

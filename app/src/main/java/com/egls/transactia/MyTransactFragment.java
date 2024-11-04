@@ -56,7 +56,7 @@ public class MyTransactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Change background for needsButton and reset offersButton
-                completedButton.setBackgroundResource(R.drawable.greenbt);
+                completedButton.setBackgroundResource(R.drawable.gradientbt);
                 completedButton.setText("COMPLETED");
                 completedButton.setTextColor(getResources().getColor(R.color.white));
                 pendingButton.setBackgroundResource(R.drawable.button);
@@ -72,7 +72,7 @@ public class MyTransactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Change background for offersButton and reset needsButton
-                pendingButton.setBackgroundResource(R.drawable.greenbt);
+                pendingButton.setBackgroundResource(R.drawable.gradientbt);
                 pendingButton.setText("PENDING");
                 pendingButton.setTextColor(getResources().getColor(R.color.white));
                 completedButton.setBackgroundResource(R.drawable.button);
