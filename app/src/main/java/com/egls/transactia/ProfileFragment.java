@@ -1,5 +1,5 @@
-
 package com.egls.transactia;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -28,11 +28,9 @@ public class ProfileFragment extends Fragment {
         accsets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start Account_Settings activity with transition
+                // Start Account_Settings activity
                 Intent intent = new Intent(getActivity(), Account_Settings.class);
                 startActivity(intent);
-                // Apply the slide-in and slide-out transitions
-                getActivity().overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
 

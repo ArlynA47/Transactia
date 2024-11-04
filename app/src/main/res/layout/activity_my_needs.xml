@@ -11,26 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/extrawhite"
-        android:visibility="visible"
         tools:context=".MyNeeds">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/savepop"
             android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.75"
             android:layout_height="200dp"
             android:background="@drawable/acctx"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent=".83">
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
+                android:layout_marginStart="48dp"
                 android:layout_marginTop="37dp"
                 android:text="Save Changes"
                 android:textColor="@color/black"
@@ -42,7 +41,7 @@
                 android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
+                android:layout_marginStart="48dp"
                 android:layout_marginTop="8dp"
                 android:text="Are you sure you wanted to save these"
                 android:textColor="@color/black"
@@ -54,7 +53,7 @@
                 android:id="@+id/textView28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
+                android:layout_marginStart="48dp"
                 android:layout_marginTop="-1dp"
                 android:text="changes? Unsaved changes will be lost"
                 android:textColor="@color/black"
@@ -66,7 +65,7 @@
                 android:id="@+id/cancelbt"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="40dp"
+                android:layout_marginStart="70dp"
                 android:layout_marginTop="28dp"
                 android:backgroundTint="#808080"
                 android:text="CANCEL"
@@ -78,12 +77,12 @@
                 android:id="@+id/savebt"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="150dp"
-                android:layout_marginEnd="40dp"
                 android:backgroundTint="#33443C"
                 android:text="SAVE"
                 android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cancelbt"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -91,9 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@color/extrawhite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            >
 
             <TextView
                 android:id="@+id/textView14"
@@ -103,11 +100,10 @@
                 android:layout_marginTop="37dp"
                 android:text="My Need"
                 android:textColor="@color/black"
-                android:textSize="30sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.68" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/change"
@@ -117,8 +113,8 @@
                 android:layout_marginTop="56dp"
                 android:text="CHANGE"
                 android:textColor="@color/grey"
-                app:layout_constraintBottom_toBottomOf="@+id/textView14"
-                app:layout_constraintStart_toEndOf="@+id/textView14" />
+                app:layout_constraintStart_toEndOf="@+id/textView14"
+                app:layout_constraintBottom_toBottomOf="@+id/textView14" />
 
             <TextView
                 android:id="@+id/savetx"
@@ -128,16 +124,16 @@
                 android:text="SAVE"
                 android:textColor="@color/lightgreen"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView14"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textView14" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="182dp"
                 android:layout_marginTop="17dp"
-                android:background="@drawable/listbox"
                 android:elevation="8dp"
+                android:background="@drawable/listbox"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView14">
@@ -160,7 +156,6 @@
                     android:layout_height="103dp"
                     android:layout_marginStart="48dp"
                     android:layout_marginTop="6dp"
-                    android:scaleType="centerCrop"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView22"
                     app:srcCompat="@drawable/skill_add" />
@@ -170,7 +165,6 @@
                     android:layout_width="103dp"
                     android:layout_height="103dp"
                     android:layout_marginTop="6dp"
-                    android:scaleType="centerCrop"
                     app:layout_constraintStart_toEndOf="@+id/skills"
                     app:layout_constraintTop_toBottomOf="@+id/textView22"
                     app:srcCompat="@drawable/favor_add" />
@@ -180,7 +174,6 @@
                     android:layout_width="103dp"
                     android:layout_height="103dp"
                     android:layout_marginTop="6dp"
-                    android:scaleType="centerCrop"
                     app:layout_constraintStart_toEndOf="@+id/favors"
                     app:layout_constraintTop_toBottomOf="@+id/textView22"
                     app:srcCompat="@drawable/item_add" />
@@ -193,7 +186,7 @@
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/skills"
                     app:layout_constraintLeft_toLeftOf="@+id/skills"
-                    app:layout_constraintRight_toRightOf="@+id/skills" />
+                    app:layout_constraintRight_toRightOf="@+id/skills"/>
 
                 <TextView
                     android:id="@+id/textView24"
@@ -269,9 +262,9 @@
                 android:layout_marginTop="12dp"
                 android:background="@drawable/offerstx"
                 android:hint="Listing Description *"
-                android:inputType="textMultiLine"
                 android:padding="8dp"
                 android:textColorHint="@color/grey"
+                android:inputType="textMultiLine"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/listingTitle" />
@@ -283,9 +276,9 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/offerstx"
                 android:hint="Listing Value"
-                android:inputType="numberDecimal"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
+                android:inputType="numberDecimal"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/listingdesc" />
@@ -296,8 +289,8 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/offerstx"
-                android:focusable="false"
                 android:hint="In exchange of"
+                android:focusable="false"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -316,13 +309,11 @@
 
                 <ImageView
                     android:id="@+id/selectedImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="340dp"
+                    android:layout_height="186dp"
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="1dp"
-                    android:layout_marginBottom="1dp"
                     android:contentDescription="Selected image"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/gallery_message" />
@@ -348,8 +339,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:indeterminate="true"
             android:visibility="gone"
+            android:indeterminate="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

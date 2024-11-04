@@ -24,6 +24,12 @@ public class My_Reports extends AppCompatActivity {
             return insets;
         });
 
-
+        ImageView accsets = findViewById(R.id.accsets);
+        accsets.setOnClickListener(v -> {
+            // Start Account_Settings activity and close My_Reports
+            Intent intent = new Intent(My_Reports.this, Account_Settings.class);
+            startActivity(intent);
+            finish();
+        });
     }
 }

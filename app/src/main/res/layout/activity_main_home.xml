@@ -8,121 +8,106 @@
     android:background="@color/extrawhite"
     tools:context=".mainHome">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/List"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="89dp"
-        android:clickable="true"
-        android:src="@drawable/baseline_add_24"
-        android:tint="@android:color/white"
-        android:visibility="visible"
-        app:backgroundTint="@color/maincolor"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/holder"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/bottombox"
-        android:paddingBottom="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.08"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/homemain2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/holder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bottombox"
+            android:paddingBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.25"
-            app:srcCompat="@drawable/selecthome" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.08"
+            >
 
-        <ImageView
-            android:id="@+id/add2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toEndOf="@+id/homemain2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.25"
-            app:srcCompat="@drawable/hanap" />
+            <ImageView
+                android:id="@+id/homemain2"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.25"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/selecthome" />
 
-        <ImageView
-            android:id="@+id/message"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/add2"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.25"
-            app:srcCompat="@drawable/message" />
+            <ImageView
+                android:id="@+id/add2"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.25"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toEndOf="@+id/homemain2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/hanap" />
 
-        <ImageView
-            android:id="@+id/prof2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toEndOf="@+id/message"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.25"
-            app:srcCompat="@drawable/profile"
-            tools:srcCompat="@drawable/profile" />
+            <ImageView
+                android:id="@+id/message"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.25"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/add2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/message" />
 
-        <TextView
-            android:id="@+id/textView29"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="65dp"
-            android:text="Home"
-            android:textColor="#33443C"
-            app:layout_constraintBottom_toBottomOf="@+id/homemain2"
-            app:layout_constraintLeft_toLeftOf="@+id/homemain2"
-            app:layout_constraintRight_toRightOf="@+id/homemain2" />
+            <ImageView
+                android:id="@+id/prof2"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.25"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toEndOf="@+id/message"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/profile"
+                tools:srcCompat="@drawable/profile" />
 
-        <TextView
-            android:id="@+id/textView30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="65dp"
-            android:text="Search"
-            android:textColor="#33443C"
-            app:layout_constraintBottom_toBottomOf="@+id/add2"
-            app:layout_constraintLeft_toLeftOf="@+id/add2"
-            app:layout_constraintRight_toRightOf="@+id/add2" />
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="65dp"
+                android:text="Home"
+                android:textColor="#33443C"
+                app:layout_constraintBottom_toBottomOf="@+id/homemain2"
+                app:layout_constraintLeft_toLeftOf="@+id/homemain2"
+                app:layout_constraintRight_toRightOf="@+id/homemain2" />
 
-        <TextView
-            android:id="@+id/textView31"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="65dp"
-            android:text="Messages"
-            android:textColor="#33443C"
-            app:layout_constraintBottom_toBottomOf="@+id/message"
-            app:layout_constraintLeft_toLeftOf="@+id/message"
-            app:layout_constraintRight_toRightOf="@+id/message" />
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="65dp"
+                android:text="Search"
+                android:textColor="#33443C"
+                app:layout_constraintBottom_toBottomOf="@+id/add2"
+                app:layout_constraintLeft_toLeftOf="@+id/add2"
+                app:layout_constraintRight_toRightOf="@+id/add2" />
 
-        <TextView
-            android:id="@+id/textView32"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="65dp"
-            android:text="Profile"
-            android:textColor="#33443C"
-            app:layout_constraintBottom_toBottomOf="@+id/prof2"
-            app:layout_constraintLeft_toLeftOf="@+id/prof2"
-            app:layout_constraintRight_toRightOf="@+id/prof2" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="65dp"
+                android:text="Messages"
+                android:textColor="#33443C"
+                app:layout_constraintBottom_toBottomOf="@+id/message"
+                app:layout_constraintLeft_toLeftOf="@+id/message"
+                app:layout_constraintRight_toRightOf="@+id/message" />
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="65dp"
+                android:text="Profile"
+                android:textColor="#33443C"
+                app:layout_constraintBottom_toBottomOf="@+id/prof2"
+                app:layout_constraintLeft_toLeftOf="@+id/prof2"
+                app:layout_constraintRight_toRightOf="@+id/prof2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
         android:name="com.egls.transactia.hfrag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_hfrag" />
@@ -131,31 +116,42 @@
         android:id="@+id/fragmentContainerHome"
         android:name="com.egls.transactia.ExchangeFragment"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.9"
         android:layout_marginTop="19dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
         app:layout_constraintHeight_percent="0.07"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
-        app:layout_constraintWidth_percent="0.9"
         tools:layout="@layout/fragment_exchange" />
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.9"
         android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerHome"
+        app:layout_constraintBottom_toTopOf="@+id/holder"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:visibility="gone"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/holder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerHome"
-        app:layout_constraintVertical_bias="1.0"
-        app:layout_constraintWidth_percent="0.9" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/List"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:clickable="true"
+        android:src="@drawable/baseline_add_24"
+        android:tint="@android:color/white"
+        app:backgroundTint="#33443C"
+        app:fabSize="normal"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

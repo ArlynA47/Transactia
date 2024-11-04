@@ -64,7 +64,7 @@ public class MyTransactFragment extends Fragment {
                 pendingButton.setTextColor(Color.parseColor("#33443C"));
 
                 // Replace the container with NeedsFragment
-
+                replaceFragment(new NeedsFragment(), R.id.transactshow);
             }
         });
 
@@ -79,7 +79,7 @@ public class MyTransactFragment extends Fragment {
                 completedButton.setText("COMPLETED");
                 completedButton.setTextColor(Color.parseColor("#33443C"));
                 // Replace the container with OffersFragment
-
+                replaceFragment(new OffersFragment(), R.id.transactshow);
             }
         });
 

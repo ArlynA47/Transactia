@@ -95,22 +95,33 @@
             android:layout_marginStart="1dp"
             android:backgroundTint="#33443C"
             android:gravity="start"
-            android:paddingStart="30dp"
+            android:paddingStart="70dp"
             android:text="Update User Details"
             android:textColor="#33443C"
-            android:textSize="30sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.68"/>
+            app:layout_constraintVertical_bias="0.5" />
+
+        <ImageView
+            android:id="@+id/accsets"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-15dp"
+            android:layout_marginTop="1dp"
+            android:src="@drawable/back_profile"
+            app:layout_constraintStart_toEndOf="@+id/textView36"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/savetxx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="328dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginStart="326dp"
+            android:layout_marginTop="28dp"
             android:text="SAVE"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"

@@ -22,6 +22,12 @@ public class Abou_Transactia extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        ImageView accsets = findViewById(R.id.accsets);
+        accsets.setOnClickListener(v -> {
+            // Start Account_Settings activity and close My_Reports
+            Intent intent = new Intent(Abou_Transactia.this, Account_Settings.class);
+            startActivity(intent);
+            finish();
+        });
     }
 }
