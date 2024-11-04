@@ -23,193 +23,187 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class mainHome extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private MyNeedsAdapter adapter;
     private List<Listing> listings = new ArrayList<>();
 
-    boolean newLogin;
-    boolean isNeed;
+    private boolean isFragmentTransitioning = false;
+    private FirebaseUser currUser;
+    private String fireBUserID;
+    private UserDatabaseHelper dbHelper;
 
-        private boolean isFragmentTransitioning = false;
+    // Declare ImageViews
+    private ImageView homeMain2, add2, message, prof2;
+    private FloatingActionButton listButton;
 
-        FirebaseUser currUser;
-        String fireBUserID;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);  // Enable edge-to-edge support
+        setContentView(R.layout.activity_main_home);
 
-        UserDatabaseHelper dbHelper;
+        // Set up a listener for window insets to apply padding to the main layout
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;  // Return the insets to propagate them
+        });
 
-        // Declare ImageViews
-        private ImageView homeMain2;
-        private ImageView add2;
-        private ImageView message;
-        private ImageView prof2;
-        FloatingActionButton listButton;
+        initializeFields();
+        handleIncomingIntent();
+        setupImageViewListeners();
+        setupFloatingButton();
+        recyclerView.setVisibility(View.GONE);
+    }
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            EdgeToEdge.enable(this);  // Enable edge-to-edge support
-            setContentView(R.layout.activity_main_home);
+    private void initializeFields() {
+        homeMain2 = findViewById(R.id.homemain2);
+        add2 = findViewById(R.id.add2);
+        message = findViewById(R.id.message);
+        prof2 = findViewById(R.id.prof2);
+        recyclerView = findViewById(R.id.recyclerView);
+        listButton = findViewById(R.id.List);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setVisibility(View.GONE);
 
-            // Set up a listener for window insets to apply padding to the main layout
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;  // Return the insets to propagate them
-            });
+    }
 
-            newLogin = getIntent().getBooleanExtra("newLogin", false);
-
-            if(newLogin) {
-                // Retrieve the FirebaseUser instance from the intent
-                currUser = getIntent().getParcelableExtra("firebaseUser");
-                // Save the user id into sqlite db
-                UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
-                dbHelper.saveUserId(currUser.getUid());
-                fireBUserID = dbHelper.getUserId();
-            } else {
-                dbHelper = new UserDatabaseHelper(this);
-                fireBUserID = dbHelper.getUserId();
-            }
-
-            // Initialize ImageViews
-            homeMain2 = findViewById(R.id.homemain2);
-            add2 = findViewById(R.id.add2);
-            message = findViewById(R.id.message);
-            prof2 = findViewById(R.id.prof2);
-            recyclerView = findViewById(R.id.recyclerView);
-
-
-            // Set up click listeners for fragment switching and image updating
-            homeMain2.setOnClickListener(view -> {
-                displayHome();
-            });
-            add2.setOnClickListener(view -> {
-                if (!isFragmentTransitioning) {
-                    updateSelectedImage(add2, "selectsearch");
-                    loadFragment(new SearchFragment());
-                }
-            });
-            message.setOnClickListener(view -> {
-                if (!isFragmentTransitioning) {
-                    updateSelectedImage(message, "selectmessage");
-                    loadFragment(new MessageFragment());
-
-                }
-            });
-            prof2.setOnClickListener(view -> {
-                if (!isFragmentTransitioning) {
-                    updateSelectedImage(prof2, "selectprof");
-                    loadFragment(new ProfileFragment());
-
-
-                    // UPDATE USER DETAILS TESTING
-                    //BackendTest backendTest = new BackendTest();
-                    //backendTest.createListing(currUser);
-
-                }
-            });
-
-            listButton = findViewById(R.id.List);
-
-            // Set an OnClickListener for the floating button
-            listButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Start MyNeeds activity when the button is clicked
-                    Intent intent = new Intent(mainHome.this, MyNeeds.class);
-                    intent.putExtra("newListing", true);
-                    intent.putExtra("isNeed", isNeed);
-                    startActivity(intent);
-                }
-            });
-
+    private void handleIncomingIntent() {
+        boolean newLogin = getIntent().getBooleanExtra("newLogin", false);
+        dbHelper = new UserDatabaseHelper(this);
+        if (newLogin) {
+            currUser = getIntent().getParcelableExtra("firebaseUser");
+            dbHelper.saveUserId(currUser.getUid());
         }
+        fireBUserID = dbHelper.getUserId();
+    }
 
-        private void displayHome() {
+    private void setupImageViewListeners() {
+        homeMain2.setOnClickListener(view -> {
             if (!isFragmentTransitioning) {
-                updateSelectedImage(homeMain2, "selecthome");
-                loadFragment(new HomeFragment());
+                listButton.setVisibility(View.VISIBLE);
+                displayHome();
             }
-        }
+        });
 
-        public void onNeedsButtonClicked() {
-            showMyNeeds(); // Call your existing showMyNeeds method
-            isNeed = true;
-        }
+        add2.setOnClickListener(view -> {
+            switchFragment(new SearchFragment(), add2, "selectsearch");
+            recyclerView.setVisibility(View.GONE); // Hide RecyclerView when Add is clicked
+            listButton.setVisibility(View.GONE);
+        });
 
-        public void onOffersButtonClicked() {
-            showMyOffers();
-            isNeed = false;
+        message.setOnClickListener(view -> {
+            switchFragment(new MessageFragment(), message, "selectmessage");
+            recyclerView.setVisibility(View.GONE); // Hide RecyclerView when Message is clicked
+            listButton.setVisibility(View.GONE);
+        });
+
+        prof2.setOnClickListener(view -> {
+            switchFragment(new ProfileFragment(), prof2, "selectprof");
+            recyclerView.setVisibility(View.GONE); // Hide RecyclerView when Profile is clicked
+            listButton.setVisibility(View.GONE);
+        });
+    }
+
+    private void setupFloatingButton() {
+        listButton.setOnClickListener(v -> {
+            // Start MyNeeds activity when the button is clicked
+            Intent intent = new Intent(mainHome.this, MyNeeds.class);
+            intent.putExtra("newListing", true);
+            startActivity(intent);
+        });
+    }
+
+    private void displayHome() {
+        if (!isFragmentTransitioning) {
+            updateSelectedImage(homeMain2, "selecthome");
+            recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView when Home is clicked
+            loadFragment(new HomeFragment());
         }
+    }
+
+    private void switchFragment(Fragment fragment, ImageView selectedImageView, String selectedImageResource) {
+        if (!isFragmentTransitioning) {
+            updateSelectedImage(selectedImageView, selectedImageResource);
+            loadFragment(fragment);
+        }
+    }
+
+    private void loadFragment(Fragment fragment) {
+        isFragmentTransitioning = true;
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainerView, fragment)
+                .addToBackStack(null)
+                .commit();
+        getSupportFragmentManager().executePendingTransactions();
+        isFragmentTransitioning = false;  // Allow clicks again after transaction
+    }
+
+    private void updateSelectedImage(ImageView selectedImageView, String selectedImageResource) {
+        homeMain2.setImageResource(R.drawable.home);
+        add2.setImageResource(R.drawable.hanap);
+        message.setImageResource(R.drawable.message);
+        prof2.setImageResource(R.drawable.profile);
+
+        selectedImageView.setImageResource(getResources().getIdentifier(selectedImageResource, "drawable", getPackageName()));
+    }
+
+    // Method to show needs listings
+    public void onNeedsButtonClicked() {
+        showMyNeeds(); // Call showMyNeeds when needs button is clicked
+    }
+
+    // Method to show offers listings
+    public void onOffersButtonClicked() {
+        showMyOffers(); // Call showMyOffers when offers button is clicked
+    }
 
     public void showMyNeeds() {
-        // Only set the adapter if it's null
-        if (adapter == null) {
-            adapter = new MyNeedsAdapter(this, listings, fireBUserID);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(adapter);
-        }
-        recyclerView.setVisibility(View.VISIBLE); // Make RecyclerView visible
-        loadListings("Need"); // Load "Need" listings
+        setupRecyclerView("Need");
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
-    // Show My Offers
     public void showMyOffers() {
-        // Only set the adapter if it's null
-        if (adapter == null) {
-            adapter = new MyNeedsAdapter(this, listings, fireBUserID);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(adapter);
-        }
-        recyclerView.setVisibility(View.VISIBLE); // Make RecyclerView visible
-        loadListings("Offer"); // Load "Offer" listings
+        setupRecyclerView("Offer");
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
-
-
-
-    // Method to load fragments
-        private void loadFragment(Fragment fragment) {
-            isFragmentTransitioning = true;
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainerView, fragment)
-                    .addToBackStack(null)
-                    .commit();
-            getSupportFragmentManager().executePendingTransactions();
-            isFragmentTransitioning = false;  // Allow clicks again after transaction
+    private void setupRecyclerView(String listingType) {
+        // Ensure the adapter is initialized
+        if (adapter == null) {
+            adapter = new MyNeedsAdapter(this, listings, fireBUserID);
+            recyclerView.setAdapter(adapter);
         }
 
-        // Method to update the selected image and reset others
-        private void updateSelectedImage(ImageView selectedImageView, String selectedImageResource) {
-            // Reset all images to their default state
-            homeMain2.setImageResource(R.drawable.home);
-            add2.setImageResource(R.drawable.hanap);
-            message.setImageResource(R.drawable.message);
-            prof2.setImageResource(R.drawable.profile);
+        // Make RecyclerView visible and load listings
+        recyclerView.setVisibility(View.GONE); // Ensure visibility
+        loadListings(listingType); // Load listings based on type
+    }
 
-            // Set the selected image to its active state
-            selectedImageView.setImageResource(getResources().getIdentifier(selectedImageResource, "drawable", getPackageName()));
-        }
-
-    private void loadListings(String lType) {
+    private void loadListings(String listingType) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Listings")
-                .whereEqualTo("listingType", lType)
+                .whereEqualTo("listingType", listingType)
                 .whereEqualTo("userId", fireBUserID)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     listings.clear(); // Clear existing listings
-                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
-                        Listing listing = doc.toObject(Listing.class);
-                        listing.setListingId(doc.getId());
-                        listings.add(listing);
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        Log.d("Firestore", "No listings found for type: " + listingType);
+                    } else {
+                        for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                            Listing listing = doc.toObject(Listing.class);
+                            listing.setListingId(doc.getId());
+                            listings.add(listing);
+                        }
+                        Log.d("Firestore", "Listings loaded: " + listings.size());
                     }
                     adapter.notifyDataSetChanged(); // Notify the adapter of data changes
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error loading listings", e));
-    }
 
     }
+
+}
