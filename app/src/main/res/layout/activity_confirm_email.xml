@@ -33,7 +33,7 @@
             android:text=" Please verify your email address to proceed."
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="#81A969"
+            android:textColor="@color/extrawhite"
             android:textStyle="bold" />
 
         <Space
