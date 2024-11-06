@@ -337,7 +337,9 @@ public class MyNeeds extends AppCompatActivity {
         ImageView[] imageViews = {
                 findViewById(R.id.favors),
                 findViewById(R.id.skills),
-                findViewById(R.id.items) // Add other ImageViews as needed
+                findViewById(R.id.items),
+                findViewById(R.id.selectedImageView),
+                findViewById(R.id.ShowGal)// Add other ImageViews as needed
         };
         TextView[] textViews = {
                 findViewById(R.id.textView23),
@@ -353,7 +355,7 @@ public class MyNeeds extends AppCompatActivity {
 
         for (ImageView imageView : imageViews) {
             if (imageView != null) {
-                imageView.setAlpha(0.4f); // Set to 50% opacity (0.0 to 1.0)
+                imageView.setAlpha(0.2f); // Set to 50% opacity (0.0 to 1.0)
             }
         }
         for (TextView textView : textViews) {

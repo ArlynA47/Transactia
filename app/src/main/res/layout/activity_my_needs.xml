@@ -68,9 +68,11 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="28dp"
+                android:layout_marginBottom="10dp"
                 android:backgroundTint="#808080"
                 android:text="CANCEL"
                 android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
@@ -78,13 +80,15 @@
                 android:id="@+id/savebt"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="28dp"
                 android:layout_marginEnd="40dp"
+                android:layout_marginBottom="10dp"
                 android:backgroundTint="#33443C"
                 android:text="SAVE"
                 android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/textView28" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -320,9 +324,11 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
                     android:layout_marginBottom="1dp"
                     android:contentDescription="Selected image"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/gallery_message" />

@@ -42,7 +42,7 @@ public class MyTransactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Replace the current fragment with MyTransactionsFragment
-                replaceFragment(new ExchangeFragment(), R.id.fragmentContainerView);
+                replaceFragment(new NotificationsFragment(), R.id.fragmentContainerView);
             }
         });
         mytransact.setOnClickListener(new View.OnClickListener() {
