@@ -12,7 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class hfrag extends Fragment {
+
+    ImageView exchange, mytransact, notifs;
+    FloatingActionButton addBt;
 
     @Nullable
     @Override
@@ -20,19 +25,23 @@ public class hfrag extends Fragment {
         View view = inflater.inflate(R.layout.fragment_hfrag, container, false);
 
         // Find ImageViews by their IDs
-        ImageView exchange = view.findViewById(R.id.exchange);
-        ImageView mytransact = view.findViewById(R.id.mytransact);
-        ImageView notifs = view.findViewById(R.id.notifs);
+        exchange = view.findViewById(R.id.exchange);
+        mytransact = view.findViewById(R.id.mytransact);
+        notifs = view.findViewById(R.id.notifs);
+
+        addBt = getActivity().findViewById(R.id.List);
 
         // set the exchange tab by default
-        replaceFragment(new ExchangeFragment());
+        defaultDisp();
 
         // Set onClick listeners for each ImageView
         exchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Replace the current fragment with ExchangeFragment
-                replaceFragment(new ExchangeFragment());
+                defaultDisp();
+                addBt.setVisibility(View.VISIBLE);
+                getActivity().findViewById(R.id.fragmentContainerHome).setVisibility(View.VISIBLE);
             }
         });
 
@@ -41,6 +50,11 @@ public class hfrag extends Fragment {
             public void onClick(View v) {
                 // Replace the current fragment with MyTransactionsFragment
                 replaceFragment(new MyTransactFragment());
+                exchange.setImageResource(R.drawable.exchangee);
+                mytransact.setImageResource(R.drawable.selecttrans);
+                notifs.setImageResource(R.drawable.notif);
+                addBt.setVisibility(View.GONE);
+                getActivity().findViewById(R.id.fragmentContainerHome).setVisibility(View.VISIBLE);
             }
         });
 
@@ -48,11 +62,24 @@ public class hfrag extends Fragment {
             @Override
             public void onClick(View v) {
                 // Replace the current fragment with NotificationsFragment
-                replaceFragment(new NotificationsFragment());
+                //replaceFragment(new NotificationsFragment());
+                exchange.setImageResource(R.drawable.exchangee);
+                mytransact.setImageResource(R.drawable.exchange);
+                notifs.setImageResource(R.drawable.selectnotif);
+                addBt.setVisibility(View.GONE);
+                getActivity().findViewById(R.id.fragmentContainerHome).setVisibility(View.GONE);
+
             }
         });
 
         return view;
+    }
+
+    private void defaultDisp() {
+        replaceFragment(new ExchangeFragment());
+        exchange.setImageResource(R.drawable.selectexchaneg);
+        mytransact.setImageResource(R.drawable.exchange);
+        notifs.setImageResource(R.drawable.notif);
     }
 
     // Helper method to replace fragments
@@ -63,4 +90,5 @@ public class hfrag extends Fragment {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
 }

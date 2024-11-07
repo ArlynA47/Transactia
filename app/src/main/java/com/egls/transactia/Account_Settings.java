@@ -34,6 +34,7 @@ public class Account_Settings extends AppCompatActivity {
         ConstraintLayout passwordreset = findViewById(R.id.passwordreset); // Assuming you have this layout
         ConstraintLayout passpop = findViewById(R.id.passpop); // The pop-up layout
         ConstraintLayout logoutlay = findViewById(R.id.logoutlay);
+        ConstraintLayout archive = findViewById(R.id.archive);
         Button cancel2 = passpop.findViewById(R.id.cancel2); // Find the cancel2 button inside passpop
 
         // Set click listener for myreportss
@@ -69,6 +70,12 @@ public class Account_Settings extends AppCompatActivity {
         cancel2.setOnClickListener(v -> {
             // Hide the passpop
             passpop.setVisibility(View.GONE);
+        });
+
+        archive.setOnClickListener(v -> {
+            Intent intent = new Intent(Account_Settings.this, Archive.class);
+            startActivity(intent);
+            finish();
         });
 
         // LOG OUT

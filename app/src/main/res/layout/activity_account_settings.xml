@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/extrawhite"
     tools:context=".Account_Settings">
 
 
@@ -93,13 +94,15 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/logoutlay"
-            android:layout_width="370dp"
+            android:layout_width="0dp"
             android:layout_height="38dp"
-            android:layout_marginStart="11dp"
             android:layout_marginTop="61dp"
-            android:background="@android:color/holo_red_dark"
+            android:background="@drawable/logoutbg"
+            android:backgroundTintMode="src_atop"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/aboutus">
+            app:layout_constraintTop_toBottomOf="@+id/aboutus"
+            app:layout_constraintWidth_percent="0.93">
 
             <ImageView
                 android:id="@+id/logout"
@@ -124,12 +127,13 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/aboutus"
-            android:layout_width="370dp"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.93"
             android:layout_height="88dp"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/bottombox"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/settingbox"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView38">
 
             <ImageView
@@ -173,9 +177,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout7"
-            android:layout_width="405dp"
-            android:layout_height="91dp"
-            android:background="@drawable/bottombox"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -186,7 +189,7 @@
                 android:layout_marginStart="1dp"
                 android:backgroundTint="#33443C"
                 android:gravity="start"
-                android:paddingStart="70dp"
+                android:paddingStart="30dp"
                 android:text="Account Settings"
                 android:textColor="#33443C"
                 android:textSize="30sp"
@@ -194,28 +197,28 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.5" />
+                app:layout_constraintVertical_bias="0.75"/>
 
-            <ImageView
-                android:id="@+id/accsets"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="-20dp"
-                android:layout_marginTop="1dp"
-                android:src="@drawable/back_profile"
-                app:layout_constraintStart_toEndOf="@+id/textView36"
+            <View
+                android:id="@+id/top_line"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#AFA6A5A5"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/updateuserdets"
-            android:layout_width="370dp"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.93"
             android:layout_height="88dp"
-            android:layout_marginStart="11dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/bottombox"
+            android:background="@drawable/settingbox"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView37">
 
             <ImageView
@@ -259,12 +262,13 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/passwordreset"
-            android:layout_width="370dp"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.93"
             android:layout_height="88dp"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bottombox"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/settingbox"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/updateuserdets">
 
             <ImageView
@@ -309,12 +313,13 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/myreportss"
-            android:layout_width="370dp"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.93"
             android:layout_height="88dp"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/bottombox"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/settingbox"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/passwordreset">
 
             <ImageView
@@ -357,11 +362,62 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/archive"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.93"
+            android:layout_height="88dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/settingbox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/myreportss">
+
+            <ImageView
+                android:id="@+id/archimg"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/reports" />
+
+            <TextView
+                android:id="@+id/archtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="14dp"
+                android:text="Archive"
+                android:textColor="#33443C"
+                app:layout_constraintStart_toEndOf="@+id/archimg"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/archdesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:text="View your archived listings."
+                app:layout_constraintStart_toEndOf="@+id/archimg"
+                app:layout_constraintTop_toBottomOf="@+id/archtitle" />
+
+            <ImageView
+                android:id="@+id/nextArch"
+                android:layout_width="68dp"
+                android:layout_height="90dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/back" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <TextView
             android:id="@+id/textView37"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="19dp"
             android:text="Your Account"
             android:textColor="@color/black"
@@ -373,13 +429,13 @@
             android:id="@+id/textView38"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="11dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="16dp"
             android:text="More Information"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/myreportss" />
+            app:layout_constraintTop_toBottomOf="@+id/archive" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.egls.transactia;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
@@ -16,15 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.List;
 
-public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHolder> {
+public class MyOfferArchiveAdapter extends RecyclerView.Adapter<MyOfferArchiveAdapter.MyViewHolder> {
     private Context context;
     private List<Listing> listings;
     private String fireBUserID;
 
-    public MyNeedsAdapter(Context context, List<Listing> listings, String fireBUserID) {
+    public MyOfferArchiveAdapter(Context context, List<Listing> listings, String fireBUserID) {
         this.context = context;
         this.listings = listings;
         this.fireBUserID = fireBUserID;
@@ -49,7 +52,7 @@ public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHo
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.need_row, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.archived_row, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -83,13 +86,13 @@ public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHo
 
         // Handle delete button click
         holder.deleteImage.setOnClickListener(v -> {
-            showArchiveConfirmationDialog(position);
+            showDeleteConfirmationDialog(position);
         });
 
     }
 
     // Method to show delete confirmation dialog
-    private void showArchiveConfirmationDialog(int position) {
+    private void showDeleteConfirmationDialog(int position) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Listing listingToArchive = listings.get(position);
@@ -104,30 +107,37 @@ public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHo
 
                     // Create the alert dialog
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Confirm Archive");
+                    builder.setTitle("Confirm Deletion");
 
                     // Check if the listing is used in other listings' inExchange fields
                     if (isInExchange) {
-                        builder.setMessage("This listing is referenced as 'In Exchange' by another listing. Are you sure you want to archive it? The reference will remain, but the listing will only be visible to you and the user associated with the referenced listing.");
+                        builder.setMessage("This listing is referenced as 'In Exchange' by another user. Are you sure you want to delete it? The reference will be cleared.");
                     } else {
-                        builder.setMessage("Are you sure you want to archive this listing?");
+                        builder.setMessage("Are you sure you want to delete this listing?");
                     }
 
-                    builder.setPositiveButton("Archive", (dialog, which) -> {
+                    builder.setPositiveButton("Delete", (dialog, which) -> {
+                        if (isInExchange) {
+                            // Clear the inExchange references before deletion
+                            for (QueryDocumentSnapshot document : querySnapshot) {
+                                document.getReference().update("inExchange", "")
+                                        .addOnSuccessListener(aVoid -> Log.d("Firestore", "Cleared inExchange field for listing: " + document.getId()))
+                                        .addOnFailureListener(e -> Log.e("Firestore", "Error clearing inExchange field: " + e.getMessage()));
+                            }
+                        }
 
-                        // Get a reference to the Firestore instance and the specific document
+                        // Now proceed with deleting the listing
                         db.collection("Listings").document(listingId)
-                                .update("storedIn", "Archive")
+                                .delete()
                                 .addOnSuccessListener(aVoid -> {
-                                    // Optional: remove the item from the list if you don't want to show archived listings
+                                    CustomToast.show(context, "Listing deleted successfully.");
                                     listings.remove(position);
                                     notifyItemRemoved(position);
                                     notifyItemRangeChanged(position, listings.size());
-                                    CustomToast.show(context, "Listing archived successfully.");
                                 })
-                                .addOnFailureListener(e ->
-                                        CustomToast.show(context, "Failed to archive listing: " + e.getMessage())
-                                );
+                                .addOnFailureListener(e -> {
+                                    CustomToast.show(context, "Error deleting listing: " + e.getMessage());
+                                });
                     });
 
                     builder.setNegativeButton("Cancel", (dialog, which) -> {

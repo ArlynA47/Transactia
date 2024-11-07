@@ -23,71 +23,44 @@ public class MyTransactFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_my_transact, container, false);
 
-        // Find ImageViews by their IDs
-        ImageView exchange = view.findViewById(R.id.exchange);
-        ImageView mytransact = view.findViewById(R.id.mytransact);
-        ImageView notifs = view.findViewById(R.id.notifs);
-
         completedButton = view.findViewById(R.id.completedbt);
         pendingButton = view.findViewById(R.id.pendingbt);
-        // Set onClick listeners for each ImageView
-        exchange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Replace the current fragment with ExchangeFragment
-                replaceFragment(new ExchangeFragment(), R.id.fragmentContainerView);
-            }
-        });
-        notifs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Replace the current fragment with MyTransactionsFragment
-                replaceFragment(new ExchangeFragment(), R.id.fragmentContainerView);
-            }
-        });
-        mytransact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Replace the current fragment with MyTransactionsFragment
-                replaceFragment(new ExchangeFragment(), R.id.fragmentContainerView);
-            }
-        });
+
+        dispByDefault();
+
         completedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Change background for needsButton and reset offersButton
-                completedButton.setBackgroundResource(R.drawable.greenbt);
-                completedButton.setText("COMPLETED");
+                completedButton.setBackgroundResource(R.drawable.srv_gradient_background);
                 completedButton.setTextColor(getResources().getColor(R.color.white));
                 pendingButton.setBackgroundResource(R.drawable.button);
-                pendingButton.setText("PENDING");
                 pendingButton.setTextColor(Color.parseColor("#33443C"));
 
                 // Replace the container with NeedsFragment
-                replaceFragment(new NeedsFragment(), R.id.transactshow);
+                //replaceFragment(new NeedsFragment(), R.id.transactshow);
             }
         });
 
         pendingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Change background for offersButton and reset needsButton
-                pendingButton.setBackgroundResource(R.drawable.greenbt);
-                pendingButton.setText("PENDING");
-                pendingButton.setTextColor(getResources().getColor(R.color.white));
-                completedButton.setBackgroundResource(R.drawable.button);
-                completedButton.setText("COMPLETED");
-                completedButton.setTextColor(Color.parseColor("#33443C"));
-                // Replace the container with OffersFragment
-                replaceFragment(new OffersFragment(), R.id.transactshow);
+                dispByDefault();
             }
         });
-
-
-
-
         return view;
     }
+
+    private void dispByDefault() {
+        // Change background for offersButton and reset needsButton
+        pendingButton.setBackgroundResource(R.drawable.srv_gradient_background);
+        pendingButton.setTextColor(getResources().getColor(R.color.white));
+        completedButton.setBackgroundResource(R.drawable.button);
+        completedButton.setTextColor(Color.parseColor("#33443C"));
+        // Replace the container with OffersFragment
+        //replaceFragment(new OffersFragment(), R.id.transactshow);
+    }
+
 
     // Helper method to replace fragments
     private void replaceFragment(Fragment fragment, int containerId) {

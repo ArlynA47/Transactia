@@ -423,6 +423,7 @@ public class MyNeeds extends AppCompatActivity {
 
         db.collection("Listings")
                 .whereEqualTo("listingType", counterListingType)
+                .whereEqualTo("storedIn", "Active")
                 .whereEqualTo("userId", currentUserId)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
@@ -494,8 +495,6 @@ public class MyNeeds extends AppCompatActivity {
                     inexchange.setText(""); // Clear the EditText in case of an error
                 });
     }
-
-
 
     private void loadListingData() {
         if (listingId == null || listingId.isEmpty()) {
@@ -598,6 +597,7 @@ public class MyNeeds extends AppCompatActivity {
         listingData.put("listingDescription", listingDescription);
         listingData.put("listingValue", listingValue);
         listingData.put("inExchange", selectedListingId);
+        listingData.put("storedIn", "Active");
         listingData.put("userId", fireBUserID);
 
         if (imageUri != null) {
@@ -635,61 +635,6 @@ public class MyNeeds extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     CustomToast.show(this, "Error creating listing: " + e.getMessage());
                     progressBar.setVisibility(View.GONE); // Hide progress bar on failure
-                });
-    }
-
-    private void deleteListing(String listingId) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        // Check if this listingId exists in the "inExchange" field of other listings
-        db.collection("Listings")
-                .whereEqualTo("inExchange", listingId)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    boolean isInExchange = !querySnapshot.isEmpty();
-
-                    // Create the alert dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Confirm Deletion");
-
-                    // Check if the listing is used in other listings' inExchange fields
-                    if (isInExchange) {
-                        builder.setMessage("This listing is referenced as 'In Exchange' by another user. Are you sure you want to delete it? The reference will be cleared.");
-                    } else {
-                        builder.setMessage("Are you sure you want to delete this listing?");
-                    }
-
-                    builder.setPositiveButton("Delete", (dialog, which) -> {
-                        if (isInExchange) {
-                            // Clear the inExchange references before deletion
-                            for (QueryDocumentSnapshot document : querySnapshot) {
-                                document.getReference().update("inExchange", "")
-                                        .addOnSuccessListener(aVoid -> Log.d("Firestore", "Cleared inExchange field for listing: " + document.getId()))
-                                        .addOnFailureListener(e -> Log.e("Firestore", "Error clearing inExchange field: " + e.getMessage()));
-                            }
-                        }
-
-                        // Now proceed with deleting the listing
-                        db.collection("Listings").document(listingId)
-                                .delete()
-                                .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(this, "Listing deleted successfully", Toast.LENGTH_SHORT).show();
-                                    // Optionally refresh your listings view here
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(this, "Error deleting listing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                });
-                    });
-
-                    builder.setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss(); // User canceled, do nothing
-                    });
-
-                    // Show the dialog
-                    builder.create().show();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error checking listings: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 

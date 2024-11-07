@@ -12,6 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +30,10 @@ public class mainHome extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MyNeedsAdapter adapter;
     private List<Listing> listings = new ArrayList<>();
+
+    FragmentContainerView fragmentContainerView;
+    FragmentContainerView fragmentContainerHome;
+    FragmentContainerView fragmentContainerNotHome;
 
     boolean newLogin;
     boolean isNeed;
@@ -74,6 +79,13 @@ public class mainHome extends AppCompatActivity {
                 fireBUserID = dbHelper.getUserId();
             }
 
+            // Home Fragments
+            fragmentContainerHome = findViewById(R.id.fragmentContainerHome);
+            fragmentContainerView = findViewById(R.id.fragmentContainerView);
+
+            // Not Home Fragment
+            fragmentContainerNotHome = findViewById(R.id.fragmentContainerNotHome);
+
             // Initialize ImageViews
             homeMain2 = findViewById(R.id.homemain2);
             add2 = findViewById(R.id.add2);
@@ -81,34 +93,30 @@ public class mainHome extends AppCompatActivity {
             prof2 = findViewById(R.id.prof2);
             recyclerView = findViewById(R.id.recyclerView);
 
-
             // Set up click listeners for fragment switching and image updating
             homeMain2.setOnClickListener(view -> {
                 displayHome();
             });
             add2.setOnClickListener(view -> {
                 if (!isFragmentTransitioning) {
+                    HideHome();
                     updateSelectedImage(add2, "selectsearch");
                     loadFragment(new SearchFragment());
                 }
             });
             message.setOnClickListener(view -> {
                 if (!isFragmentTransitioning) {
+                    HideHome();
                     updateSelectedImage(message, "selectmessage");
                     loadFragment(new MessageFragment());
-
                 }
             });
             prof2.setOnClickListener(view -> {
                 if (!isFragmentTransitioning) {
+                    HideHome();
                     updateSelectedImage(prof2, "selectprof");
                     loadFragment(new ProfileFragment());
-
-
-                    // UPDATE USER DETAILS TESTING
-                    //BackendTest backendTest = new BackendTest();
-                    //backendTest.createListing(currUser);
-
+                    recyclerView.setVisibility(View.GONE);
                 }
             });
 
@@ -128,12 +136,31 @@ public class mainHome extends AppCompatActivity {
 
         }
 
-        private void displayHome() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showMyNeeds();
+    }
+
+
+    private void displayHome() {
             if (!isFragmentTransitioning) {
+                fragmentContainerNotHome.setVisibility(View.GONE);
                 updateSelectedImage(homeMain2, "selecthome");
-                loadFragment(new HomeFragment());
+                fragmentContainerView.setVisibility(View.VISIBLE);
+                fragmentContainerHome.setVisibility(View.VISIBLE);
+                listButton.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
             }
         }
+
+    private void HideHome() {
+            fragmentContainerView.setVisibility(View.GONE);
+            fragmentContainerHome.setVisibility(View.GONE);
+            listButton.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            fragmentContainerNotHome.setVisibility(View.VISIBLE);
+    }
 
         public void onNeedsButtonClicked() {
             showMyNeeds(); // Call your existing showMyNeeds method
@@ -168,14 +195,11 @@ public class mainHome extends AppCompatActivity {
         loadListings("Offer"); // Load "Offer" listings
     }
 
-
-
-
-    // Method to load fragments
+        // Method to load fragments
         private void loadFragment(Fragment fragment) {
             isFragmentTransitioning = true;
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainerView, fragment)
+                    .replace(R.id.fragmentContainerNotHome, fragment)
                     .addToBackStack(null)
                     .commit();
             getSupportFragmentManager().executePendingTransactions();
@@ -198,6 +222,7 @@ public class mainHome extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Listings")
                 .whereEqualTo("listingType", lType)
+                .whereEqualTo("storedIn", "Active")
                 .whereEqualTo("userId", fireBUserID)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

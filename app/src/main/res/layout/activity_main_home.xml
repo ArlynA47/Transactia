@@ -12,28 +12,37 @@
             android:id="@+id/holder"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@drawable/bottombox"
-            android:paddingBottom="5dp"
+            android:paddingBottom="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.08"
+            app:layout_constraintHeight_percent="0.07"
             >
+            <View
+                android:id="@+id/top_line"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#AFA6A5A5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- Rest of your views -->
             <ImageView
                 android:id="@+id/homemain2"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent="0.25"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.90"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/selecthome" />
 
             <ImageView
                 android:id="@+id/add2"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent="0.25"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.90"
                 app:layout_constraintStart_toEndOf="@+id/homemain2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/hanap" />
@@ -42,7 +51,8 @@
                 android:id="@+id/message"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent="0.25"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.90"
                 android:layout_weight="1"
                 app:layout_constraintStart_toEndOf="@+id/add2"
                 app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +62,8 @@
                 android:id="@+id/prof2"
                 android:layout_width="0dp"
                 app:layout_constraintWidth_percent="0.25"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.90"
                 app:layout_constraintStart_toEndOf="@+id/message"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/profile"
@@ -65,7 +76,7 @@
                 android:layout_marginTop="65dp"
                 android:text="Home"
                 android:textColor="#33443C"
-                app:layout_constraintBottom_toBottomOf="@+id/homemain2"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/homemain2"
                 app:layout_constraintRight_toRightOf="@+id/homemain2" />
 
@@ -76,7 +87,7 @@
                 android:layout_marginTop="65dp"
                 android:text="Search"
                 android:textColor="#33443C"
-                app:layout_constraintBottom_toBottomOf="@+id/add2"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/add2"
                 app:layout_constraintRight_toRightOf="@+id/add2" />
 
@@ -87,7 +98,7 @@
                 android:layout_marginTop="65dp"
                 android:text="Messages"
                 android:textColor="#33443C"
-                app:layout_constraintBottom_toBottomOf="@+id/message"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/message"
                 app:layout_constraintRight_toRightOf="@+id/message" />
 
@@ -98,7 +109,7 @@
                 android:layout_marginTop="65dp"
                 android:text="Profile"
                 android:textColor="#33443C"
-                app:layout_constraintBottom_toBottomOf="@+id/prof2"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@+id/prof2"
                 app:layout_constraintRight_toRightOf="@+id/prof2" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -118,8 +129,7 @@
         android:layout_width="0dp"
         app:layout_constraintWidth_percent="0.9"
         android:layout_marginTop="19dp"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.07"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
@@ -146,12 +156,22 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
         android:clickable="true"
-        android:src="@drawable/baseline_add_24"
-        android:tint="@android:color/white"
-        app:backgroundTint="#33443C"
+        app:backgroundTint="@color/Transparent"
+        android:foreground="@drawable/fab_gradient_background"
+        android:visibility="visible"
+        app:elevation="7dp"
         app:fabSize="normal"
         app:layout_constraintEnd_toEndOf="@+id/recyclerView"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView" />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerNotHome"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/holder"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

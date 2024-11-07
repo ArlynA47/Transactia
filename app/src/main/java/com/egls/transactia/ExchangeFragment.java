@@ -33,7 +33,7 @@ public class ExchangeFragment extends Fragment {
             ((mainHome) getActivity()).onNeedsButtonClicked(); // Call the method in the activity
         }
         // Change background for needsButton and reset offersButton
-        needsButton.setBackgroundResource(R.drawable.greenbt);
+        needsButton.setBackgroundResource(R.drawable.srv_gradient_background);
         needsButton.setTextColor(getResources().getColor(R.color.white));
         offersButton.setBackgroundResource(R.drawable.button);
         offersButton.setTextColor(Color.parseColor("#33443C"));
@@ -48,7 +48,7 @@ public class ExchangeFragment extends Fragment {
                 }
 
                 // Change background for needsButton and reset offersButton
-                needsButton.setBackgroundResource(R.drawable.greenbt);
+                needsButton.setBackgroundResource(R.drawable.srv_gradient_background);
                 needsButton.setTextColor(getResources().getColor(R.color.white));
                 offersButton.setBackgroundResource(R.drawable.button);
                 offersButton.setTextColor(Color.parseColor("#33443C"));
@@ -64,7 +64,7 @@ public class ExchangeFragment extends Fragment {
                     ((mainHome) getActivity()).onOffersButtonClicked(); // Call the method in the activity
                 }
                 // Change background for offersButton and reset needsButton
-                offersButton.setBackgroundResource(R.drawable.greenbt);
+                offersButton.setBackgroundResource(R.drawable.srv_gradient_background);
                 offersButton.setTextColor(getResources().getColor(R.color.white));
                 needsButton.setBackgroundResource(R.drawable.button);
                 needsButton.setTextColor(Color.parseColor("#33443C"));

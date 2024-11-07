@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Transactia"
         tools:targetApi="31">
         <activity
+            android:name=".Archive"
+            android:exported="false" />
+        <activity
             android:name=".Update_User_Details"
             android:exported="false" />
         <activity
