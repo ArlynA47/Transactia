@@ -18,6 +18,15 @@ import androidx.fragment.app.Fragment;
 
 public class SearchFragment extends Fragment {
 
+    ConstraintLayout filteritems;
+    RadioButton listingbt, Usersbt, filtersbtt;
+    RadioGroup searchType, filterrg;
+
+    Spinner listingTypeFltr, listingCategFltr;
+
+    String filters;
+    int selectedType = 1;
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -27,44 +36,29 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-        ConstraintLayout rqsttrade = view.findViewById(R.id.rqsttrade);
-        ConstraintLayout filteritems = view.findViewById(R.id.Filtersitems);
-        ConstraintLayout Displayprev = view.findViewById(R.id.displaypreview);
-        ConstraintLayout Listingsdisplay = view.findViewById(R.id.Listingdisplay);
-        RadioButton listingbt = view.findViewById(R.id.Listingbt);
-        RadioButton Usersbt = view.findViewById(R.id.Usersbt);
-        RadioButton filtersbtt = view.findViewById(R.id.Filtersbtt);
-        RadioGroup radioGroup = view.findViewById(R.id.Radiogroup);
-
-        rqsttrade.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), Request.class);  // Request is your target activity
-            startActivity(intent);
-        });
+        filteritems = view.findViewById(R.id.Filtersitems);
+        listingbt = view.findViewById(R.id.Listingbt);
+        Usersbt = view.findViewById(R.id.Usersbt);
+        filtersbtt = view.findViewById(R.id.Filtersbtt);
+        searchType = view.findViewById(R.id.Radiogroup);
+        filterrg = view.findViewById(R.id.filterRadio);
 
         // Set up radio button listener for the Listingbt to handle showing Listingsdisplay
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+        searchType.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == listingbt.getId()) {
-                // If listingbt is selected, show Listingsdisplay and hide filteritems if visible
-                Listingsdisplay.setVisibility(View.VISIBLE); // Show Listingsdisplay
-                filteritems.setVisibility(View.GONE); // Hide the filter view
-                Displayprev.setVisibility(View.GONE); // Hide Displayprev
                 // Set the button tint for the selected listingbt
                 listingbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
-            } else {
-                // Hide Listingsdisplay if Listingbt is not selected
-                Listingsdisplay.setVisibility(View.GONE);
-            }
-            if (checkedId == Usersbt.getId()) {
+                selectedType = 1;
 
+            } else if (checkedId == Usersbt.getId()) {
                 Usersbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
-            } else {
-                // Hide Listingsdisplay if Listingbt is not selected
-                Listingsdisplay.setVisibility(View.GONE);
+                selectedType = 2;
             }
+        });
 
+        listingbt.setChecked(true);
 
-
-
+/*
             if (checkedId == filtersbtt.getId()) {
                 // If filtersbtt is selected, show filteritems and hide Listingsdisplay
                 filteritems.setVisibility(View.VISIBLE); // Show the filter view
@@ -83,17 +77,15 @@ public class SearchFragment extends Fragment {
                 filteritems.setVisibility(View.GONE);
                 Displayprev.setVisibility(View.GONE);
             }
-        });
+        }); */
 
         // Find Spinners by their IDs
-        Spinner spinner1 = view.findViewById(R.id.spinner1);
-        Spinner spinner2 = view.findViewById(R.id.spinner2);
-        Spinner spinner3 = view.findViewById(R.id.spinner3);
+        listingTypeFltr = view.findViewById(R.id.spinner1);
+        listingCategFltr = view.findViewById(R.id.spinner2);
 
         // Define options for the spinners
-        String[] spinnerOptions1 = {"NEED", "OFFER", "ALL"};
-        String[] spinnerOptions2 = {"FAVOR", "SKILL", "ALL"};
-        String[] spinnerOptions3 = {"BY REGION", "BY PROVINCE", "BY CITY/MUNICIPALITY"};
+        String[] spinnerOptions1 = {"Need", "Offer", "All"};
+        String[] spinnerOptions2 = {"Favor", "Skill", "All"};
 
         // Custom ArrayAdapter to set all text color to black for Spinner 1
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerOptions1) {
@@ -114,7 +106,7 @@ public class SearchFragment extends Fragment {
             }
         };
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner1.setAdapter(adapter1);
+        listingTypeFltr.setAdapter(adapter1);
 
         // Custom ArrayAdapter to set all text color to black for Spinner 2
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerOptions2) {
@@ -135,29 +127,58 @@ public class SearchFragment extends Fragment {
             }
         };
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner2.setAdapter(adapter2);
+        listingCategFltr.setAdapter(adapter2);
 
-        // Custom ArrayAdapter to set all text color to black for Spinner 3
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, spinnerOptions3) {
+        /*
+
+        // Initialize the Spinner
+        Spinner listingTypeFltr = findViewById(R.id.listingTypeFltr);
+
+// Set the first item as selected by default
+        listingTypeFltr.setSelection(0);
+
+// Set an OnItemSelectedListener
+        listingTypeFltr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView textView = (TextView) view;
-                textView.setTextColor(Color.BLACK); // Set text color to black for selected item
-                return view;
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Get the selected item
+                String selectedItem = parent.getItemAtPosition(position).toString();
+
+                // Check which item is selected
+                switch (position) {
+                    case 0:
+                        // First item selected
+                        // Add logic here if needed
+                        break;
+                    case 1:
+                        // Second item selected
+                        // Add logic here if needed
+                        break;
+                    // Add more cases as needed for additional items
+                    default:
+                        break;
+                }
+
+                // You can also use selectedItem variable if you need the selected text
+                Toast.makeText(parent.getContext(), "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView textView = (TextView) view;
-                textView.setTextColor(Color.BLACK); // Set text color to black for dropdown items
-                return view;
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optional: Handle if no item is selected
             }
-        };
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner3.setAdapter(adapter3);
+        });
+
+
+*/
+
+
+
+
+
+
 
         return view;
     }
+
 }

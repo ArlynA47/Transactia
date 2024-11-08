@@ -13,33 +13,34 @@
         android:background="@color/extrawhite">
 
         <EditText
-            android:id="@+id/listingTitle"
-            android:layout_width="340dp"
+            android:id="@+id/searchBar"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.88"
             android:layout_height="40dp"
-            android:layout_marginStart="26dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/graysearch"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/acctx"
             android:drawableLeft="@android:drawable/ic_menu_search"
             android:hint="Search"
             android:paddingStart="8dp"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
         <TextView
             android:id="@+id/filterbt"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="252dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="7dp"
             android:drawableLeft="@drawable/filter"
             android:text="Filters"
             android:textColor="@color/black"
-            android:textSize="24sp"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listingTitle" />
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@+id/searchBar"
+            app:layout_constraintTop_toBottomOf="@+id/Radiogroup" />
+
 
         <!-- First Dropdown (Spinner) -->
 
@@ -57,10 +58,10 @@
                 android:id="@+id/titlemain10"
                 android:layout_width="391dp"
                 android:layout_height="259dp"
-                android:layout_marginEnd="1dp"
                 android:layout_marginBottom="-79dp"
                 android:backgroundTint="@android:color/darker_gray"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/greentransactiatext" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -69,110 +70,161 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/Filtersitems"
-            android:layout_width="360dp"
-            android:layout_height="250dp"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="72dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/bottombox"
-            android:visibility="gone"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.88"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.40"
+            android:background="@drawable/acctx"
+            android:paddingVertical="20dp"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/filterbt">
+            app:layout_constraintTop_toTopOf="@+id/filterbt">
 
             <Spinner
                 android:id="@+id/spinner1"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="23dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/graysearch"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.88"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.16"
+                android:background="@drawable/acctx"
                 android:spinnerMode="dropdown"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gd1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.20" />
 
             <Spinner
                 android:id="@+id/spinner2"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="23dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/graysearch"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.88"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.16"
+                android:background="@drawable/acctx"
                 android:spinnerMode="dropdown"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner1" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gd1" />
 
-            <Spinner
-                android:id="@+id/spinner3"
-                android:layout_width="300dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="23dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/graysearch"
-                android:spinnerMode="dropdown"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gd2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.40" />
+
+            <EditText
+                android:id="@+id/loctx"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.88"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.16"
+                android:background="@drawable/acctx"
+                android:focusable="false"
+                android:focusableInTouchMode="true"
+                android:hint="Location *"
+                android:inputType="text"
+                android:padding="1dp"
+                android:paddingStart="8dp"
+                android:textColor="@color/black"
+                android:textColorHint="#BDBDBD"
+                android:textCursorDrawable="@drawable/cursor_black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gd2" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gd4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.15" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gd5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
 
             <TextView
                 android:id="@+id/Applybt"
-                android:layout_width="150dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="18dp"
-                android:layout_marginEnd="32dp"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.30"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.13"
                 android:background="@drawable/button"
                 android:gravity="center"
-                android:text="APPLY"
+                android:text="Apply"
                 android:textAlignment="gravity"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/Clearbt"
-                app:layout_constraintTop_toBottomOf="@+id/spinner3" />
+                app:layout_constraintEnd_toStartOf="@id/gd5"
+                app:layout_constraintBottom_toTopOf="@+id/gd3" />
 
             <TextView
                 android:id="@+id/Clearbt"
-                android:layout_width="150dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="23dp"
-                android:layout_marginTop="18dp"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.30"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.13"
                 android:background="@drawable/button"
                 android:gravity="center"
-                android:text="CLEAR"
+                android:text="Clear"
                 android:textAlignment="gravity"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner3" />
+                app:layout_constraintStart_toStartOf="@id/gd4"
+                app:layout_constraintBottom_toTopOf="@+id/gd3" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gd3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.90" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RadioGroup
             android:id="@+id/Radiogroup"
-            android:layout_width="391dp"
+            android:layout_width="wrap_content"
             android:layout_height="45dp"
-            android:layout_marginStart="26dp"
             android:layout_marginTop="11dp"
             android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listingTitle">
+            app:layout_constraintStart_toStartOf="@+id/searchBar"
+            app:layout_constraintTop_toBottomOf="@+id/searchBar">
 
             <RadioButton
                 android:id="@+id/Listingbt"
                 android:layout_width="109dp"
                 android:layout_height="match_parent"
-
+                android:buttonTint="@color/maincolor"
                 android:text="Listings"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textColorLink="@color/maincolor" />
 
             <RadioButton
                 android:id="@+id/Usersbt"
                 android:layout_width="109dp"
                 android:layout_height="match_parent"
+                android:enabled="false"
                 android:text="Users"
-
                 android:textColor="@color/black"
                 android:textColorLink="@color/maincolor" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/filterRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginTop="11dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/searchBar"
+            app:layout_constraintTop_toBottomOf="@+id/searchBar">
 
             <RadioButton
                 android:id="@+id/Filtersbtt"
@@ -184,47 +236,19 @@
                 android:textColor="@color/black" />
         </RadioGroup>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/displaypreview"
-            android:layout_width="360dp"
-            android:layout_height="250dp"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/bottombox"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Filtersitems">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/rqsttrade"
-                android:layout_width="324dp"
-                android:layout_height="71dp"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="18dp"
-                android:background="@drawable/bottombox"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/Listingdisplay"
-            android:layout_width="360dp"
-            android:layout_height="480dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="17dp"
-            android:background="@drawable/bottombox"
-            android:visibility="gone"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchrv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginBottom="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Radiogroup">
+            app:layout_constraintTop_toBottomOf="@+id/Filtersitems"
+            app:layout_constraintWidth_percent="0.9" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
