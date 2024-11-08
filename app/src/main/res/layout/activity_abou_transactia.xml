@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/extrawhite"
     tools:context=".Abou_Transactia">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,25 +25,15 @@
             android:layout_marginStart="1dp"
             android:backgroundTint="#33443C"
             android:gravity="start"
-            android:paddingStart="70dp"
+            android:paddingStart="30dp"
             android:text="About"
             android:textColor="#33443C"
-            android:textSize="30sp"
+            android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintVertical_bias="0.68" />
 
-        <ImageView
-            android:id="@+id/accsets"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="-15dp"
-            android:layout_marginTop="1dp"
-            android:src="@drawable/back_profile"
-            app:layout_constraintStart_toEndOf="@+id/textView36"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

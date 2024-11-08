@@ -41,21 +41,21 @@ public class Account_Settings extends AppCompatActivity {
         myreportss.setOnClickListener(v -> {
             Intent intent = new Intent(Account_Settings.this, My_Reports.class);
             startActivity(intent);
-            finish();
+
         });
 
         // Set click listener for aboutus
         aboutus.setOnClickListener(v -> {
             Intent intent = new Intent(Account_Settings.this, Abou_Transactia.class);
             startActivity(intent);
-            finish();
+
         });
 
         // Set click listener for updateuserdets
         updateuserdets.setOnClickListener(v -> {
             Intent intent = new Intent(Account_Settings.this, Update_User_Details.class);
             startActivity(intent);
-            finish();
+
         });
 
         // Set click listener for passwordreset
