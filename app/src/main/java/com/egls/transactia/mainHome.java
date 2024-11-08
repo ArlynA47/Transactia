@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -26,6 +27,10 @@ import java.util.List;
 
 
 public class mainHome extends AppCompatActivity {
+
+    ConstraintLayout mainLay;
+
+    int displayed = 1;
 
     private RecyclerView recyclerView;
     private MyNeedsAdapter adapter;
@@ -65,6 +70,7 @@ public class mainHome extends AppCompatActivity {
                 return insets;  // Return the insets to propagate them
             });
 
+
             newLogin = getIntent().getBooleanExtra("newLogin", false);
 
             if(newLogin) {
@@ -78,6 +84,8 @@ public class mainHome extends AppCompatActivity {
                 dbHelper = new UserDatabaseHelper(this);
                 fireBUserID = dbHelper.getUserId();
             }
+
+            mainLay = findViewById(R.id.main);
 
             // Home Fragments
             fragmentContainerHome = findViewById(R.id.fragmentContainerHome);
@@ -139,7 +147,9 @@ public class mainHome extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        showMyNeeds();
+        if(displayed==1) {
+            showMyNeeds();
+        }
     }
 
 
@@ -213,6 +223,16 @@ public class mainHome extends AppCompatActivity {
             add2.setImageResource(R.drawable.hanap);
             message.setImageResource(R.drawable.message);
             prof2.setImageResource(R.drawable.profile);
+
+            if(selectedImageResource.equals("selectsearch")) {
+                displayed = 2;
+            } else if(selectedImageResource.equals("selectmessage")) {
+                displayed = 3;
+            } else if(selectedImageResource.equals("selectprof")) {
+                displayed = 4;
+            } else {
+                displayed = 1;
+            }
 
             // Set the selected image to its active state
             selectedImageView.setImageResource(getResources().getIdentifier(selectedImageResource, "drawable", getPackageName()));

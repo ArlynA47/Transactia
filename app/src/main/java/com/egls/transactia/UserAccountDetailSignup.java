@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -38,7 +37,7 @@ import java.util.Locale;
 import androidx.appcompat.app.AlertDialog;
 
 
-public class signuptwo extends AppCompatActivity {
+public class UserAccountDetailSignup extends AppCompatActivity {
 
     FirebaseUser currUser;
 
@@ -252,7 +251,7 @@ public class signuptwo extends AppCompatActivity {
     // Show Image on full screen
     private void imgFullScreen() {
         if (imageUri != null) {
-            Intent fullScreenIntent = new Intent(signuptwo.this, FullScreenImageActivity.class);
+            Intent fullScreenIntent = new Intent(UserAccountDetailSignup.this, FullScreenImageActivity.class);
             fullScreenIntent.putExtra("imageUri", imageUri.toString());
             startActivity(fullScreenIntent);
         }
@@ -446,7 +445,7 @@ public class signuptwo extends AppCompatActivity {
                                 // Save user details along with image URL to Firestore
                                 saveUserDetailsToFirestore(db, userDetails);
                                 CustomToast.show(this, "Account details added successfully.");
-                                Intent intent = new Intent(signuptwo.this, mainHome.class);
+                                Intent intent = new Intent(UserAccountDetailSignup.this, mainHome.class);
                                 intent.putExtra("newLogin", true);
                                 intent.putExtra("firebaseUser", currUser);
                                 startActivity(intent);
@@ -482,7 +481,7 @@ public class signuptwo extends AppCompatActivity {
                 .set(userDetails)
                 .addOnSuccessListener(aVoid -> {
                     CustomToast.show(this, "User details saved successfully!");
-                    Intent intent = new Intent(signuptwo.this, mainHome.class);
+                    Intent intent = new Intent(UserAccountDetailSignup.this, mainHome.class);
                     intent.putExtra("firebaseUser", currUser);
                     startActivity(intent);
                     finish(); // Close current activity

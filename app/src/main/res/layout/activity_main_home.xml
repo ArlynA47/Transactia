@@ -8,111 +8,112 @@
     android:background="@color/extrawhite"
     tools:context=".mainHome">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/holder"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingBottom="3dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/holder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/fadewhite"
+        android:paddingBottom="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.07"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/top_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#AFA6A5A5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.07"
-            >
-            <View
-                android:id="@+id/top_line"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="#AFA6A5A5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Rest of your views -->
-            <ImageView
-                android:id="@+id/homemain2"
-                android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.25"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.90"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/selecthome" />
+        <!-- Rest of your views -->
+        <ImageView
+            android:id="@+id/homemain2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.90"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.25"
+            app:srcCompat="@drawable/selecthome" />
 
-            <ImageView
-                android:id="@+id/add2"
-                android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.25"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.90"
-                app:layout_constraintStart_toEndOf="@+id/homemain2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/hanap" />
+        <ImageView
+            android:id="@+id/add2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.90"
+            app:layout_constraintStart_toEndOf="@+id/homemain2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25"
+            app:srcCompat="@drawable/hanap" />
 
-            <ImageView
-                android:id="@+id/message"
-                android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.25"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.90"
-                android:layout_weight="1"
-                app:layout_constraintStart_toEndOf="@+id/add2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/message" />
+        <ImageView
+            android:id="@+id/message"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintHeight_percent="0.90"
+            app:layout_constraintStart_toEndOf="@+id/add2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25"
+            app:srcCompat="@drawable/message" />
 
-            <ImageView
-                android:id="@+id/prof2"
-                android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.25"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.90"
-                app:layout_constraintStart_toEndOf="@+id/message"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/profile"
-                tools:srcCompat="@drawable/profile" />
+        <ImageView
+            android:id="@+id/prof2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.90"
+            app:layout_constraintStart_toEndOf="@+id/message"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25"
+            app:srcCompat="@drawable/profile"
+            tools:srcCompat="@drawable/profile" />
 
-            <TextView
-                android:id="@+id/textView29"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="65dp"
-                android:text="Home"
-                android:textColor="#33443C"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="@+id/homemain2"
-                app:layout_constraintRight_toRightOf="@+id/homemain2" />
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:text="Home"
+            android:textColor="#33443C"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/homemain2"
+            app:layout_constraintRight_toRightOf="@+id/homemain2" />
 
-            <TextView
-                android:id="@+id/textView30"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="65dp"
-                android:text="Search"
-                android:textColor="#33443C"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="@+id/add2"
-                app:layout_constraintRight_toRightOf="@+id/add2" />
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:text="Search"
+            android:textColor="#33443C"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/add2"
+            app:layout_constraintRight_toRightOf="@+id/add2" />
 
-            <TextView
-                android:id="@+id/textView31"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="65dp"
-                android:text="Messages"
-                android:textColor="#33443C"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="@+id/message"
-                app:layout_constraintRight_toRightOf="@+id/message" />
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:text="Messages"
+            android:textColor="#33443C"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/message"
+            app:layout_constraintRight_toRightOf="@+id/message" />
 
-            <TextView
-                android:id="@+id/textView32"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="65dp"
-                android:text="Profile"
-                android:textColor="#33443C"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="@+id/prof2"
-                app:layout_constraintRight_toRightOf="@+id/prof2" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="65dp"
+            android:text="Profile"
+            android:textColor="#33443C"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/prof2"
+            app:layout_constraintRight_toRightOf="@+id/prof2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
@@ -127,27 +128,27 @@
         android:id="@+id/fragmentContainerHome"
         android:name="com.egls.transactia.ExchangeFragment"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.9"
-        android:layout_marginTop="19dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="19dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
+        app:layout_constraintWidth_percent="0.9"
         tools:layout="@layout/fragment_exchange" />
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.9"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerHome"
-        app:layout_constraintBottom_toTopOf="@+id/holder"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/holder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerHome"
+        app:layout_constraintWidth_percent="0.9" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/List"
@@ -156,22 +157,22 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
         android:clickable="true"
-        app:backgroundTint="@color/Transparent"
         android:foreground="@drawable/fab_gradient_background"
         android:visibility="visible"
+        app:backgroundTint="@color/Transparent"
         app:elevation="7dp"
         app:fabSize="normal"
-        app:layout_constraintEnd_toEndOf="@+id/recyclerView"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/recyclerView" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerNotHome"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/holder"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

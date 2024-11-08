@@ -61,7 +61,7 @@
             android:name=".Mainpage"
             android:exported="false" />
         <activity
-            android:name=".signuptwo"
+            android:name=".UserAccountDetailSignup"
             android:exported="false" />
         <activity
             android:name=".signup"

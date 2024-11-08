@@ -113,7 +113,7 @@ public class ConfirmEmail extends AppCompatActivity {
                                 // Delay before moving to the next activity (e.g., 2 seconds)
                                 new Handler().postDelayed(() -> {
                                     // Move to the next activity after the image update
-                                    Intent intent = new Intent(ConfirmEmail.this, signuptwo.class);
+                                    Intent intent = new Intent(ConfirmEmail.this, UserAccountDetailSignup.class);
                                     intent.putExtra("firebaseUser", currentUser);
                                     startActivity(intent);
                                     finish();
@@ -154,7 +154,7 @@ public class ConfirmEmail extends AppCompatActivity {
                             // Delay before moving to the next activity (e.g., 2 seconds)
                             new Handler().postDelayed(() -> {
                                 // Move to the next activity after the image update
-                                Intent intent = new Intent(ConfirmEmail.this, signuptwo.class);
+                                Intent intent = new Intent(ConfirmEmail.this, UserAccountDetailSignup.class);
                                 intent.putExtra("userId", user.getUid());
                                 Toast.makeText(ConfirmEmail.this, "ID" + user.getUid(), Toast.LENGTH_SHORT).show();
                                 startActivity(intent);

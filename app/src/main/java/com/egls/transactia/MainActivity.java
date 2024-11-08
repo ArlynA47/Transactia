@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView; // Import TextView
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,9 +23,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.graphics.Insets;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -165,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                                             } else {
                                                 // No UserDetails, redirect to signuptwo
                                                 CustomToast.show(MainActivity.this, "Please add your account details.");
-                                                Intent intent = new Intent(MainActivity.this, signuptwo.class);
+                                                Intent intent = new Intent(MainActivity.this, UserAccountDetailSignup.class);
                                                 intent.putExtra("firebaseUser", user);
                                                 startActivity(intent);
                                                 finish();

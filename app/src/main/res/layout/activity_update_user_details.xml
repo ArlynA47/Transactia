@@ -82,8 +82,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout7"
         android:layout_width="match_parent"
-        android:layout_height="91dp"
-        android:background="@drawable/bottombox"
+        android:layout_height="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -102,19 +101,29 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.68" />
+            app:layout_constraintVertical_bias="0.75"  />
 
         <TextView
             android:id="@+id/savetxx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="328dp"
-            android:layout_marginTop="40dp"
-            android:text="SAVE"
+            android:layout_marginEnd="15dp"
+            android:text="Save"
             android:textColor="@color/lightgreen"
             android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.75"  />
+
+        <View
+            android:id="@+id/top_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#AFA6A5A5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
@@ -128,10 +137,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bottombox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
-
 
         <ImageView
             android:id="@+id/pfp"
@@ -197,6 +204,7 @@
             android:layout_width="0dp"
             app:layout_constraintWidth_percent="0.85"
             android:layout_height="35dp"
+            android:paddingTop="5dp"
             android:layout_marginTop="16dp"
             android:background="@drawable/acctx"
             android:textColorHint="@color/black"
@@ -288,7 +296,7 @@
             android:id="@+id/biotx"
             android:layout_width="0dp"
             app:layout_constraintWidth_percent="0.85"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/acctx"
             android:gravity="top"
