@@ -4,18 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".SearchFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/extrawhite">
 
         <EditText
             android:id="@+id/listingTitle"
             android:layout_width="340dp"
             android:layout_height="40dp"
             android:layout_marginStart="26dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/graysearch"
             android:drawableLeft="@android:drawable/ic_menu_search"
             android:hint="Search"
@@ -26,88 +28,203 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/filterbt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="138dp"
+            android:layout_marginStart="252dp"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/filter"
             android:text="Filters"
             android:textColor="@color/black"
             android:textSize="24sp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/listingTitle" />
+
+        <!-- First Dropdown (Spinner) -->
+
+        <!-- Second Dropdown (Spinner) -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
-            android:layout_width="414dp"
-            android:layout_height="121dp"
-            android:layout_marginStart="-5dp"
-            android:layout_marginTop="-20dp"
+            android:layout_width="match_parent"
+            android:layout_height="79dp"
             android:background="@drawable/bottombox"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/titlemain10"
-                android:layout_width="405dp"
+                android:layout_width="391dp"
                 android:layout_height="259dp"
-                android:layout_marginStart="-4dp"
-                android:layout_marginTop="-79dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="-79dp"
                 android:backgroundTint="@android:color/darker_gray"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/greentransactiatext" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- First Dropdown (Spinner) -->
-
-        <!-- Second Dropdown (Spinner) -->
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="300dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="12dp"
-            android:spinnerMode="dropdown"
-              android:background="@drawable/graysearch"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView13" />
-
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="300dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="16dp"
-            android:spinnerMode="dropdown"
-            android:background="@drawable/graysearch"
-            app:layout_constraintStart_toStartOf="@id/spinner1"
-            app:layout_constraintTop_toBottomOf="@id/spinner1" />
-
         <!-- Third Dropdown (Spinner) -->
-        <Spinner
-            android:id="@+id/spinner3"
-            android:layout_width="300dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/graysearch"
-            android:spinnerMode="dropdown"
-            app:layout_constraintStart_toStartOf="@id/spinner2"
-            app:layout_constraintTop_toBottomOf="@id/spinner2" />
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="150dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="121dp"
-            android:layout_marginTop="571dp"
-            android:background="@drawable/button"
-            android:gravity="center"
-            android:text="Search"
-            android:textAlignment="gravity"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Filtersitems"
+            android:layout_width="360dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="72dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bottombox"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/filterbt">
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/graysearch"
+                android:spinnerMode="dropdown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/graysearch"
+                android:spinnerMode="dropdown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner1" />
+
+            <Spinner
+                android:id="@+id/spinner3"
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/graysearch"
+                android:spinnerMode="dropdown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+
+            <TextView
+                android:id="@+id/Applybt"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/button"
+                android:gravity="center"
+                android:text="APPLY"
+                android:textAlignment="gravity"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/Clearbt"
+                app:layout_constraintTop_toBottomOf="@+id/spinner3" />
+
+            <TextView
+                android:id="@+id/Clearbt"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/button"
+                android:gravity="center"
+                android:text="CLEAR"
+                android:textAlignment="gravity"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <RadioGroup
+            android:id="@+id/Radiogroup"
+            android:layout_width="391dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="11dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/listingTitle">
+
+            <RadioButton
+                android:id="@+id/Listingbt"
+                android:layout_width="109dp"
+                android:layout_height="match_parent"
+
+                android:text="Listings"
+                android:textColor="@color/black" />
+
+            <RadioButton
+                android:id="@+id/Usersbt"
+                android:layout_width="109dp"
+                android:layout_height="match_parent"
+                android:text="Users"
+
+                android:textColor="@color/black"
+                android:textColorLink="@color/maincolor" />
+
+            <RadioButton
+                android:id="@+id/Filtersbtt"
+                android:layout_width="99dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:button="@drawable/radio_button_selector"
+                android:text="Filters"
+                android:textColor="@color/black" />
+        </RadioGroup>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/displaypreview"
+            android:layout_width="360dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bottombox"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Filtersitems">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rqsttrade"
+                android:layout_width="324dp"
+                android:layout_height="71dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="18dp"
+                android:background="@drawable/bottombox"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/Listingdisplay"
+            android:layout_width="360dp"
+            android:layout_height="480dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="17dp"
+            android:background="@drawable/bottombox"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Radiogroup">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

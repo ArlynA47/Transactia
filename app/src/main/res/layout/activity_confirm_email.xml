@@ -33,12 +33,12 @@
             android:text=" Please verify your email address to proceed."
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="#81A969"
+            android:textColor="@color/extrawhite"
             android:textStyle="bold" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="63dp" />
+            android:layout_height="159dp" />
 
         <ImageView
             android:id="@+id/loading"
