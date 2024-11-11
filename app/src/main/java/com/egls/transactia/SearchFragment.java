@@ -237,77 +237,90 @@ public class SearchFragment extends Fragment {
 
     private void StartSearch() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference userDetailsRef = db.collection("UserDetails");
+        CollectionReference listingsRef = db.collection("Listings");
 
-        // Step 1: Build the UserDetails query based on location filters
-        Query userQuery = userDetailsRef;
-        if (selectedCountry != null && !selectedCountry.equals("All Countries")) {
-            userQuery = userQuery.whereEqualTo("locationMap.country", selectedCountry);
-        }
-        if (selectedRegion != null && !selectedRegion.equals("All Regions")) {
-            userQuery = userQuery.whereEqualTo("locationMap.region", selectedRegion);
-        }
-        if (selectedState != null && !selectedState.equals("All States")) {
-            userQuery = userQuery.whereEqualTo("locationMap.state", selectedState);
-        }
-        if (selectedCity != null && !selectedCity.equals("All Cities")) {
-            userQuery = userQuery.whereEqualTo("locationMap.city", selectedCity);
+        // Step 1: Apply search text filter as a priority
+        Query query = listingsRef;
+        String searchText = searchBar.getText().toString().trim();
+        if (!searchText.isEmpty()) {
+            query = query.whereGreaterThanOrEqualTo("title", searchText)
+                    .whereLessThanOrEqualTo("title", searchText + "\uf8ff");
         }
 
-        // Step 2: Execute the UserDetails query to find matching user IDs
-        userQuery.get().addOnCompleteListener(userTask -> {
-            if (userTask.isSuccessful() && !userTask.getResult().isEmpty()) {
-                List<String> userIds = new ArrayList<>();
-                for (QueryDocumentSnapshot userDoc : userTask.getResult()) {
-                    userIds.add(userDoc.getId()); // Each document ID corresponds to a userId
+        // Step 2: Apply listing type filter if specified
+        if (slt != null && !slt.equals("All Types")) {
+            query = query.whereEqualTo("listingType", slt);
+        }
+
+        // Apply listing category filter if specified
+        if (slc != null && !slc.equals("All Categories")) {
+            query = query.whereEqualTo("listingCategory", slc);
+        }
+
+        // Step 3: Execute Listings query first to narrow results, then filter users based on location
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Listing> initialResults = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Listing listing = document.toObject(Listing.class);
+                    initialResults.add(listing);
                 }
 
-                // Step 3: Query the Listings collection using the retrieved user IDs
-                CollectionReference listingsRef = db.collection("Listings");
-                Query listingQuery = listingsRef.whereIn("userId", userIds);
-
-                // Apply additional filters (search text, listing type, listing category)
-                String searchText = searchBar.getText().toString().trim();
-                if (!searchText.isEmpty()) {
-                    listingQuery = listingQuery.whereGreaterThanOrEqualTo("title", searchText)
-                            .whereLessThanOrEqualTo("title", searchText + "\uf8ff");
+                if (initialResults.isEmpty()) {
+                    displayNoResultsFound();
+                    return;
                 }
 
-                if (slt != null && !slt.equals("All Types")) {
-                    listingQuery = listingQuery.whereEqualTo("listingType", slt);
+                // Step 4: Filter initial results by location in UserDetails
+                CollectionReference userDetailsRef = db.collection("UserDetails");
+                Query userQuery = userDetailsRef;
+
+                if (selectedCountry != null && !selectedCountry.equals("All Countries")) {
+                    userQuery = userQuery.whereEqualTo("locationMap.country", selectedCountry);
+                }
+                if (selectedRegion != null && !selectedRegion.equals("All Regions")) {
+                    userQuery = userQuery.whereEqualTo("locationMap.region", selectedRegion);
+                }
+                if (selectedState != null && !selectedState.equals("All States")) {
+                    userQuery = userQuery.whereEqualTo("locationMap.state", selectedState);
+                }
+                if (selectedCity != null && !selectedCity.equals("All Cities")) {
+                    userQuery = userQuery.whereEqualTo("locationMap.city", selectedCity);
                 }
 
-                if (slc != null && !slc.equals("All Categories")) {
-                    listingQuery = listingQuery.whereEqualTo("listingCategory", slc);
-                }
-
-                // Fetch the filtered listings
-                listingQuery.get().addOnCompleteListener(listingTask -> {
-                    if (listingTask.isSuccessful()) {
-                        List<Listing> searchResults = new ArrayList<>();
-                        for (QueryDocumentSnapshot listingDoc : listingTask.getResult()) {
-                            Listing listing = listingDoc.toObject(Listing.class);
-                            searchResults.add(listing);
+                userQuery.get().addOnCompleteListener(userTask -> {
+                    if (userTask.isSuccessful()) {
+                        List<String> userIds = new ArrayList<>();
+                        for (QueryDocumentSnapshot userDoc : userTask.getResult()) {
+                            userIds.add(userDoc.getId());
                         }
 
-                        if (searchResults.isEmpty()) {
+                        // Filter initial results by matching user IDs from UserDetails
+                        List<Listing> finalResults = new ArrayList<>();
+                        for (Listing listing : initialResults) {
+                            if (userIds.contains(listing.getUserId())) {
+                                finalResults.add(listing);
+                            }
+                        }
+
+                        if (finalResults.isEmpty()) {
                             displayNoResultsFound();
                         } else {
-                            fetchUserDetailsAndUpdateRecyclerView(searchResults);
+                            fetchUserDetailsAndUpdateRecyclerView(finalResults);
                             searchrv.setVisibility(View.VISIBLE);
                             noResultsTextView.setVisibility(View.GONE);
                         }
                     } else {
-                        Log.e("SearchFragment", "Error getting listings: ", listingTask.getException());
+                        displayNoResultsFound();
+                        Log.d("SearchFragment", "No users found matching location filters.");
                     }
                 });
             } else {
-                // No matching users found, show no results
-                displayNoResultsFound();
-                Log.d("SearchFragment", "No users found matching location filters.");
+                Log.e("SearchFragment", "Error getting listings: ", task.getException());
             }
         });
     }
+
 
 
 
