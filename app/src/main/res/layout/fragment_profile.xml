@@ -22,6 +22,8 @@
             android:gravity="start"
             android:paddingStart="30dp"
             android:text="Profile"
+            android:textColor="@color/maincolor"
+            android:textColorLink="@color/maincolor"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
