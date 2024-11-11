@@ -58,9 +58,7 @@ public class Account_Settings extends AppCompatActivity {
         // Set click listener for passwordreset
         passwordreset.setOnClickListener(v -> {
             // Make the passpop visible and bring it to the front
-            pas                              spop.setVisibility(View.VISIBLE);
-            passpop.bringToFront(); // Bring the pop-up to the front
-            // Optionally, you can add animations here to make it appear nicely
+
         });
 
         // Set click listener for cancel2 button
