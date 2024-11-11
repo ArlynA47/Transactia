@@ -118,7 +118,7 @@
                 android:layout_marginEnd="-5dp"
                 android:contentDescription="Delete listing"
                 android:scaleType="centerCrop"
-                android:src="@drawable/delete"
+                android:src="@drawable/archived_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categ_txt" />
 

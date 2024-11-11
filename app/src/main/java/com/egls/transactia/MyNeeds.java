@@ -346,6 +346,12 @@ public class MyNeeds extends AppCompatActivity {
                 findViewById(R.id.textView26),
                 findViewById(R.id.textView27)
         };
+        EditText[] editTexts = {
+                findViewById(R.id.inexchange),
+                findViewById(R.id.listvalue),
+                findViewById(R.id.searchBar),
+                findViewById(R.id.listingdesc)
+        };
 
         for (ImageView imageView : imageViews) {
             if (imageView != null) {
@@ -355,6 +361,11 @@ public class MyNeeds extends AppCompatActivity {
         for (TextView textView : textViews) {
             if (textView != null) {
                 textView.setAlpha(0.4f); // Set to 50% opacity (0.0 to 1.0)
+            }
+        }
+        for (EditText editText : editTexts) {
+            if (editText != null) {
+                editText.setAlpha(0.4f); // 40% opacity
             }
         }
 
@@ -374,6 +385,14 @@ public class MyNeeds extends AppCompatActivity {
                     textView.setAlpha(1.0f); // Reset to 100% opacity
                 }
             }
+
+
+    // Reset opacity of each EditText
+    for (EditText editText : editTexts) {
+        if (editText != null) {
+            editText.setAlpha(1.0f); // Reset to 100% opacity
+        }
+    }
             createListing(fireBUserID);
         });
 
@@ -391,6 +410,14 @@ public class MyNeeds extends AppCompatActivity {
             for (TextView textView : textViews) {
                 if (textView != null) {
                     textView.setAlpha(1.0f); // Reset to 100% opacity
+                }
+            }
+
+
+            // Reset opacity of each EditText
+            for (EditText editText : editTexts) {
+                if (editText != null) {
+                    editText.setAlpha(1.0f); // Reset to 100% opacity
                 }
             }
         });
