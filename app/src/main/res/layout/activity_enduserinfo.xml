@@ -132,11 +132,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="132dp"
-            android:text="Mike Hawk"
-            app:layout_constraintLeft_toLeftOf="@+id/imageView6"
-            app:layout_constraintRight_toRightOf="@+id/imageView6"
+            android:text="Louie Hawk"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/imageView6"
+            app:layout_constraintRight_toRightOf="@+id/imageView6"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
