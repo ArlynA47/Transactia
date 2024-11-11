@@ -31,8 +31,10 @@ import com.google.firebase.storage.StorageReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -43,6 +45,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
 
     // user details string holders
     String name, sex, bio, birthdate, contactInfo, location;
+    String selectedCountry, selectedState, selectedRegion, selectedCity;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri imageUri;
@@ -312,7 +315,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Select Country")
                                 .setItems(countries.toArray(new String[0]), (dialog, which) -> {
-                                    String selectedCountry = countries.get(which);
+                                    selectedCountry = countries.get(which);
                                     pickRegion(selectedCountry);
                                 })
                                 .show();
@@ -336,7 +339,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Select Region")
                                 .setItems(regions.toArray(new String[0]), (dialog, which) -> {
-                                    String selectedRegion = regions.get(which);
+                                    selectedRegion = regions.get(which);
                                     pickState(country, selectedRegion);
                                 })
                                 .show();
@@ -360,7 +363,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Select State")
                                 .setItems(states.toArray(new String[0]), (dialog, which) -> {
-                                    String selectedState = states.get(which);
+                                    selectedState = states.get(which);
                                     pickCity(country, region, selectedState);
                                 })
                                 .show();
@@ -384,7 +387,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Select City")
                                 .setItems(cities.toArray(new String[0]), (dialog, which) -> {
-                                    String selectedCity = cities.get(which);
+                                    selectedCity = cities.get(which);
                                     displaySelectedLocation(selectedCity, state, region, country);
                                 })
                                 .show();
@@ -403,20 +406,28 @@ public class UserAccountDetailSignup extends AppCompatActivity {
             return;
         }
 
-        // get the strings from edit texts
+        // Get the strings from the edit texts
         name = nametx.getText().toString().trim();
         sex = sextx.getText().toString().trim();
         bio = biotx.getText().toString().trim();
         contactInfo = contacttx.getText().toString().trim();
         birthdate = birthdateTx.getText().toString().trim();
-        location = loctx.getText().toString().trim();
+
+        // Create the location map
+        Map<String, String> locationMap = new HashMap<>();
+        locationMap.put("country", selectedCountry);
+        locationMap.put("region", selectedRegion);
+        locationMap.put("state", selectedState);
+        locationMap.put("city", selectedCity);
+
+        // You can also store the location as a single string if needed, e.g. "City, State, Country"
+        String location = selectedCity + ", " + selectedState + ", " + selectedCountry;
 
         // Check if the required fields are filled
-        if(name.isEmpty() || sex.isEmpty() || contactInfo.isEmpty() || birthdate.isEmpty() || location.isEmpty()) {
+        if (name.isEmpty() || sex.isEmpty() || contactInfo.isEmpty() || birthdate.isEmpty() || location.isEmpty()) {
             handleBioClick();
             CustomToast.show(this, "Please fill in all required fields.");
         } else {
-
             // Firestore instance
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -429,7 +440,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
 
                 // Create a unique listing ID if needed
-                String udid = db.collection("UserDetails").document().getId(); // Ensure listingId is unique and consistent
+                String udid = db.collection("UserDetails").document().getId();
 
                 // Firebase Storage reference with listing ID subfolder
                 StorageReference storageRef = storage.getReference().child("images/pfp/" + udid + "/image.jpg");
@@ -440,7 +451,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                             // Get the image's download URL
                             storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
                                 // Create a new UserDetails object including image URL
-                                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, downloadUri.toString());
+                                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, locationMap, downloadUri.toString());
 
                                 // Save user details along with image URL to Firestore
                                 saveUserDetailsToFirestore(db, userDetails);
@@ -462,7 +473,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                         });
             } else {
                 // If no image is provided, set null as the image URL
-                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, null);
+                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, locationMap, null);
 
                 // Show the progress bar for saving user details
                 progressBar.setVisibility(View.VISIBLE);
@@ -473,6 +484,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
             }
         }
     }
+
 
     // Helper method to save user details to Firestore
     private void saveUserDetailsToFirestore(FirebaseFirestore db, UserDetails userDetails) {

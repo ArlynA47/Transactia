@@ -33,8 +33,10 @@ import com.google.firebase.storage.StorageReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class Update_User_Details extends AppCompatActivity {
 
@@ -43,6 +45,7 @@ public class Update_User_Details extends AppCompatActivity {
     private FirebaseStorage storage;
 
     String fireBUserID;  // Firestore user ID (must be passed to the activity)
+    String selectedCountry, selectedState, selectedRegion, selectedCity;
 
     String[] item = {"Male", "Female", "Prefer not to say"};
     TextInputLayout sextxCont;
@@ -57,6 +60,8 @@ public class Update_User_Details extends AppCompatActivity {
     EditText biotx;
     EditText loctx;
     TextView errorTv;
+
+    boolean isLocChanged = false;
 
     Drawable defaultBgET;
     // Set up button for updating user details
@@ -294,7 +299,7 @@ public class Update_User_Details extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Select Country")
                                 .setItems(countries.toArray(new String[0]), (dialog, which) -> {
-                                    String selectedCountry = countries.get(which);
+                                    selectedCountry = countries.get(which);
                                     pickRegion(selectedCountry);
                                 })
                                 .show();
@@ -318,7 +323,7 @@ public class Update_User_Details extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Select Region")
                                 .setItems(regions.toArray(new String[0]), (dialog, which) -> {
-                                    String selectedRegion = regions.get(which);
+                                    selectedRegion = regions.get(which);
                                     pickState(country, selectedRegion);
                                 })
                                 .show();
@@ -342,7 +347,7 @@ public class Update_User_Details extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Select State")
                                 .setItems(states.toArray(new String[0]), (dialog, which) -> {
-                                    String selectedState = states.get(which);
+                                    selectedState = states.get(which);
                                     pickCity(country, region, selectedState);
                                 })
                                 .show();
@@ -366,17 +371,18 @@ public class Update_User_Details extends AppCompatActivity {
                         AlertDialog.Builder builder = new AlertDialog.Builder(this);
                         builder.setTitle("Select City")
                                 .setItems(cities.toArray(new String[0]), (dialog, which) -> {
-                                    String selectedCity = cities.get(which);
-                                    displaySelectedLocation(selectedCity, state, region, country);
+                                    selectedCity = cities.get(which);
+                                    displaySelectedLocation(selectedCity, region, country);
                                 })
                                 .show();
                     }
                 });
     }
 
-    private void displaySelectedLocation(String city, String state, String region, String country) {
-        String location = city + ", " + state + ", " + region + ", " + country;
+    private void displaySelectedLocation(String city, String state, String country) {
+        String location = city + ", " + state + ", " + country;
         loctx.setText(location);
+        isLocChanged = true;
     }
 
     private void loadUserDetails() {
@@ -416,9 +422,21 @@ public class Update_User_Details extends AppCompatActivity {
         String bio = biotx.getText().toString().trim();
         String contactInfo = contacttx.getText().toString().trim();
         String birthdate = birthdateTx.getText().toString().trim();
-        String location = loctx.getText().toString().trim();
 
-        if (name.isEmpty() || sex.isEmpty() || contactInfo.isEmpty() || birthdate.isEmpty() || location.isEmpty()) {
+        // Create the location map and location string only if isLocChanged is true
+        Map<String, String> locationMap = null;
+        String location = null;
+
+        if (isLocChanged) {
+            locationMap = new HashMap<>();
+            locationMap.put("country", selectedCountry);
+            locationMap.put("region", selectedRegion);
+            locationMap.put("state", selectedState);
+            locationMap.put("city", selectedCity);
+            location = selectedCity + ", " + selectedState + ", " + selectedCountry;
+        }
+
+        if (name.isEmpty() || sex.isEmpty() || contactInfo.isEmpty() || birthdate.isEmpty() || (isLocChanged && location.isEmpty())) {
             errorTv.setText("Please fill in all required fields.");
             errorTv.setVisibility(View.VISIBLE);
             return;
@@ -430,23 +448,49 @@ public class Update_User_Details extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference userRef = db.collection("UserDetails").document(fireBUserID);
 
+        // Create a map to hold only the fields that need updating
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("name", name);
+        updates.put("sex", sex);
+        updates.put("bio", bio);
+        updates.put("contactInfo", contactInfo);
+        updates.put("birthdate", birthdate);
+
+        // Add location fields only if location has changed
+        if (isLocChanged) {
+            updates.put("location", location);
+            updates.put("locationMap", locationMap);
+        }
+
         if (imageUri != null) {
+            // Upload image and get URL
             StorageReference storageRef = storage.getReference().child("images/pfp/" + fireBUserID + "/image.jpg");
             storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
                 storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
-                    UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, downloadUri.toString());
-                    userRef.set(userDetails).addOnSuccessListener(aVoid -> {
+                    updates.put("imageUrl", downloadUri.toString());
+                    userRef.update(updates).addOnSuccessListener(aVoid -> {
                         progressBar.setVisibility(View.GONE);
                         finish();
+                    }).addOnFailureListener(e -> {
+                        CustomToast.show(this, "Error updating user details: " + e.getMessage());
+                        progressBar.setVisibility(View.GONE);
                     });
                 });
+            }).addOnFailureListener(e -> {
+                CustomToast.show(this, "Error uploading image: " + e.getMessage());
+                progressBar.setVisibility(View.GONE);
             });
         } else {
-            UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, null);
-            userRef.set(userDetails).addOnSuccessListener(aVoid -> {
+            // Update Firestore without image
+            userRef.update(updates).addOnSuccessListener(aVoid -> {
                 progressBar.setVisibility(View.GONE);
                 finish();
+            }).addOnFailureListener(e -> {
+                CustomToast.show(this, "Error updating user details: " + e.getMessage());
+                progressBar.setVisibility(View.GONE);
             });
         }
     }
+
+
 }

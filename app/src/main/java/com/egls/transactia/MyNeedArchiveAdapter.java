@@ -20,7 +20,11 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MyNeedArchiveAdapter extends RecyclerView.Adapter<MyNeedArchiveAdapter.MyViewHolder> {
     private Context context;
@@ -34,7 +38,7 @@ public class MyNeedArchiveAdapter extends RecyclerView.Adapter<MyNeedArchiveAdap
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTxt, descriptionTxt, categTxt;
+        TextView titleTxt, descriptionTxt, categTxt, timestamptx;
         ImageView listingImage, deleteImage;
         CardView cardView;
 
@@ -45,6 +49,7 @@ public class MyNeedArchiveAdapter extends RecyclerView.Adapter<MyNeedArchiveAdap
             categTxt = itemView.findViewById(R.id.categ_txt);
             listingImage = itemView.findViewById(R.id.listingImage);
             deleteImage = itemView.findViewById(R.id.delete_image);
+            timestamptx = itemView.findViewById(R.id.timestamptx);
             cardView = itemView.findViewById(R.id.cardView);
         }
     }
@@ -63,6 +68,17 @@ public class MyNeedArchiveAdapter extends RecyclerView.Adapter<MyNeedArchiveAdap
         holder.descriptionTxt.setText(limitWords(listing.getListingDescription(), 10));
         holder.categTxt.setText(listing.getListingCategory());
 
+        // Set the timestamp, format it if necessary
+        if (listing.getCreatedTimestamp() != null) {
+            long timestampMillis = listing.getCreatedTimestamp().getSeconds() * 1000; // Firestore Timestamp to milliseconds
+            Date date = new Date(timestampMillis);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
+            String formattedDate = dateFormat.format(date);
+            holder.timestamptx.setText(formattedDate);
+        } else {
+            holder.timestamptx.setText("No Timestamp available");
+        }
+
         // Load image using Glide
         if (listing.getListingImage() != null) {
             Glide.with(context).load(listing.getListingImage()).into(holder.listingImage);
@@ -72,9 +88,9 @@ public class MyNeedArchiveAdapter extends RecyclerView.Adapter<MyNeedArchiveAdap
 
         // Handle CardView click to navigate to MyNeeds activity
         holder.cardView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, MyNeeds.class);
-            intent.putExtra("newListing", false);
+            Intent intent = new Intent(context, ArchiveDetails.class);
             intent.putExtra("listingId", listing.getListingId());
+            intent.putExtra("listingType", "Need");
             context.startActivity(intent);
         });
 

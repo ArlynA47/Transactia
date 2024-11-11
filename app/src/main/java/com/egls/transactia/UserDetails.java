@@ -1,26 +1,30 @@
 package com.egls.transactia;
 
+import java.util.Map;
+
 public class UserDetails {
     private String name;
     private String sex;
     private String bio;
     private String contactInfo;
     private String birthdate;
-    private String location;
+    private String location;  // Keep the original location string
+    private Map<String, String> locationMap;  // New location map for hierarchical data
     private String imageUrl;
 
     // Default constructor for Firestore serialization
     public UserDetails() {
     }
 
-    // Constructor with all fields
-    public UserDetails(String name, String sex, String bio, String contactInfo, String birthdate, String location, String imageUrl) {
+    // Constructor with all fields, including the new locationMap
+    public UserDetails(String name, String sex, String bio, String contactInfo, String birthdate, String location, Map<String, String> locationMap, String imageUrl) {
         this.name = name;
         this.sex = sex;
         this.bio = bio;
         this.contactInfo = contactInfo;
         this.birthdate = birthdate;
         this.location = location;
+        this.locationMap = locationMap;
         this.imageUrl = imageUrl;
     }
 
@@ -73,12 +77,20 @@ public class UserDetails {
         this.location = location;
     }
 
+    public Map<String, String> getLocationMap() {
+        return locationMap;
+    }
+
+    public void setLocationMap(Map<String, String> locationMap) {
+        this.locationMap = locationMap;
+    }
+
     // Getter and setter for imageUrl
     public String getImageUrl() {
         return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl; // Define this method
+        this.imageUrl = imageUrl;
     }
 }

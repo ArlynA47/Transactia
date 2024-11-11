@@ -22,76 +22,107 @@
             android:paddingHorizontal="10dp"
             android:paddingVertical="10dp">
 
-            <TextView
-                android:id="@+id/title_txt"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/timestamp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="4dp"
-                android:text="Title"
-                android:textColor="@color/grey"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@id/categ_txt"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@id/listingImage"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.50" />
+                app:layout_constraintStart_toStartOf="parent">
 
-            <TextView
-                android:id="@+id/description_txt"
-                android:layout_width="0dp"
+
+                <TextView
+                    android:id="@+id/timestamptx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Timestamp"
+                    android:textColor="@color/grey"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.50" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listingcl"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Description"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/title_txt"
-                app:layout_constraintTop_toBottomOf="@+id/title_txt"
-                app:layout_constraintWidth_percent="0.60" />
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/timestamp"
+                app:layout_constraintStart_toStartOf="parent">
 
-            <TextView
-                android:id="@+id/categ_txt"
-                android:layout_width="100dp"
-                android:layout_height="30dp"
-                android:clickable="false"
-                android:text="Status"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/grey"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/title_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="4dp"
+                    android:text="Title"
+                    android:textColor="@color/maincolor"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/categ_txt"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@id/listingImage"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.50" />
 
-            <ImageView
-                android:id="@+id/listingImage"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:background="@drawable/acctx"
-                android:backgroundTint="@color/maincolor"
-                android:backgroundTintMode="src_in"
-                android:clipToOutline="true"
-                android:padding="0dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/addimage_profile"
-                tools:srcCompat="@drawable/addimage_profile" />
+                <TextView
+                    android:id="@+id/description_txt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Description"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@+id/title_txt"
+                    app:layout_constraintTop_toBottomOf="@+id/title_txt"
+                    app:layout_constraintWidth_percent="0.60" />
 
-            <ImageView
-                android:id="@+id/delete_image"
-                android:layout_width="47dp"
-                android:layout_height="39dp"
-                android:layout_gravity="end"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="-5dp"
-                android:contentDescription="Delete listing"
-                android:scaleType="centerCrop"
-                android:src="@drawable/delete"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/categ_txt" />
+                <TextView
+                    android:id="@+id/categ_txt"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:clickable="false"
+                    android:text="Status"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageView
+                    android:id="@+id/listingImage"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:background="@drawable/acctx"
+                    android:backgroundTint="@color/maincolor"
+                    android:backgroundTintMode="src_in"
+                    android:clipToOutline="true"
+                    android:padding="0dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/addimage_profile"
+                    tools:srcCompat="@drawable/addimage_profile" />
+
+                <ImageView
+                    android:id="@+id/delete_image"
+                    android:layout_width="47dp"
+                    android:layout_height="39dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="-5dp"
+                    android:contentDescription="Delete listing"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/delete"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/categ_txt" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

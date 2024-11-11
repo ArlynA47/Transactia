@@ -17,7 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHolder> {
     private Context context;
@@ -31,7 +35,7 @@ public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHo
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTxt, descriptionTxt, categTxt;
+        TextView titleTxt, descriptionTxt, categTxt, timestamptx;
         ImageView listingImage, deleteImage;
         CardView cardView;
 
@@ -42,6 +46,7 @@ public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHo
             categTxt = itemView.findViewById(R.id.categ_txt);
             listingImage = itemView.findViewById(R.id.listingImage);
             deleteImage = itemView.findViewById(R.id.delete_image);
+            timestamptx = itemView.findViewById(R.id.timestamptx);
             cardView = itemView.findViewById(R.id.cardView);
         }
     }
@@ -59,6 +64,18 @@ public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHo
         holder.titleTxt.setText(listing.getTitle());
         holder.descriptionTxt.setText(limitWords(listing.getListingDescription(), 10));
         holder.categTxt.setText(listing.getListingCategory());
+
+        // Set the timestamp, format it if necessary
+        if (listing.getCreatedTimestamp() != null) {
+            long timestampMillis = listing.getCreatedTimestamp().getSeconds() * 1000; // Firestore Timestamp to milliseconds
+            Date date = new Date(timestampMillis);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
+            String formattedDate = dateFormat.format(date);
+            holder.timestamptx.setText(formattedDate);
+        } else {
+            holder.timestamptx.setText("No Timestamp available");
+        }
+
 
         // Load image using Glide
         if (listing.getListingImage() != null) {

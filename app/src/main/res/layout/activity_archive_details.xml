@@ -12,84 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/extrawhite"
         android:visibility="visible"
-        tools:context=".MyNeeds">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/savepop"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:background="@drawable/acctx"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent=".83">
-
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="37dp"
-                android:text="Save Changes"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="8dp"
-                android:text="Are you sure you wanted to save these"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-            <TextView
-                android:id="@+id/textView28"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="-1dp"
-                android:text="changes? Unsaved changes will be lost"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-            <Button
-                android:id="@+id/cancelbt"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="#808080"
-                android:text="CANCEL"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView28" />
-
-            <Button
-                android:id="@+id/savebt"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="40dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="#33443C"
-                android:text="SAVE"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView28" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        tools:context=".ArchiveDetails">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -114,22 +37,11 @@
                 app:layout_constraintVertical_bias="0.68" />
 
             <TextView
-                android:id="@+id/change"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="56dp"
-                android:text="CHANGE"
-                android:textColor="@color/grey"
-                app:layout_constraintBottom_toBottomOf="@+id/textView14"
-                app:layout_constraintStart_toEndOf="@+id/textView14" />
-
-            <TextView
-                android:id="@+id/savetx"
+                android:id="@+id/unarch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
-                android:text="SAVE"
+                android:text="Unarchive"
                 android:textColor="@color/lightgreen"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView14"
@@ -150,12 +62,12 @@
                     android:id="@+id/textView22"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="77dp"
                     android:layout_marginTop="16dp"
-                    android:text="Select Listing Category"
+                    android:text="Listing Category"
                     android:textColor="@color/black"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
@@ -231,40 +143,19 @@
                 app:layout_constraintStart_toStartOf="@+id/searchBar"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
 
-            <TextView
-                android:id="@+id/textView27"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Enter your need details."
-                android:textColor="@color/lightgreen"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/searchBar"
-                app:layout_constraintTop_toBottomOf="@+id/textView26" />
-
-            <TextView
-                android:id="@+id/errorTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Please fill in all the required fields *"
-                android:textColor="#EB3A3A"
-                android:textSize="12sp"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="@id/searchBar"
-                app:layout_constraintTop_toBottomOf="@id/textView27" />
-
             <EditText
                 android:id="@+id/searchBar"
                 android:layout_width="340dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/acctx"
+                android:enabled="false"
                 android:hint="Listing Title *"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/errorTv" />
+                app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
             <EditText
                 android:id="@+id/listingdesc"
@@ -273,6 +164,7 @@
                 android:layout_marginTop="12dp"
                 android:background="@drawable/acctx"
                 android:hint="Listing Description *"
+                android:enabled="false"
                 android:inputType="textMultiLine"
                 android:padding="8dp"
                 android:textColorHint="@color/grey"
@@ -288,6 +180,7 @@
                 android:background="@drawable/acctx"
                 android:hint="Listing Value"
                 android:inputType="numberDecimal"
+                android:enabled="false"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -301,6 +194,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/acctx"
                 android:focusable="false"
+                android:enabled="false"
                 android:hint="In exchange of"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
@@ -332,20 +226,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/gallery_message" />
-
-                <ImageView
-                    android:id="@+id/ShowGal"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_marginStart="268dp"
-                    android:layout_marginTop="112dp"
-                    android:background="@drawable/round"
-                    android:clipToOutline="true"
-                    android:padding="0dp"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/add_icon" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

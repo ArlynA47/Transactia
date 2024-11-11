@@ -26,6 +26,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -278,8 +279,6 @@ public class MyNeeds extends AppCompatActivity {
             return true;
         }
     }
-
-
 
     // Function to open gallery
     private void openGallery() {
@@ -651,6 +650,7 @@ public class MyNeeds extends AppCompatActivity {
         listingData.put("inExchange", selectedListingId);
         listingData.put("storedIn", "Active");
         listingData.put("userId", fireBUserID);
+        listingData.put("createdTimestamp", FieldValue.serverTimestamp()); // Add timestamp field
 
         if (imageUri != null) {
             StorageReference storageRef = storage.getReference().child("images/listing/" + idToUse + ".jpg");
@@ -673,6 +673,7 @@ public class MyNeeds extends AppCompatActivity {
             saveListingToFirestore(db, idToUse, listingData);
         }
     }
+
 
 
     private void saveListingToFirestore(FirebaseFirestore db, String listingId, Map<String, Object> listingData) {
