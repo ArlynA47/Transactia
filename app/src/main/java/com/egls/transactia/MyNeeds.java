@@ -119,7 +119,7 @@ public class MyNeeds extends AppCompatActivity {
 
         listingTitle = findViewById(R.id.searchBar);
         listvalue = findViewById(R.id.listvalue);
-        listingdesc = findViewById(R.id.listingdesc);
+        listingdesc = findViewById(R.id.requestNote);
         inexchange = findViewById(R.id.inexchange);
 
         defaultBgET = listingTitle.getBackground();
@@ -279,7 +279,6 @@ public class MyNeeds extends AppCompatActivity {
         }
     }
 
-
     private boolean handleNotRequiredFieldClick() {
         if (listingdesc.getText().toString().trim().isEmpty()) {
             // Set red border when validation fails
@@ -364,7 +363,7 @@ public class MyNeeds extends AppCompatActivity {
                 findViewById(R.id.inexchange),
                 findViewById(R.id.listvalue),
                 findViewById(R.id.searchBar),
-                findViewById(R.id.listingdesc)
+                findViewById(R.id.requestNote)
         };
 
         for (ImageView imageView : imageViews) {

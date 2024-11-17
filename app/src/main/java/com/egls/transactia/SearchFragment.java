@@ -261,7 +261,10 @@ public class SearchFragment extends Fragment {
             query = query.whereArrayContains("keywords", searchText); // Use keywords array for flexible matching
         }
 
-        // Step 2: Apply listing type filter if specified
+        // Step 2: Apply "storedIn" filter to search for listings with "Active" status
+        query = query.whereEqualTo("storedIn", "Active");
+
+        // Apply listing type filter if specified
         if (slt != null && !slt.equals("All Types")) {
             query = query.whereEqualTo("listingType", slt);
         }
@@ -334,6 +337,7 @@ public class SearchFragment extends Fragment {
             }
         });
     }
+
 
     private void displayNoResultsFound() {
         // Hide the RecyclerView

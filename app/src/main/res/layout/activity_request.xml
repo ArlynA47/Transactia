@@ -125,19 +125,20 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout9"
             android:layout_width="0dp"
-            android:layout_height="190dp"
+            android:layout_height="400dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/bottombox"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
-            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-            app:layout_constraintEnd_toEndOf="@+id/guidelineRight">
+            android:backgroundTint="#171817"
+            android:backgroundTintMode="src_over"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/gallery_message"
-                />
+                android:src="@drawable/gallery_message" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -179,9 +180,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="listtype"
+                android:text="listcateg"
                 android:textColor="@color/grey"
-                android:textStyle="italic"
                 android:textSize="@dimen/text_size_medium"
                 app:layout_constraintTop_toBottomOf="@+id/listingtype"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -283,11 +283,52 @@
                 android:background="@drawable/acctx"
                 android:layout_marginTop="10dp"
                 android:focusable="false"
-                android:hint="In exchange of"
+                android:hint="In exchange of *"
                 android:paddingStart="8dp"
                 android:textSize="@dimen/text_size_small"
                 android:textColorHint="@color/grey"
                 app:layout_constraintTop_toBottomOf="@+id/cond" />
+
+            <RadioGroup
+                android:id="@+id/paymentOption"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="11dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/inexchange">
+
+                <RadioButton
+                    android:id="@+id/nopaymentbt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:buttonTint="@color/maincolor"
+                    android:textSize="@dimen/text_size_small"
+                    android:text="No payment"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/maincolor"
+                    android:layout_marginRight="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/paymebt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:buttonTint="@color/maincolor"
+                    android:textSize="@dimen/text_size_small"
+                    android:text="Pay me"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/maincolor"
+                    android:layout_marginRight="10dp"/>
+
+                <RadioButton
+                    android:id="@+id/paytraderbt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:buttonTint="@color/maincolor"
+                    android:textSize="@dimen/text_size_small"
+                    android:text="Pay Trader"
+                    android:textColor="@color/black"
+                    android:textColorLink="@color/maincolor" />
+            </RadioGroup>
 
             <EditText
                 android:id="@+id/listvalue"
@@ -295,16 +336,17 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/acctx"
+                android:enabled="false"
                 android:hint="Listing Value"
                 android:inputType="numberDecimal"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
                 android:textSize="@dimen/text_size_small"
-                app:layout_constraintTop_toBottomOf="@+id/inexchange"
+                app:layout_constraintTop_toBottomOf="@+id/paymentOption"
                 tools:layout_editor_absoluteX="4dp" />
 
             <EditText
-                android:id="@+id/listingdesc"
+                android:id="@+id/requestNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/acctx"

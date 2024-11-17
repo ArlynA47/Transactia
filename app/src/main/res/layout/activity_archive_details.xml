@@ -158,7 +158,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
             <EditText
-                android:id="@+id/listingdesc"
+                android:id="@+id/requestNote"
                 android:layout_width="340dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -185,7 +185,7 @@
                 android:textColorHint="@color/grey"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/listingdesc" />
+                app:layout_constraintTop_toBottomOf="@+id/requestNote" />
 
             <EditText
                 android:id="@+id/inexchange"
