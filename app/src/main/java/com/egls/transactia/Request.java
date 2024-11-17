@@ -134,6 +134,12 @@ public class Request extends AppCompatActivity {
 
         defaultBgET = listvalue.getBackground();
 
+        // Find the TextViews and ConstraintLayout
+        requestBt = findViewById(R.id.requestbt);  // Request button (TextView)
+        confirmationBt = findViewById(R.id.confirmationbt);  // Confirmation layout
+        backBt = findViewById(R.id.backbt);  // TextView for "back" button
+        conBt = findViewById(R.id.conbt);  // TextView for "confirm" button
+
         // Retrieve the intent
         Intent intent = getIntent();
 
@@ -165,12 +171,6 @@ public class Request extends AppCompatActivity {
 
 
         setValues();
-
-        // Find the TextViews and ConstraintLayout
-         requestBt = findViewById(R.id.requestbt);  // Request button (TextView)
-         confirmationBt = findViewById(R.id.confirmationbt);  // Confirmation layout
-         backBt = findViewById(R.id.backbt);  // TextView for "back" button
-         conBt = findViewById(R.id.conbt);  // TextView for "confirm" button
 
 
         // AFTER DECLARATIONS
