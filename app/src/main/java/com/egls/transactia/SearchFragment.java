@@ -277,9 +277,14 @@ public class SearchFragment extends Fragment {
         // Step 3: Execute Listings query first to narrow results, then filter users based on location
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                List<ListingWithUserDetails> listingsWithUserDetails = new ArrayList<>();
                 List<Listing> initialResults = new ArrayList<>();
+
+                // Step 1: Fetch listings along with their document IDs
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Listing listing = document.toObject(Listing.class);
+                    String listingId = document.getId(); // Firestore's document ID
+                    listing.setListingId(listingId); // Optionally set listingId in the Listing object (if you add it as a field)
                     initialResults.add(listing);
                 }
 
@@ -288,7 +293,7 @@ public class SearchFragment extends Fragment {
                     return;
                 }
 
-                // Step 4: Filter initial results by location in UserDetails
+                // Step 2: Filter initial results by location in UserDetails
                 CollectionReference userDetailsRef = db.collection("UserDetails");
                 Query userQuery = userDetailsRef;
 
@@ -337,6 +342,7 @@ public class SearchFragment extends Fragment {
             }
         });
     }
+
 
 
     private void displayNoResultsFound() {

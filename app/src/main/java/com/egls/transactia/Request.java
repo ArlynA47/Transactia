@@ -3,12 +3,17 @@ package com.egls.transactia;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -54,6 +59,10 @@ public class Request extends AppCompatActivity {
     listingInExchangeStr,
     listingImageUrl;
 
+    ProgressBar progressBar;
+
+    TextView errorTv;
+
     String timestampStr;
 
     String counterListingType;
@@ -63,9 +72,19 @@ public class Request extends AppCompatActivity {
     RadioButton paymebt, nopaymentbt, paytraderbt;
     RadioGroup paymentOption;
 
+    Drawable defaultBgET;
+
     // Holders
     String selectedTitleAndType;
     String selectedListingId;
+
+    String transactionTitle = "Unnamed";
+    String senderID, receiverId;
+    String senderListing, receiverListing;
+    String status = "Request";
+    String paymentTransaction = "0";
+    String paymentMode;
+    String senderNote = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +115,10 @@ public class Request extends AppCompatActivity {
         inExchangeOwner = findViewById(R.id.Exchangefor);
         valueOwner = findViewById(R.id.Pricevalue);
 
+        progressBar = findViewById(R.id.progressBar);
+
+        errorTv = findViewById(R.id.errorTv);
+
         inexchange = findViewById(R.id.inexchange);
         listvalue = findViewById(R.id.listvalue);
         requestNote = findViewById(R.id.requestNote);
@@ -109,6 +132,8 @@ public class Request extends AppCompatActivity {
         nopaymentbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
         listvalue.setText("");
 
+        defaultBgET = listvalue.getBackground();
+
         // Retrieve the intent
         Intent intent = getIntent();
 
@@ -120,6 +145,7 @@ public class Request extends AppCompatActivity {
 
         // Get listing details
         listingId = intent.getStringExtra("listingId");
+
         listingTitleStr = intent.getStringExtra("listingTitle");
         listingTypeStr = intent.getStringExtra("listingType");
         listingDescriptionStr = intent.getStringExtra("listingDescription");
@@ -149,6 +175,10 @@ public class Request extends AppCompatActivity {
 
         // AFTER DECLARATIONS
 
+        requestNote.setOnClickListener(v -> {
+            handleMissingInfo();
+        });
+
         inexchange.setOnClickListener(v -> {
             fetchInExchangeOptions(fireBUserID, ownerUserId);
         });
@@ -176,6 +206,7 @@ public class Request extends AppCompatActivity {
 
                         listvalue.setText(formatted);
                         listvalue.setSelection(formatted.length()); // Set cursor to the end
+                        handleMissingInfo();
                     } catch (NumberFormatException e) {
                         // Handle number parsing error
                         e.printStackTrace();
@@ -208,28 +239,99 @@ public class Request extends AppCompatActivity {
                 } else if(selectedText.equals("Pay trader")) {
                     listvalue.setEnabled(true);
                 }
+
+                paymentMode = selectedText;
             }
         });
-
 
 
         // Initially hide the confirmation layout
         confirmationBt.setVisibility(View.GONE);  // Make confirmation layout invisible at first
 
         // Set up click listener for the request button (TextView)
-        requestBt.setOnClickListener(v -> toggleConfirmationLayoutVisibility(confirmationBt));
+        requestBt.setOnClickListener(v -> {
+
+            boolean missinginfo = handleMissingInfo();
+
+            if(!missinginfo) {
+                toggleConfirmationLayoutVisibility(confirmationBt);
+            }
+        });
 
         // Show toast and hide confirmation layout for cancellation when backBt is clicked
         backBt.setOnClickListener(v -> {
-            Toast.makeText(Request.this, "Request is cancelled", Toast.LENGTH_SHORT).show();
+            CustomToast.show(this, "Request is cancelled.");
             confirmationBt.setVisibility(View.GONE);  // Hide confirmation layout
         });
 
         // Show toast and hide confirmation layout for successful request when conBt is clicked
         conBt.setOnClickListener(v -> {
-            Toast.makeText(Request.this, "Request sent successfully", Toast.LENGTH_SHORT).show();
+
             confirmationBt.setVisibility(View.GONE);  // Hide confirmation layout
+            // Create an EditText for user input
+            EditText input = new EditText(this);
+            input.setHint("Enter transaction name");
+
+            // Set layout parameters for centering horizontally without taking full width
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, // Width wraps content
+                    LinearLayout.LayoutParams.WRAP_CONTENT  // Height wraps content
+            );
+            params.gravity = Gravity.CENTER_HORIZONTAL; // Center horizontally
+            params.setMargins(30, 20, 30, 20); // Optional: Add some margins
+            input.setLayoutParams(params);
+
+            // Use a container to manage layout more easily
+            LinearLayout container = new LinearLayout(this);
+            container.setOrientation(LinearLayout.VERTICAL);
+            container.addView(input);
+
+            // Build the dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+            builder.setTitle("Transaction Name")
+                    .setMessage("Please enter the transaction name:")
+                    .setView(container) // Add the container to the dialog
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        // Get the input text
+                        transactionTitle = input.getText().toString().trim();
+
+                        // Validate the input
+                        if (!transactionTitle.isEmpty()) {
+                            // CREATE THE TRANSACTION REQUEST
+                            createTransactionRequest();
+                        } else {
+                            builder.setMessage("Transaction name is required.");
+
+                        }
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.dismiss(); // Close the dialog
+                    });
+
+            // Show the dialog
+            builder.show();
+
         });
+    }
+
+    // Separate methods to handle each field's action
+    private boolean handleMissingInfo() {
+
+        if (inexchange.getText().toString().trim().isEmpty() && listvalue.getText().toString().trim().isEmpty()) {
+            // Set red border when validation fails
+            inexchange.setBackgroundResource(R.drawable.edittext_red_border);
+            listvalue.setBackgroundResource(R.drawable.edittext_red_border);
+            requestNote.clearFocus();
+            errorTv.setVisibility(View.VISIBLE);
+
+            return true;
+        } else {
+            // Reset to default background after valid input
+            inexchange.setBackground(defaultBgET);
+            listvalue.setBackground(defaultBgET);
+            errorTv.setVisibility(View.INVISIBLE);
+            return false;
+        }
     }
 
 
@@ -284,31 +386,34 @@ public class Request extends AppCompatActivity {
     private void fetchInExchangeOptions(String currentUserId, String traderId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Use .whereIn() to match either currentUserId or traderId in userId
         db.collection("Listings")
                 .whereEqualTo("listingType", counterListingType)
                 .whereEqualTo("storedIn", "Active")
-                .whereIn("userId", Arrays.asList(currentUserId, traderId)) // Change to whereIn for multiple IDs
+                .whereIn("userId", Arrays.asList(currentUserId, traderId)) // Fetch listings for both users
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     List<String> titleAndTypeList = new ArrayList<>();
                     List<String> listingIdList = new ArrayList<>();
+
+                    // Add "Clear Selection" option at the beginning of the list
+                    titleAndTypeList.add("Clear Selection");
+                    listingIdList.add(null); // Placeholder for no selection
 
                     // Iterate through the listings fetched
                     for (QueryDocumentSnapshot document : querySnapshot) {
                         String title = document.getString("title");
                         String category = document.getString("listingCategory");
                         String listingId = document.getId();
-                        String userId = document.getString("userId"); // Get the userId of the listing
+                        String userId = document.getString("userId");
 
-                        // Build the titleAndType based on whether it's the current user's listing or the other trader's listing
+                        // Format titleAndType based on ownership
                         String titleAndType;
                         if (userId.equals(currentUserId)) {
-                            titleAndType = "You:         " +title + " - " + category;  // Add "- You" for current user's listing
+                            titleAndType = "You:         " + title + " - " + category;
                         } else if (userId.equals(traderId)) {
-                            titleAndType = "Trader:     " +title + " - " + category;  // Add "- Trader" for the other trader's listing
+                            titleAndType = "Trader:     " + title + " - " + category;
                         } else {
-                            titleAndType = title + " - " + category; // Default case (shouldn't occur if userId is currentUserId or traderId)
+                            titleAndType = title + " - " + category;
                         }
 
                         // Add the formatted title and listing ID to the lists
@@ -320,20 +425,29 @@ public class Request extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Select In Exchange")
                             .setItems(titleAndTypeList.toArray(new String[0]), (dialog, which) -> {
-                                selectedTitleAndType = titleAndTypeList.get(which);
-                                selectedListingId = listingIdList.get(which);
+                                if (which == 0) { // First item is "Clear Selection"
+                                    selectedTitleAndType = null;
+                                    selectedListingId = null;
 
-                                // Assign selected values to inExchange field
-                                inexchange.setText(selectedTitleAndType);
+                                    // Clear the inExchange field
+                                    inexchange.setText("");
+                                    CustomToast.show(this, "Selection cleared.");
+                                } else {
+                                    // Regular selection
+                                    selectedTitleAndType = titleAndTypeList.get(which);
+                                    selectedListingId = listingIdList.get(which);
+
+                                    // Assign selected values to inExchange field
+                                    inexchange.setText(selectedTitleAndType);
+                                    handleMissingInfo(); // Perform validation or further actions
+                                }
                             })
                             .show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error fetching listings: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    CustomToast.show(this, "Error fetching listings: " + e.getMessage());
                 });
     }
-
-
 
     private void fetchTitleAndCategoryById(String listingId) {
         // Set listingId to empty string if it is null
@@ -392,4 +506,47 @@ public class Request extends AppCompatActivity {
                 .replace(R.id.fragmentContainerView, fragment, "MY_FRAGMENT_TAG")
                 .commit();
     }
+
+
+    private void createTransactionRequest() {
+        progressBar.setVisibility(View.VISIBLE);
+
+        senderID = fireBUserID;
+        receiverId = ownerUserId;
+        senderListing = selectedListingId;
+        receiverListing = listingId;
+        status = "Request";
+        paymentTransaction = listvalue.getText().toString().replaceAll("[^\\d.]", "");
+        senderNote = requestNote.getText().toString();
+
+        TransactionManager transactionManager = new TransactionManager();
+        transactionManager.createTransaction(
+                transactionTitle,
+                senderID,
+                receiverId,
+                senderListing,
+                receiverListing,
+                status,
+                paymentTransaction,
+                paymentMode,
+                senderNote,
+                new TransactionManager.OnTransactionCompleteListener() {
+                    @Override
+                    public void onTransactionSuccess() {
+                        progressBar.setVisibility(View.GONE);
+                        CustomToast.show(Request.this, "Transaction created successfully!");
+                    }
+
+                    @Override
+                    public void onTransactionFailure(String errorMessage) {
+                        progressBar.setVisibility(View.GONE);
+                        CustomToast.show(Request.this, "Error: " + errorMessage);
+                    }
+                }
+        );
+    }
+
+
+
 }
+

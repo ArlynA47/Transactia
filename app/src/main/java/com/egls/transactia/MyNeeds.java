@@ -521,6 +521,10 @@ public class MyNeeds extends AppCompatActivity {
                     List<String> titleAndTypeList = new ArrayList<>();
                     List<String> listingIdList = new ArrayList<>();
 
+                    // Add "Clear Selection" option at the beginning
+                    titleAndTypeList.add("Clear Selection");
+                    listingIdList.add(null); // Placeholder for no selection
+
                     for (QueryDocumentSnapshot document : querySnapshot) {
                         String title = document.getString("title");
                         String category = document.getString("listingCategory");
@@ -535,18 +539,29 @@ public class MyNeeds extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Select In Exchange")
                             .setItems(titleAndTypeList.toArray(new String[0]), (dialog, which) -> {
-                                selectedTitleAndType = titleAndTypeList.get(which);
-                                selectedListingId = listingIdList.get(which);
+                                if (which == 0) { // "Clear Selection" option
+                                    selectedTitleAndType = null;
+                                    selectedListingId = null;
 
-                                // Assign selected values to inExchange fields
-                                inexchange.setText(selectedTitleAndType);
+                                    // Clear the inExchange field
+                                    inexchange.setText("");
+                                    CustomToast.show(this, "Selection cleared.");
+                                } else {
+                                    // Regular selection
+                                    selectedTitleAndType = titleAndTypeList.get(which);
+                                    selectedListingId = listingIdList.get(which);
+
+                                    // Assign selected values to inExchange fields
+                                    inexchange.setText(selectedTitleAndType);
+                                }
                             })
                             .show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error fetching listings: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    CustomToast.show(this, "Error fetching listings: " + e.getMessage());
                 });
     }
+
 
     private void fetchTitleAndCategoryById(String listingId) {
         // Set listingId to empty string if it is null

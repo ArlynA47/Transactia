@@ -52,7 +52,6 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
             holder.timestamptx.setText("No Timestamp available");
         }
 
-
         // Set user info
         holder.UserName.setText(userDetails.getName());
         holder.UserLoc.setText(userDetails.getLocation());
@@ -64,8 +63,6 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
         holder.categ_txt.setText(listing.getListingCategory());
 
         // Set images (You may want to load images using a library like Glide or Picasso)
-
-
         if (userDetails.getImageUrl() != null && !userDetails.getImageUrl().isEmpty()) {
             Glide.with(holder.itemView.getContext())
                     .load(userDetails.getImageUrl()) // This should be the URL string from Firebase Storage
@@ -82,18 +79,20 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
             holder.listingImage.setImageResource(R.drawable.addimage_profile);
         }
 
-        // Handle CardView click to navigate to MyNeeds activity
+        // Handle CardView click to navigate to Request activity
         holder.cardView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), Request.class);
 
             // Add user details to the intent
             intent.putExtra("ownerUserId", listing.getUserId()); // Add owner User ID
-            intent.putExtra("ownerImage", userDetails.getImageUrl()); // Add owner User ID
-            intent.putExtra("ownerName", userDetails.getName()); // Add owner name
-            intent.putExtra("ownerLocation", userDetails.getLocation()); // Add owner location
+            intent.putExtra("ownerImage", userDetails.getImageUrl()); // Add owner Image URL
+            intent.putExtra("ownerName", userDetails.getName()); // Add owner Name
+            intent.putExtra("ownerLocation", userDetails.getLocation()); // Add owner Location
 
             // Add listing details to the intent
-            intent.putExtra("listingId", listing.getListingId()); // Pass the listing ID
+            // Since there is no 'listingId' field, you can pass the document ID here
+            String listingId = item.getListing().getListingId(); // Get the document ID
+            intent.putExtra("listingId", listingId); // Pass the listing ID (document ID)
             intent.putExtra("listingTitle", listing.getTitle());
             intent.putExtra("listingDescription", listing.getListingDescription());
             intent.putExtra("listingType", listing.getListingType());
@@ -116,9 +115,8 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
             // Start the Request activity
             holder.itemView.getContext().startActivity(intent);
         });
-
-
     }
+
 
     @Override
     public int getItemCount() {
