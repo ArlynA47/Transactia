@@ -75,7 +75,7 @@ public class Account_Settings extends AppCompatActivity {
         // LOG OUT
         logoutlay.setOnClickListener(v -> {
             UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
-            dbHelper.deleteUserId();
+            dbHelper.deleteUserDetails();
             Intent intent = new Intent(Account_Settings.this, MainActivity.class);
             startActivity(intent);
             finish();

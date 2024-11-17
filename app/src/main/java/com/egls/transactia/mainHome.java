@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,6 +49,8 @@ public class mainHome extends AppCompatActivity {
         FirebaseUser currUser;
         String fireBUserID;
 
+        String emailAuth = "", passAuth = "";
+
         UserDatabaseHelper dbHelper;
 
         // Declare ImageViews
@@ -63,84 +66,29 @@ public class mainHome extends AppCompatActivity {
             EdgeToEdge.enable(this);  // Enable edge-to-edge support
             setContentView(R.layout.activity_main_home);
 
-            // Set up a listener for window insets to apply padding to the main layout
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;  // Return the insets to propagate them
-            });
+            recyclerView = findViewById(R.id.recyclerView);
 
 
             newLogin = getIntent().getBooleanExtra("newLogin", false);
 
             if(newLogin) {
                 // Retrieve the FirebaseUser instance from the intent
-                currUser = getIntent().getParcelableExtra("firebaseUser");
-                // Save the user id into sqlite db
-                UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
-                dbHelper.saveUserId(currUser.getUid());
-                fireBUserID = dbHelper.getUserId();
+                emailAuth = getIntent().getStringExtra("emailAuth");
+                passAuth = getIntent().getStringExtra("passAuth");
+
+                // Save the credentials into sqlite db
+                UserDatabaseHelper dbHelper = new UserDatabaseHelper(mainHome.this);
+                dbHelper.saveUserDetails(emailAuth, passAuth);
+                AuthenticateUser();
             } else {
-                dbHelper = new UserDatabaseHelper(this);
-                fireBUserID = dbHelper.getUserId();
+                dbHelper = new UserDatabaseHelper(mainHome.this);
+                String[] userDetails = dbHelper.getUserDetails();
+                if (userDetails != null) {
+                    emailAuth = userDetails[0];
+                    passAuth = userDetails[1];
+                    AuthenticateUser();
+                }
             }
-
-            mainLay = findViewById(R.id.main);
-
-            // Home Fragments
-            fragmentContainerHome = findViewById(R.id.fragmentContainerHome);
-            fragmentContainerView = findViewById(R.id.fragmentContainerView);
-
-            // Not Home Fragment
-            fragmentContainerNotHome = findViewById(R.id.fragmentContainerNotHome);
-
-            // Initialize ImageViews
-            homeMain2 = findViewById(R.id.homemain2);
-            add2 = findViewById(R.id.add2);
-            message = findViewById(R.id.message);
-            prof2 = findViewById(R.id.prof2);
-            recyclerView = findViewById(R.id.recyclerView);
-
-            // Set up click listeners for fragment switching and image updating
-            homeMain2.setOnClickListener(view -> {
-                displayHome();
-            });
-            add2.setOnClickListener(view -> {
-                if (!isFragmentTransitioning) {
-                    HideHome();
-                    updateSelectedImage(add2, "selectsearch");
-                    loadFragment(new SearchFragment());
-                }
-            });
-            message.setOnClickListener(view -> {
-                if (!isFragmentTransitioning) {
-                    HideHome();
-                    updateSelectedImage(message, "selectmessage");
-                    loadFragment(new MessageFragment());
-                }
-            });
-            prof2.setOnClickListener(view -> {
-                if (!isFragmentTransitioning) {
-                    HideHome();
-                    updateSelectedImage(prof2, "selectprof");
-                    loadFragment(new ProfileFragment());
-                    recyclerView.setVisibility(View.GONE);
-                }
-            });
-
-            listButton = findViewById(R.id.List);
-
-            // Set an OnClickListener for the floating button
-            listButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Start MyNeeds activity when the button is clicked
-                    Intent intent = new Intent(mainHome.this, MyNeeds.class);
-                    intent.putExtra("newListing", true);
-                    intent.putExtra("isNeed", isNeed);
-                    startActivity(intent);
-                }
-            });
 
         }
 
@@ -152,6 +100,88 @@ public class mainHome extends AppCompatActivity {
         }
     }
 
+    private void AfterAuth() {
+        mainLay = findViewById(R.id.main);
+
+        // Home Fragments
+        fragmentContainerHome = findViewById(R.id.fragmentContainerHome);
+        fragmentContainerView = findViewById(R.id.fragmentContainerView);
+
+        // Not Home Fragment
+        fragmentContainerNotHome = findViewById(R.id.fragmentContainerNotHome);
+
+        // Initialize ImageViews
+        homeMain2 = findViewById(R.id.homemain2);
+        add2 = findViewById(R.id.add2);
+        message = findViewById(R.id.message);
+        prof2 = findViewById(R.id.prof2);
+
+        // Set up click listeners for fragment switching and image updating
+        homeMain2.setOnClickListener(view -> {
+            displayHome();
+        });
+        add2.setOnClickListener(view -> {
+            if (!isFragmentTransitioning) {
+                HideHome();
+                updateSelectedImage(add2, "selectsearch");
+                loadFragment(new SearchFragment());
+            }
+        });
+        message.setOnClickListener(view -> {
+            if (!isFragmentTransitioning) {
+                HideHome();
+                updateSelectedImage(message, "selectmessage");
+                loadFragment(new MessageFragment());
+            }
+        });
+        prof2.setOnClickListener(view -> {
+            if (!isFragmentTransitioning) {
+                HideHome();
+                updateSelectedImage(prof2, "selectprof");
+                loadFragment(new ProfileFragment());
+                recyclerView.setVisibility(View.GONE);
+            }
+        });
+
+
+        listButton = findViewById(R.id.List);
+
+        // Set an OnClickListener for the floating button
+        listButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start MyNeeds activity when the button is clicked
+                Intent intent = new Intent(mainHome.this, MyNeeds.class);
+                intent.putExtra("newListing", true);
+                intent.putExtra("isNeed", isNeed);
+                startActivity(intent);
+            }
+        });
+
+        // Set up a listener for window insets to apply padding to the main layout
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;  // Return the insets to propagate them
+        });
+    }
+
+    private void AuthenticateUser() {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(emailAuth, passAuth)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // User is authenticated
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        fireBUserID = user.getUid();  // This will be the authenticated user ID
+                        AfterAuth();
+                        loadInitialFragment();
+                        showMyNeeds();
+                    } else {
+                        CustomToast.show(this, "Authentication failed.");
+                        finish();
+                    }
+                });
+    }
 
     private void displayHome() {
             if (!isFragmentTransitioning) {
@@ -257,4 +287,13 @@ public class mainHome extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("Firestore", "Error loading listings", e));
     }
 
+
+    private void loadInitialFragment() {
+        hfrag fragment = new hfrag();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainerView, fragment, "MY_FRAGMENT_TAG")
+                .commit();
     }
+
+
+}

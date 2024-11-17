@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
@@ -20,6 +22,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class ProfileFragment extends Fragment {
+
+    FirebaseUser user;
 
     ImageView profileUser;
     TextView UserName, UserLoc, UserGender, UserAge, UserBio;
@@ -45,8 +49,8 @@ public class ProfileFragment extends Fragment {
         UserAge = view.findViewById(R.id.UserAge);
         UserBio = view.findViewById(R.id.UserBio);
 
-        dbHelper = new UserDatabaseHelper(getContext());
-        fireBUserID = dbHelper.getUserId();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        fireBUserID = user.getUid();
 
         loadUserDetails(); // Call method to load user details
 

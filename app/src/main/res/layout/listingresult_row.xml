@@ -9,6 +9,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
+        app:cardBackgroundColor="@color/extrawhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -32,13 +33,24 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
+                android:id="@+id/ltype"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Listing Type"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.50" />
+
+            <TextView
                 android:id="@+id/timestamptx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Timestamp"
                 android:textColor="@color/grey"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ltype"
                 app:layout_constraintWidth_percent="0.50" />
 
             <ImageView

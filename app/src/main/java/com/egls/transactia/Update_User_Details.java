@@ -24,6 +24,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,6 +41,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Update_User_Details extends AppCompatActivity {
+
+    FirebaseUser user;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri imageUri;
@@ -74,8 +78,8 @@ public class Update_User_Details extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_update_user_details);
 
-        UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
-        fireBUserID = dbHelper.getUserId();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        fireBUserID = user.getUid();
 
         storage = FirebaseStorage.getInstance();
 

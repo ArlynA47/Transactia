@@ -117,16 +117,14 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="com.egls.transactia.hfrag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_hfrag" />
+        />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerHome"
-        android:name="com.egls.transactia.ExchangeFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="19dp"
@@ -134,7 +132,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
         app:layout_constraintWidth_percent="0.9"
-        tools:layout="@layout/fragment_exchange" />
+         />
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView

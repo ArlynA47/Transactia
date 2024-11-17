@@ -90,7 +90,7 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
         <TextView
-            android:id="@+id/userprofile"
+            android:id="@+id/tradername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="84dp"
@@ -109,7 +109,7 @@
             android:text="Bikini Bottom"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userprofile" />
+            app:layout_constraintTop_toBottomOf="@+id/tradername" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

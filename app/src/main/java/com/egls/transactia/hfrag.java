@@ -75,7 +75,7 @@ public class hfrag extends Fragment {
         return view;
     }
 
-    private void defaultDisp() {
+    public void defaultDisp() {
         replaceFragment(new ExchangeFragment());
         exchange.setImageResource(R.drawable.selectexchaneg);
         mytransact.setImageResource(R.drawable.exchange);

@@ -12,6 +12,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -20,6 +22,7 @@ import java.util.List;
 
 public class Archive extends AppCompatActivity {
 
+    FirebaseUser user;
     String fireBUserID;
     UserDatabaseHelper dbHelper;
 
@@ -40,8 +43,8 @@ public class Archive extends AppCompatActivity {
             return insets;
         });
 
-            dbHelper = new UserDatabaseHelper(this);
-            fireBUserID = dbHelper.getUserId();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        fireBUserID = user.getUid();
 
             needrv = findViewById(R.id.needrv);
             offerrv= findViewById(R.id.offerrv);

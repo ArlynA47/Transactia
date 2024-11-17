@@ -45,10 +45,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
-        String userId = dbHelper.getUserId();
-
         // If the user is already logged in
-        if (userId != null) {
+        String[] userDetails = dbHelper.getUserDetails();
+        if (userDetails != null) {
             Intent intent = new Intent(MainActivity.this, mainHome.class);
             intent.putExtra("newLogin", false);
             startActivity(intent);
@@ -154,7 +153,8 @@ public class MainActivity extends AppCompatActivity {
                                             if (documentSnapshot.exists()) {
                                                 // UserDetails exists, redirect to mainHome
                                                 Intent intent = new Intent(MainActivity.this, mainHome.class);
-                                                intent.putExtra("firebaseUser", user);
+                                                intent.putExtra("emailAuth", email);
+                                                intent.putExtra("passAuth", pass);
                                                 intent.putExtra("newLogin", true);
                                                 startActivity(intent);
                                                 finish();

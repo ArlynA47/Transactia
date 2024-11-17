@@ -1,11 +1,13 @@
 package com.egls.transactia;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -57,6 +59,7 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
 
         // Set listing info
         holder.title_txt.setText(listing.getTitle());
+        holder.ltype.setText(listing.getListingType());
         holder.description_txt.setText(listing.getListingDescription());
         holder.categ_txt.setText(listing.getListingCategory());
 
@@ -79,6 +82,42 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
             holder.listingImage.setImageResource(R.drawable.addimage_profile);
         }
 
+        // Handle CardView click to navigate to MyNeeds activity
+        holder.cardView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), Request.class);
+
+            // Add user details to the intent
+            intent.putExtra("ownerUserId", listing.getUserId()); // Add owner User ID
+            intent.putExtra("ownerImage", userDetails.getImageUrl()); // Add owner User ID
+            intent.putExtra("ownerName", userDetails.getName()); // Add owner name
+            intent.putExtra("ownerLocation", userDetails.getLocation()); // Add owner location
+
+            // Add listing details to the intent
+            intent.putExtra("listingId", listing.getListingId()); // Pass the listing ID
+            intent.putExtra("listingTitle", listing.getTitle());
+            intent.putExtra("listingDescription", listing.getListingDescription());
+            intent.putExtra("listingType", listing.getListingType());
+            intent.putExtra("listingCategory", listing.getListingCategory());
+            intent.putExtra("listingValue", listing.getListingValue());
+            intent.putExtra("listingInExchange", listing.getInExchange());
+            intent.putExtra("listingImage", listing.getListingImage()); // URL for the image
+
+            // Add timestamp if available
+            if (listing.getCreatedTimestamp() != null) {
+                long timestampMillis = listing.getCreatedTimestamp().getSeconds() * 1000; // Firestore Timestamp to milliseconds
+                Date date = new Date(timestampMillis);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
+                String formattedDate = dateFormat.format(date);
+                intent.putExtra("listingTimestamp", formattedDate);
+            } else {
+                intent.putExtra("listingTimestamp", "No Timestamp available");
+            }
+
+            // Start the Request activity
+            holder.itemView.getContext().startActivity(intent);
+        });
+
+
     }
 
     @Override
@@ -87,11 +126,13 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView timestamptx, UserName, UserLoc, title_txt, description_txt, categ_txt;
+        TextView timestamptx, UserName, UserLoc, title_txt, description_txt, categ_txt, ltype;
         ImageView profileUser, listingImage;
+        CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            ltype = itemView.findViewById(R.id.ltype);
             timestamptx = itemView.findViewById(R.id.timestamptx);
             UserName = itemView.findViewById(R.id.UserName);
             UserLoc = itemView.findViewById(R.id.UserLoc);
@@ -100,6 +141,7 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
             categ_txt = itemView.findViewById(R.id.categ_txt);
             profileUser = itemView.findViewById(R.id.profileUser);
             listingImage = itemView.findViewById(R.id.listingImage);
+            cardView = itemView.findViewById(R.id.cardView);
         }
     }
 }

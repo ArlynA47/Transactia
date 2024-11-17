@@ -26,6 +26,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -40,6 +42,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ArchiveDetails extends AppCompatActivity {
+
+    FirebaseUser user;
 
     private ImageView currentlySelectedImageView = null;
 
@@ -91,8 +95,8 @@ public class ArchiveDetails extends AppCompatActivity {
 
         storage = FirebaseStorage.getInstance();
 
-        UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
-        fireBUserID = dbHelper.getUserId();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        fireBUserID = user.getUid();
 
         // ImageViews for skills, favors, and items
         skillsImageView = findViewById(R.id.skills);

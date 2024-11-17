@@ -23,6 +23,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,9 +33,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SearchFragment extends Fragment {
+
+    public boolean isFromRequest = false;
 
     ConstraintLayout filteritems;
     RadioButton listingbt, Usersbt, filtersbtt;
@@ -62,6 +67,9 @@ public class SearchFragment extends Fragment {
 
     RecyclerView searchrv;
 
+    ConstraintLayout constraintLayout;
+
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -71,6 +79,7 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+        constraintLayout = view.findViewById(R.id.constraintLayout);
         filteritems = view.findViewById(R.id.Filtersitems);
         listingbt = view.findViewById(R.id.Listingbt);
         Usersbt = view.findViewById(R.id.Usersbt);
@@ -86,6 +95,10 @@ public class SearchFragment extends Fragment {
         searchBar  = view.findViewById(R.id.searchBar);
 
         searchrv = view.findViewById(R.id.searchrv);
+
+        // Find Spinners by their IDs
+        listingTypeFltr = view.findViewById(R.id.spinner1);
+        listingCategFltr = view.findViewById(R.id.spinner2);
 
         // Set up radio button listener for the Listingbt to handle showing Listingsdisplay
         searchType.setOnCheckedChangeListener((group, checkedId) -> {
@@ -116,11 +129,6 @@ public class SearchFragment extends Fragment {
                 checkAlr = true;
             }
         });
-
-
-        // Find Spinners by their IDs
-        listingTypeFltr = view.findViewById(R.id.spinner1);
-        listingCategFltr = view.findViewById(R.id.spinner2);
 
         // Define options for the spinners
         String[] spinnerOptions1 = {"All Types", "Need", "Offer"};
@@ -228,9 +236,16 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                // This is called after the text has changed, in case you want to handle something post-change.
+                StartSearch();
             }
         });
+
+        if(isFromRequest) {
+            publicSearch();
+        } else {
+            getSelectedCountry();
+            StartSearch(); // start by initially searching the listings in the user's country
+        }
 
         return view;
     }
@@ -241,10 +256,9 @@ public class SearchFragment extends Fragment {
 
         // Step 1: Apply search text filter as a priority
         Query query = listingsRef;
-        String searchText = searchBar.getText().toString().trim();
+        String searchText = searchBar.getText().toString().trim().toLowerCase();
         if (!searchText.isEmpty()) {
-            query = query.whereGreaterThanOrEqualTo("title", searchText)
-                    .whereLessThanOrEqualTo("title", searchText + "\uf8ff");
+            query = query.whereArrayContains("keywords", searchText); // Use keywords array for flexible matching
         }
 
         // Step 2: Apply listing type filter if specified
@@ -321,9 +335,6 @@ public class SearchFragment extends Fragment {
         });
     }
 
-
-
-
     private void displayNoResultsFound() {
         // Hide the RecyclerView
         searchrv.setVisibility(View.GONE);
@@ -365,6 +376,32 @@ public class SearchFragment extends Fragment {
         ListingResultAdapter adapter = new ListingResultAdapter(listingsWithUserDetails);
         searchrv.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    public void publicSearch() {
+
+        filteritems.setVisibility(View.GONE);
+        searchType.setVisibility(View.GONE);
+        filterrg.setVisibility(View.GONE);
+        noResultsTextView.setVisibility(View.GONE);
+        searchBar.setVisibility(View.GONE);
+        filteritems.setVisibility(View.GONE);
+        filterDisp.setVisibility(View.GONE);
+        constraintLayout.setVisibility(View.GONE);
+
+        getSelectedCountry();
+
+        // Get the current layout parameters of the RecyclerView
+        ViewGroup.LayoutParams layoutParams = searchrv.getLayoutParams();
+
+        // Set the height to match the parent
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+        // Apply the updated layout parameters
+        searchrv.setLayoutParams(layoutParams);
+
+        StartSearch(); // start by initially searching the listings in the user's country
+
     }
 
     private void ApplyFilters() {
@@ -544,6 +581,36 @@ public class SearchFragment extends Fragment {
         loctx.setText(location.toString());
         selectedLoc = location.toString();
     }
+
+    private void getSelectedCountry() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String fireBUserID = user.getUid();
+
+        // Fetch the document where the userId matches fireBUserID
+        db.collection("UserDetails")
+                .document(fireBUserID) // Assuming userId is the document ID
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Access the locationMap and retrieve the country
+                        Map<String, String> locationMap = (Map<String, String>) documentSnapshot.get("locationMap");
+                        if (locationMap != null && locationMap.containsKey("country")) {
+                            selectedCountry = locationMap.get("country");
+                            // Use the selectedCountry as needed
+                        } else {
+                            Log.d("SelectedCountry", "Country field is missing in locationMap.");
+                        }
+                    } else {
+                        Log.d("SelectedCountry", "No document found for userId: " + fireBUserID);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("SelectedCountry", "Error retrieving selectedCountry: " + e.getMessage(), e);
+                });
+    }
+
 
 
 }

@@ -26,6 +26,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -40,6 +42,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class MyNeeds extends AppCompatActivity {
+
+    FirebaseUser user;
 
     private ImageView currentlySelectedImageView = null;
     private View hiddenLayout; // Reference to the hidden layout
@@ -96,10 +100,11 @@ public class MyNeeds extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my_needs);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         storage = FirebaseStorage.getInstance();
 
-        UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
-        fireBUserID = dbHelper.getUserId();
+        fireBUserID = user.getUid();
         boolean fromAdapter = getIntent().getBooleanExtra("fromAdapter", false);
         // ImageViews for skills, favors, and items
         skillsImageView = findViewById(R.id.skills);
@@ -190,14 +195,22 @@ public class MyNeeds extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // When the user types, remove the formatting
+                // Remove the formatting when the user is typing
                 if (!s.toString().equals(current)) {
-                    String cleanString = s.toString().replaceAll("[^\\d]", "");
-                    double parsed = Double.parseDouble(cleanString);
-                    String formatted = NumberFormat.getCurrencyInstance(Locale.getDefault()).format(parsed / 100);
-                    current = formatted;
-                    listvalue.setText(formatted);
-                    listvalue.setSelection(formatted.length()); // Set cursor at the end
+                    listvalue.removeTextChangedListener(this); // Prevent infinite loop
+                    try {
+                        String cleanString = s.toString().replaceAll("[^\\d]", ""); // Remove all non-numeric characters
+                        double parsed = Double.parseDouble(cleanString);
+                        String formatted = NumberFormat.getCurrencyInstance(new Locale("en", "PH")).format(parsed / 100);
+                        current = formatted;
+
+                        listvalue.setText(formatted);
+                        listvalue.setSelection(formatted.length()); // Set cursor to the end
+                    } catch (NumberFormatException e) {
+                        // Handle number parsing error
+                        e.printStackTrace();
+                    }
+                    listvalue.addTextChangedListener(this); // Re-attach listener
                 }
             }
 
@@ -205,6 +218,7 @@ public class MyNeeds extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
 
         inexchange.setOnClickListener(v -> {
             boolean allowShow = handleNotRequiredFieldClick();
@@ -609,15 +623,21 @@ public class MyNeeds extends AppCompatActivity {
 
                         // Format listingValue as currency
                         if (listingValue != null && !listingValue.isEmpty()) {
-                            double parsedValue = Double.parseDouble(listingValue.replaceAll("[^\\d.]", ""));
-                            String formattedValue = NumberFormat.getCurrencyInstance(Locale.getDefault()).format(parsedValue);
-                            listvalue.setText(formattedValue);
+                            try {
+                                double parsedValue = Double.parseDouble(listingValue.replaceAll("[^\\d.]", "")); // Remove non-numeric characters
+                                String formattedValue = NumberFormat.getCurrencyInstance(new Locale("en", "PH")).format(parsedValue / 100); // Divide by 100 to handle fractional values
+                                listvalue.setText(formattedValue);
+                            } catch (NumberFormatException e) {
+                                // Handle invalid number format (e.g., empty or non-numeric input)
+                                e.printStackTrace();
+                            }
                         } else {
-                            String noVal = "0";
-                            double parsedValue = Double.parseDouble(noVal); // No need to replace anything here
-                            String formattedValue = NumberFormat.getCurrencyInstance(Locale.getDefault()).format(parsedValue);
+                            // If listingValue is empty, display "₱0.00"
+                            double parsedValue = 0;
+                            String formattedValue = NumberFormat.getCurrencyInstance(new Locale("en", "PH")).format(parsedValue); // Format as PHP
                             listvalue.setText(formattedValue);
                         }
+
 
                         // Set the selected category
                         switch (listingCategory) {
@@ -650,6 +670,29 @@ public class MyNeeds extends AppCompatActivity {
                 });
     }
 
+    // Generate keywords for partial matching
+    private List<String> generateKeywords(String text) {
+        List<String> keywords = new ArrayList<>();
+        if (text == null || text.isEmpty()) {
+            return keywords;
+        }
+
+        // Split text into individual words
+        String[] words = text.toLowerCase().split(" ");
+
+        // Generate all prefixes for each word
+        for (String word : words) {
+            StringBuilder prefix = new StringBuilder();
+            for (char c : word.toCharArray()) {
+                prefix.append(c);
+                keywords.add(prefix.toString());
+            }
+        }
+
+        return keywords;
+    }
+
+
 
     // save listing to firebase method
     public void createListing(String fireBUserID) {
@@ -660,6 +703,9 @@ public class MyNeeds extends AppCompatActivity {
         if (fireBUserID == null || fireBUserID.isEmpty()) {
             return;
         }
+
+        // Generate keywords
+        List<String> keywords = generateKeywords(title);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -678,6 +724,7 @@ public class MyNeeds extends AppCompatActivity {
         listingData.put("storedIn", "Active");
         listingData.put("userId", fireBUserID);
         listingData.put("createdTimestamp", FieldValue.serverTimestamp()); // Add timestamp field
+        listingData.put("keywords", keywords);
 
         if (imageUri != null) {
             StorageReference storageRef = storage.getReference().child("images/listing/" + idToUse + ".jpg");

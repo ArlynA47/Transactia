@@ -31,7 +31,9 @@ public class ExchangeFragment extends Fragment {
         // show the needs recyclerview by default
         if (getActivity() instanceof mainHome) {
             ((mainHome) getActivity()).onNeedsButtonClicked(); // Call the method in the activity
+
         }
+
         // Change background for needsButton and reset offersButton
         needsButton.setBackgroundResource(R.drawable.srv_gradient_background);
         needsButton.setTextColor(getResources().getColor(R.color.white));

@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Request">
+    android:background="@color/extrawhite">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/extrawhite"
+        android:visibility="visible"
+        tools:context=".Request">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/confirmationbt"
@@ -87,107 +94,140 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/requestLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bottombox"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:visibility="visible">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout4"
-            android:layout_width="match_parent"
-            android:layout_height="81dp"
-            android:background="@drawable/bottombox"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1"/>
 
-            <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="107dp"
-                android:layout_height="match_parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/back_profile" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.05"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout9"
-            android:layout_width="331dp"
+            android:layout_width="0dp"
             android:layout_height="190dp"
-            android:layout_marginStart="31dp"
-            android:layout_marginTop="68dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/bottombox"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineRight">
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/emptyprofile"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:src="@drawable/gallery_message"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout10"
-            android:layout_width="331dp"
-            android:layout_height="172dp"
-            android:layout_marginStart="31dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="31dp"
-            android:background="@drawable/bottombox"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
 
             <TextView
-                android:id="@+id/Stufftitle"
+                android:id="@+id/timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="17dp"
-                android:text="POU Stuffed toy"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="10dp"
+                android:text="Timestamp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
-                android:id="@+id/Stuffdescription"
+                android:id="@+id/listingtype"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="10dp"
+                android:text="listtype"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/listingCateg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="listtype"
+                android:textColor="@color/grey"
+                android:textStyle="italic"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintTop_toBottomOf="@+id/listingtype"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/listingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="POU Stuffed toy"
+                android:textColor="@color/maincolor"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/listingCateg" />
+
+            <TextView
+                android:id="@+id/listingDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="chagong stuff"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Stufftitle" />
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintTop_toBottomOf="@+id/listingTitle" />
 
             <TextView
                 android:id="@+id/textView52"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="20dp"
                 android:text="Exchange for:"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="italic"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Stuffdescription" />
+                app:layout_constraintTop_toBottomOf="@+id/listingDescription" />
 
             <TextView
                 android:id="@+id/Exchangefor"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
                 android:text="preloved or bnebfdahfahsf"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView52" />
 
@@ -195,122 +235,176 @@
                 android:id="@+id/textView55"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="10dp"
                 android:text="Value:"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textColor="@color/grey"
+                android:textStyle="italic"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/Exchangefor" />
 
             <TextView
                 android:id="@+id/Pricevalue"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
                 android:text="500php"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintTop_toBottomOf="@+id/textView55" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout11"
-            android:layout_width="331dp"
-            android:layout_height="82dp"
-            android:layout_marginStart="31dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="31dp"
-            android:background="@drawable/bottombox"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
 
             <TextView
-                android:id="@+id/textView57"
-                android:layout_width="wrap_content"
+                android:id="@+id/cond"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="Note:"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="10dp"
+                android:text="Enter your transaction conditions"
+                android:textColor="@color/lightgreen"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView58"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/inexchange"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/acctx"
+                android:layout_marginTop="10dp"
+                android:focusable="false"
+                android:hint="In exchange of"
+                android:paddingStart="8dp"
+                android:textSize="@dimen/text_size_small"
+                android:textColorHint="@color/grey"
+                app:layout_constraintTop_toBottomOf="@+id/cond" />
+
+            <EditText
+                android:id="@+id/listvalue"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/acctx"
+                android:hint="Listing Value"
+                android:inputType="numberDecimal"
+                android:paddingStart="8dp"
+                android:textColorHint="@color/grey"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintTop_toBottomOf="@+id/inexchange"
+                tools:layout_editor_absoluteX="4dp" />
+
+            <EditText
+                android:id="@+id/listingdesc"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="1dp"
-                android:text="ahfiuawiufiuhfuashfhahfuahfiuahiufhiuwhf"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView57" />
+                android:background="@drawable/acctx"
+                android:layout_marginTop="10dp"
+                android:hint="Note"
+                android:inputType="textMultiLine"
+                android:padding="8dp"
+                android:textSize="@dimen/text_size_small"
+                android:textColorHint="@color/grey"
+                app:layout_constraintTop_toBottomOf="@+id/listvalue" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="96dp"
-            android:layout_height="72dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginStart="4dp"
-            android:background="@drawable/circle_background"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circle_shape"
+            android:clipToOutline="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/emptyprofile"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+            android:src="@drawable/pfpdef"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+            app:layout_constraintTop_toBottomOf="@+id/guidelineTop" />
 
         <TextView
-            android:id="@+id/userprofile"
+            android:id="@+id/tradername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="84dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:text="Mico Jardinero"
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size_medium"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
         <TextView
             android:id="@+id/userlocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="84dp"
+            android:layout_marginTop="3dp"
             android:text="Bikini Bottom"
             android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userprofile" />
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toStartOf="@+id/tradername"
+            app:layout_constraintTop_toBottomOf="@+id/tradername" />
 
         <TextView
             android:id="@+id/requestbt"
             android:layout_width="150dp"
             android:layout_height="45dp"
-            android:layout_marginStart="121dp"
-            android:layout_marginTop="46dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/button"
             android:gravity="center"
-            android:text="SEND REQEUST"
+            android:text="SEND REQUEST"
             android:textAlignment="gravity"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
+            app:layout_constraintTop_toBottomOf="@+id/textView59"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/textView59"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="31dp"
+            android:layout_marginEnd="25dp"
             android:text="Report Listing"
             android:textColor="@android:color/holo_red_dark"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/ymal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="30dp"
+            android:text="You may also like"
+            android:textColor="@color/maincolor"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/requestLayout" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ymal"
+            />
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
