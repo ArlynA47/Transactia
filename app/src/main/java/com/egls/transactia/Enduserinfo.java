@@ -66,5 +66,16 @@ public class Enduserinfo extends AppCompatActivity {
     private void goToTraderProfile() {
         Intent intent = new Intent(this, Traderprofile.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Apply the transition when back button is pressed
+        overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
     }
 }
+
+
+

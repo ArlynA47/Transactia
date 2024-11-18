@@ -94,364 +94,364 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView61" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/requestLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="visible">
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1"/>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9"/>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineTop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.05"/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout9"
-            android:layout_width="0dp"
-            android:layout_height="400dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bottombox"
-            android:backgroundTint="#171817"
-            android:backgroundTintMode="src_over"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/requestLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2">
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.1" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout9"
+                android:layout_width="0dp"
+                android:layout_height="400dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bottombox"
+                android:backgroundTint="#171817"
+                android:backgroundTintMode="src_over"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/gallery_message" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
+
+                <TextView
+                    android:id="@+id/timestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Timestamp"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/listingtype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="listtype"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/listingCateg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="listcateg"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/listingtype" />
+
+                <TextView
+                    android:id="@+id/listingTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="POU Stuffed toy"
+                    android:textColor="@color/maincolor"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@+id/listingCateg" />
+
+                <TextView
+                    android:id="@+id/listingDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="chagong stuff"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintTop_toBottomOf="@+id/listingTitle" />
+
+                <TextView
+                    android:id="@+id/textView52"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Exchange for:"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="italic"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/listingDescription" />
+
+                <TextView
+                    android:id="@+id/Exchangefor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="preloved or bnebfdahfahsf"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView52" />
+
+                <TextView
+                    android:id="@+id/textView55"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Value:"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="italic"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/Exchangefor" />
+
+                <TextView
+                    android:id="@+id/Pricevalue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:text="500php"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintTop_toBottomOf="@+id/textView55" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="10dp"
+                app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
+
+                <TextView
+                    android:id="@+id/cond"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Enter your transaction conditions"
+                    android:textColor="@color/lightgreen"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/errorTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Please provide either a listing or a payment in exchange to proceed."
+                    android:textColor="#EB3A3A"
+                    android:textSize="12sp"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="@id/cond"
+                    app:layout_constraintTop_toBottomOf="@id/cond" />
+
+                <EditText
+                    android:id="@+id/inexchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/acctx"
+                    android:focusable="false"
+                    android:hint="In exchange of"
+                    android:paddingStart="8dp"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintTop_toBottomOf="@+id/errorTv" />
+
+                <RadioGroup
+                    android:id="@+id/paymentOption"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="11dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/inexchange">
+
+                    <RadioButton
+                        android:id="@+id/nopaymentbt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:buttonTint="@color/maincolor"
+                        android:text="No payment"
+                        android:textColor="@color/black"
+                        android:textColorLink="@color/maincolor"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <RadioButton
+                        android:id="@+id/paymebt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:buttonTint="@color/maincolor"
+                        android:text="Pay me"
+                        android:textColor="@color/black"
+                        android:textColorLink="@color/maincolor"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <RadioButton
+                        android:id="@+id/paytraderbt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:buttonTint="@color/maincolor"
+                        android:text="Pay trader"
+                        android:textColor="@color/black"
+                        android:textColorLink="@color/maincolor"
+                        android:textSize="@dimen/text_size_small" />
+                </RadioGroup>
+
+                <EditText
+                    android:id="@+id/listvalue"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/acctx"
+                    android:enabled="false"
+                    android:hint="Listing Value"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="8dp"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintTop_toBottomOf="@+id/paymentOption"
+                    tools:layout_editor_absoluteX="4dp" />
+
+                <EditText
+                    android:id="@+id/requestNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/acctx"
+                    android:hint="Note"
+                    android:inputType="textMultiLine"
+                    android:padding="8dp"
+                    android:textColorHint="@color/grey"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintTop_toBottomOf="@+id/listvalue" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/gallery_message" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout10"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="10dp"
-            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-            app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout9">
+                android:id="@+id/imageView2"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="4dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/circle_shape"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pfpdef"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/guidelineTop" />
 
             <TextView
-                android:id="@+id/timestamp"
+                android:id="@+id/tradername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="Timestamp"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_small"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/listingtype"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="listtype"
+                android:text="Mico Jardinero"
                 android:textColor="@color/black"
-                android:textStyle="bold"
                 android:textSize="@dimen/text_size_medium"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                android:id="@+id/listingCateg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="listcateg"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_medium"
-                app:layout_constraintTop_toBottomOf="@+id/listingtype"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                android:id="@+id/listingTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="POU Stuffed toy"
-                android:textColor="@color/maincolor"
-                android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/listingCateg" />
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
             <TextView
-                android:id="@+id/listingDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="chagong stuff"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_small"
-                app:layout_constraintTop_toBottomOf="@+id/listingTitle" />
-
-            <TextView
-                android:id="@+id/textView52"
+                android:id="@+id/userlocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Exchange for:"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/text_size_small"
-                android:textStyle="italic"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/listingDescription" />
-
-            <TextView
-                android:id="@+id/Exchangefor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="15dp"
-                android:text="preloved or bnebfdahfahsf"
+                android:layout_marginTop="3dp"
+                android:text="Bikini Bottom"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_small"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView52" />
+                app:layout_constraintStart_toStartOf="@+id/tradername"
+                app:layout_constraintTop_toBottomOf="@+id/tradername" />
 
             <TextView
-                android:id="@+id/textView55"
+                android:id="@+id/requestbt"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/button"
+                android:gravity="center"
+                android:text="SEND REQUEST"
+                android:textAlignment="gravity"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
+                app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
+                app:layout_constraintTop_toBottomOf="@+id/textView59" />
+
+            <TextView
+                android:id="@+id/textView59"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Value:"
-                android:textColor="@color/grey"
-                android:textStyle="italic"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="25dp"
+                android:text="Report Listing"
+                android:textColor="@android:color/holo_red_dark"
                 android:textSize="@dimen/text_size_small"
+                app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Exchangefor" />
-
-            <TextView
-                android:id="@+id/Pricevalue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="15dp"
-                android:text="500php"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_small"
-                app:layout_constraintTop_toBottomOf="@+id/textView55" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout11"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="10dp"
-            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-            app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
-
-            <TextView
-                android:id="@+id/cond"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Enter your transaction conditions"
-                android:textColor="@color/lightgreen"
-                android:textSize="@dimen/text_size_small"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/errorTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Please provide either a listing or a payment in exchange to proceed."
-                android:textColor="#EB3A3A"
-                android:textSize="12sp"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="@id/cond"
-                app:layout_constraintTop_toBottomOf="@id/cond" />
-
-            <EditText
-                android:id="@+id/inexchange"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/acctx"
-                android:layout_marginTop="5dp"
-                android:focusable="false"
-                android:hint="In exchange of"
-                android:paddingStart="8dp"
-                android:textSize="@dimen/text_size_small"
-                android:textColorHint="@color/grey"
-                app:layout_constraintTop_toBottomOf="@+id/errorTv" />
-
-            <RadioGroup
-                android:id="@+id/paymentOption"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="11dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/inexchange">
-
-                <RadioButton
-                    android:id="@+id/nopaymentbt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:buttonTint="@color/maincolor"
-                    android:textSize="@dimen/text_size_small"
-                    android:text="No payment"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/maincolor"
-                    android:layout_marginRight="10dp"/>
-
-                <RadioButton
-                    android:id="@+id/paymebt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:buttonTint="@color/maincolor"
-                    android:textSize="@dimen/text_size_small"
-                    android:text="Pay me"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/maincolor"
-                    android:layout_marginRight="10dp"/>
-
-                <RadioButton
-                    android:id="@+id/paytraderbt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:buttonTint="@color/maincolor"
-                    android:textSize="@dimen/text_size_small"
-                    android:text="Pay trader"
-                    android:textColor="@color/black"
-                    android:textColorLink="@color/maincolor" />
-            </RadioGroup>
-
-            <EditText
-                android:id="@+id/listvalue"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/acctx"
-                android:enabled="false"
-                android:hint="Listing Value"
-                android:inputType="numberDecimal"
-                android:paddingStart="8dp"
-                android:textColorHint="@color/grey"
-                android:textSize="@dimen/text_size_small"
-                app:layout_constraintTop_toBottomOf="@+id/paymentOption"
-                tools:layout_editor_absoluteX="4dp" />
-
-            <EditText
-                android:id="@+id/requestNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/acctx"
-                android:layout_marginTop="10dp"
-                android:hint="Note"
-                android:inputType="textMultiLine"
-                android:padding="8dp"
-                android:textSize="@dimen/text_size_small"
-                android:textColorHint="@color/grey"
-                app:layout_constraintTop_toBottomOf="@+id/listvalue" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="4dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/circle_shape"
-            android:clipToOutline="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/pfpdef"
-            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-            app:layout_constraintTop_toBottomOf="@+id/guidelineTop" />
-
-        <TextView
-            android:id="@+id/tradername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Mico Jardinero"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toTopOf="@+id/imageView2" />
-
-        <TextView
-            android:id="@+id/userlocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:text="Bikini Bottom"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_small"
-            app:layout_constraintStart_toStartOf="@+id/tradername"
-            app:layout_constraintTop_toBottomOf="@+id/tradername" />
-
-        <TextView
-            android:id="@+id/requestbt"
-            android:layout_width="150dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/button"
-            android:gravity="center"
-            android:text="SEND REQUEST"
-            android:textAlignment="gravity"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/guidelineLeft"
-            app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
-            app:layout_constraintTop_toBottomOf="@+id/textView59"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <TextView
-            android:id="@+id/textView59"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="25dp"
-            android:text="Report Listing"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="@dimen/text_size_small"
-            app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout11" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:indeterminate="true"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/ymal"
@@ -471,7 +471,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ymal"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/ymal" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

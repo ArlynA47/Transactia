@@ -41,18 +41,21 @@ public class Account_Settings extends AppCompatActivity {
         myreportss.setOnClickListener(v -> {
             Intent intent = new Intent(Account_Settings.this, My_Reports.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         });
 
         // Set click listener for aboutus
         aboutus.setOnClickListener(v -> {
             Intent intent = new Intent(Account_Settings.this, Abou_Transactia.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         });
 
         // Set click listener for updateuserdets
         updateuserdets.setOnClickListener(v -> {
             Intent intent = new Intent(Account_Settings.this, Update_User_Details.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         });
 
         // Set click listener for passwordreset
@@ -70,6 +73,7 @@ public class Account_Settings extends AppCompatActivity {
         archive.setOnClickListener(v -> {
             Intent intent = new Intent(Account_Settings.this, Archive.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         });
 
         // LOG OUT
@@ -81,4 +85,12 @@ public class Account_Settings extends AppCompatActivity {
             finish();
         });
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Apply the transition when back button is pressed
+        overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+    }
 }
+
+

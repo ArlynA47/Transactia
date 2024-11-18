@@ -56,6 +56,15 @@ reportcfbt.setOnClickListener(v -> {
             // Navigate to Inbox activity
             Intent intent = new Intent(Traderprofile.this, Inbox.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         });
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Apply the transition when back button is pressed
+        overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+    }
 }
+
+
