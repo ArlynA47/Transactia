@@ -456,7 +456,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                                 // Save user details along with image URL to Firestore
                                 saveUserDetailsToFirestore(db, userDetails);
                                 CustomToast.show(this, "Account details added successfully.");
-                                Intent intent = new Intent(UserAccountDetailSignup.this, mainHome.class);
+                                Intent intent = new Intent(UserAccountDetailSignup.this, MainHome.class);
                                 intent.putExtra("newLogin", true);
                                 intent.putExtra("firebaseUser", currUser);
                                 startActivity(intent);
@@ -493,7 +493,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                 .set(userDetails)
                 .addOnSuccessListener(aVoid -> {
                     CustomToast.show(this, "User details saved successfully!");
-                    Intent intent = new Intent(UserAccountDetailSignup.this, mainHome.class);
+                    Intent intent = new Intent(UserAccountDetailSignup.this, MainHome.class);
                     intent.putExtra("firebaseUser", currUser);
                     startActivity(intent);
                     finish(); // Close current activity

@@ -2,9 +2,11 @@ package com.egls.transactia;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class mainHome extends AppCompatActivity {
+public class MainHome extends AppCompatActivity {
 
         ConstraintLayout mainLay;
         ConstraintLayout viewSentRequests, myReceivedRequests;
@@ -47,6 +49,8 @@ public class mainHome extends AppCompatActivity {
         boolean newLogin;
         boolean isNeed;
 
+        int homeScreenNum = 1;
+
         private boolean isFragmentTransitioning = false;
 
         FirebaseUser currUser;
@@ -63,11 +67,19 @@ public class mainHome extends AppCompatActivity {
         private ImageView prof2;
         FloatingActionButton listButton;
 
+        ProgressBar progressBar;
+
+        boolean isInHome = true;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             EdgeToEdge.enable(this);  // Enable edge-to-edge support
             setContentView(R.layout.activity_main_home);
+
+            instance = this;
+
+            progressBar = findViewById(R.id.progressBar);
 
             recyclerView = findViewById(R.id.recyclerView);
             rvTransaction = findViewById(R.id.rvTransaction);
@@ -75,37 +87,93 @@ public class mainHome extends AppCompatActivity {
             viewSentRequests = findViewById(R.id.viewSentRequests);
             myReceivedRequests = findViewById(R.id.myReceivedRequests);
 
+                newLogin = getIntent().getBooleanExtra("newLogin", false);
 
-            newLogin = getIntent().getBooleanExtra("newLogin", false);
+                if(newLogin) {
+                    // Retrieve the FirebaseUser instance from the intent
+                    emailAuth = getIntent().getStringExtra("emailAuth");
+                    passAuth = getIntent().getStringExtra("passAuth");
 
-            if(newLogin) {
-                // Retrieve the FirebaseUser instance from the intent
-                emailAuth = getIntent().getStringExtra("emailAuth");
-                passAuth = getIntent().getStringExtra("passAuth");
-
-                // Save the credentials into sqlite db
-                UserDatabaseHelper dbHelper = new UserDatabaseHelper(mainHome.this);
-                dbHelper.saveUserDetails(emailAuth, passAuth);
-                AuthenticateUser();
-            } else {
-                dbHelper = new UserDatabaseHelper(mainHome.this);
-                String[] userDetails = dbHelper.getUserDetails();
-                if (userDetails != null) {
-                    emailAuth = userDetails[0];
-                    passAuth = userDetails[1];
+                    // Save the credentials into sqlite db
+                    UserDatabaseHelper dbHelper = new UserDatabaseHelper(MainHome.this);
+                    dbHelper.saveUserDetails(emailAuth, passAuth);
                     AuthenticateUser();
+                } else {
+                    dbHelper = new UserDatabaseHelper(MainHome.this);
+                    String[] userDetails = dbHelper.getUserDetails();
+                    if (userDetails != null) {
+                        emailAuth = userDetails[0];
+                        passAuth = userDetails[1];
+                        AuthenticateUser();
+                    }
                 }
-            }
+
 
         }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         if(displayed==1) {
-            showMyNeeds();
+
+            if(homeScreenNum==1) {
+                showMyNeeds();
+            } else if(homeScreenNum==2) {
+                showMyOffers();
+            } else if(homeScreenNum==3) {
+                fetchTransactions();
+            }
+
         }
     }
+
+    // Static accessor for activity instance
+    private static MainHome instance;
+
+    public static MainHome getInstance() {
+        return instance; // Return the active instance
+    }
+
+    private int backPressCount = 0; // Counter for back presses
+    private static final int EXIT_DELAY = 3000; // Time delay in milliseconds
+    private Handler handler = new Handler();
+
+    @Override
+    public void onBackPressed() {
+        backPressCount++;
+
+        if (backPressCount == 1) {
+            if(displayed!=1) {
+                displayHome();
+                loadInitialFragment();
+                showMyNeeds();
+            } else {
+                backPressCount =2;
+            }
+        }
+
+        if (backPressCount == 2) {
+            // Second back press: Show a toast
+            CustomToast.show(MainHome.this, "Press once again to exit.");
+        } else if (backPressCount == 3) {
+            // Third back press: Exit the app
+            super.onBackPressed();
+        }
+
+        // Reset the counter after the delay
+        handler.removeCallbacks(resetBackPressCount); // Avoid multiple callbacks
+        handler.postDelayed(resetBackPressCount, EXIT_DELAY);
+    }
+
+    // Custom method to reset the back press count
+    private Runnable resetBackPressCount = new Runnable() {
+        @Override
+        public void run() {
+            backPressCount = 0;
+        }
+    };
+
 
     private void AfterAuth() {
         mainLay = findViewById(R.id.main);
@@ -158,9 +226,18 @@ public class mainHome extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start MyNeeds activity when the button is clicked
-                Intent intent = new Intent(mainHome.this, MyNeeds.class);
+                Intent intent = new Intent(MainHome.this, MyNeeds.class);
                 intent.putExtra("newListing", true);
                 intent.putExtra("isNeed", isNeed);
+                startActivity(intent);
+            }
+        });
+
+        viewSentRequests.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start MyNeeds activity when the button is clicked
+                Intent intent = new Intent(MainHome.this, MyRequests.class);
                 startActivity(intent);
             }
         });
@@ -181,6 +258,7 @@ public class mainHome extends AppCompatActivity {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         fireBUserID = user.getUid();  // This will be the authenticated user ID
                         AfterAuth();
+                        listButton.setVisibility(View.VISIBLE);
                         loadInitialFragment();
                         showMyNeeds();
                     } else {
@@ -271,6 +349,8 @@ public class mainHome extends AppCompatActivity {
                 displayed = 4;
             } else {
                 displayed = 1;
+                loadInitialFragment();
+                showMyNeeds();
             }
 
             // Set the selected image to its active state
@@ -278,6 +358,8 @@ public class mainHome extends AppCompatActivity {
         }
 
     private void loadListings(String lType) {
+
+        progressBar.setVisibility(View.VISIBLE);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Listings")
                 .whereEqualTo("listingType", lType)
@@ -294,6 +376,7 @@ public class mainHome extends AppCompatActivity {
                     adapter.notifyDataSetChanged(); // Notify the adapter of data changes
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error loading listings", e));
+                progressBar.setVisibility(View.GONE);
     }
 
 
@@ -316,6 +399,7 @@ public class mainHome extends AppCompatActivity {
 
     public void fetchTransactions() {
         String currentUserId = fireBUserID;
+        progressBar.setVisibility(View.VISIBLE);
 
         FirebaseFirestore.getInstance()
                 .collection("Transactions")
@@ -335,6 +419,7 @@ public class mainHome extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     CustomToast.show(this, "Error fetching transactions: " + e.getMessage());
                 });
+        progressBar.setVisibility(View.GONE);
     }
 
     public void switchrvExchange() {
@@ -350,6 +435,10 @@ public class mainHome extends AppCompatActivity {
     public void hideHomeRv() {
         recyclerView.setVisibility(View.GONE);
         rvTransaction.setVisibility(View.GONE);
+    }
+
+    public void whatHomeScreen(int hsnum) {
+        homeScreenNum = hsnum;
     }
 
 

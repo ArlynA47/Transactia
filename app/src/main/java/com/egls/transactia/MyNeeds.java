@@ -721,6 +721,7 @@ public class MyNeeds extends AppCompatActivity {
         // Use existing listingId for updates or generate a new one
         String idToUse = (listingId != null) ? listingId : db.collection("Listings").document().getId();
 
+        // Create a map to hold the fields for the listing
         Map<String, Object> listingData = new HashMap<>();
         listingData.put("title", title);
         listingData.put("listingType", listingType);
@@ -733,13 +734,15 @@ public class MyNeeds extends AppCompatActivity {
         listingData.put("createdTimestamp", FieldValue.serverTimestamp()); // Add timestamp field
         listingData.put("keywords", keywords);
 
+        // Check if image is updated
         if (imageUri != null) {
+            // Upload image and update Firestore with image URL
             StorageReference storageRef = storage.getReference().child("images/listing/" + idToUse + ".jpg");
             storageRef.putFile(imageUri)
                     .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl()
                             .addOnSuccessListener(downloadUri -> {
                                 listingData.put("listingImage", downloadUri.toString());
-                                saveListingToFirestore(db, idToUse, listingData);
+                                updateListingInFirestore(db, idToUse, listingData);
                             })
                             .addOnFailureListener(e -> {
                                 CustomToast.show(this, "Error getting image URL: " + e.getMessage());
@@ -750,29 +753,23 @@ public class MyNeeds extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                     });
         } else {
-            listingData.put("listingImage", null);
-            saveListingToFirestore(db, idToUse, listingData);
+            // Do not include "listingImage" in updates if no new image is provided
+            updateListingInFirestore(db, idToUse, listingData);
         }
     }
 
-
-
-    private void saveListingToFirestore(FirebaseFirestore db, String listingId, Map<String, Object> listingData) {
-        db.collection("Listings")
-                .document(listingId)
-                .set(listingData)
+    private void updateListingInFirestore(FirebaseFirestore db, String idToUse, Map<String, Object> listingData) {
+        db.collection("Listings").document(idToUse)
+                .update(listingData) // Update existing fields, without overwriting unspecified fields
                 .addOnSuccessListener(aVoid -> {
-                    CustomToast.show(this, "Listing added successfully.");
-                    progressBar.setVisibility(View.GONE); // Hide progress bar on success
+                    CustomToast.show(this, "Listing created successfully!");
+                    progressBar.setVisibility(View.GONE);
                     finish();
                 })
                 .addOnFailureListener(e -> {
-                    CustomToast.show(this, "Error creating listing: " + e.getMessage());
-                    progressBar.setVisibility(View.GONE); // Hide progress bar on failure
+                    CustomToast.show(this, "Error saving listing: " + e.getMessage());
+                    progressBar.setVisibility(View.GONE);
                 });
     }
-
-
-
 
 }

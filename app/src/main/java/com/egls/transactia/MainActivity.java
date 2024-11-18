@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
 
+    TextView forgotPass;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         // If the user is already logged in
         String[] userDetails = dbHelper.getUserDetails();
         if (userDetails != null) {
-            Intent intent = new Intent(MainActivity.this, mainHome.class);
+            Intent intent = new Intent(MainActivity.this, MainHome.class);
             intent.putExtra("newLogin", false);
             startActivity(intent);
         }
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         contain = findViewById(R.id.contain); // Initialize the ConstraintLayout
         signupbt = findViewById(R.id.signupbt); // Initialize the sign-up button
         loginbt =  findViewById(R.id.loginbt);
-        TextView forgotPass = findViewById(R.id.forgotpass);
+        forgotPass = findViewById(R.id.forgotpass);
 
         usernameEditText = findViewById(R.id.usernametx);
         passwordEditText = findViewById(R.id.passtx);
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
                                             if (documentSnapshot.exists()) {
                                                 // UserDetails exists, redirect to mainHome
-                                                Intent intent = new Intent(MainActivity.this, mainHome.class);
+                                                Intent intent = new Intent(MainActivity.this, MainHome.class);
                                                 intent.putExtra("emailAuth", email);
                                                 intent.putExtra("passAuth", pass);
                                                 intent.putExtra("newLogin", true);
@@ -191,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
         forgotPass.setOnClickListener(v -> {
             // Create an intent to start the FindAcc activity
             Intent intent = new Intent(MainActivity.this, findacc.class);
+            intent.putExtra("isLoggedIn", false);
             startActivity(intent);
         });
 

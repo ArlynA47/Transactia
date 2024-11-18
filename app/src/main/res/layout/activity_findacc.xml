@@ -181,25 +181,29 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:text="Please enter your email or mobile number to search for your account"
+            android:text="Send password reset link to"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
         <EditText
             android:id="@+id/facc"
-            android:layout_width="269dp"
-            android:layout_height="30dp"
-            android:layout_gravity="bottom"
+            android:layout_width="290dp"
             android:layout_marginStart="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/acctx"
             android:gravity="bottom|start"
             android:hint="Email address"
             android:inputType="text"
             android:paddingStart="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView10"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:textColor="@color/black"
             android:textCursorDrawable="@drawable/cursor_black"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView10"/>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -215,7 +219,7 @@
                 android:layout_marginTop="120dp"
                 android:layout_marginEnd="28dp"
                 android:backgroundTint="#33443C"
-                android:text="SEARCH"
+                android:text="SEND"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -55,6 +55,13 @@ public class Archive extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+            showMyNeeds();
+            showMyOffers();
+    }
+
     public void showMyNeeds() {
         // Only set the adapter if it's null
         if (adapter1 == null) {

@@ -61,7 +61,10 @@ public class Account_Settings extends AppCompatActivity {
         // Set click listener for passwordreset
         passwordreset.setOnClickListener(v -> {
             // Make the passpop visible and bring it to the front
-
+            Intent intent = new Intent(Account_Settings.this, findacc.class);
+            intent.putExtra("isLoggedIn", true);
+            startActivity(intent);
+            finish();
         });
 
         // Set click listener for cancel2 button

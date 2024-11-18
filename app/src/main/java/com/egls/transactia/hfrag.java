@@ -42,8 +42,8 @@ public class hfrag extends Fragment {
                 defaultDisp();
                 addBt.setVisibility(View.VISIBLE);
                 getActivity().findViewById(R.id.fragmentContainerHome).setVisibility(View.VISIBLE);
-                if (getActivity() instanceof mainHome) {
-                    ((mainHome) getActivity()).hideViewRequestSent(); // Call the method in the activity
+                if (getActivity() instanceof MainHome) {
+                    ((MainHome) getActivity()).hideViewRequestSent(); // Call the method in the activity
                 }
             }
         });
@@ -58,7 +58,7 @@ public class hfrag extends Fragment {
                 notifs.setImageResource(R.drawable.notif);
                 addBt.setVisibility(View.GONE);
                 getActivity().findViewById(R.id.fragmentContainerHome).setVisibility(View.VISIBLE);
-                ((mainHome) getActivity()).switchrvTransaction();
+                ((MainHome) getActivity()).switchrvTransaction();
             }
         });
 
@@ -72,8 +72,8 @@ public class hfrag extends Fragment {
                 notifs.setImageResource(R.drawable.selectnotif);
                 addBt.setVisibility(View.GONE);
                 getActivity().findViewById(R.id.fragmentContainerHome).setVisibility(View.GONE);
-                if (getActivity() instanceof mainHome) {
-                    ((mainHome) getActivity()).hideViewRequestSent(); // Call the method in the activity
+                if (getActivity() instanceof MainHome) {
+                    ((MainHome) getActivity()).hideViewRequestSent(); // Call the method in the activity
                 }
             }
         });
@@ -86,7 +86,7 @@ public class hfrag extends Fragment {
         exchange.setImageResource(R.drawable.selectexchaneg);
         mytransact.setImageResource(R.drawable.exchange);
         notifs.setImageResource(R.drawable.notif);
-        ((mainHome) getActivity()).switchrvExchange();
+        ((MainHome) getActivity()).switchrvExchange();
     }
 
     // Helper method to replace fragments

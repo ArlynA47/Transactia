@@ -119,7 +119,7 @@ public class MyOffers extends AppCompatActivity {
             Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show();
 
             // Navigate to mainHome Activity
-            startActivity(new Intent(this, mainHome.class));
+            startActivity(new Intent(this, MainHome.class));
         });
 
         // Cancel button click listener

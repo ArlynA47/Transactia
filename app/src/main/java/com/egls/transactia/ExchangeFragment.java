@@ -5,13 +5,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ExchangeFragment extends Fragment {
@@ -29,8 +26,8 @@ public class ExchangeFragment extends Fragment {
         offersButton = view.findViewById(R.id.offersbt2);
 
         // show the needs recyclerview by default
-        if (getActivity() instanceof mainHome) {
-            ((mainHome) getActivity()).onNeedsButtonClicked(); // Call the method in the activity
+        if (getActivity() instanceof MainHome) {
+            ((MainHome) getActivity()).onNeedsButtonClicked(); // Call the method in the activity
 
         }
 
@@ -45,8 +42,9 @@ public class ExchangeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (getActivity() instanceof mainHome) {
-                    ((mainHome) getActivity()).onNeedsButtonClicked(); // Call the method in the activity
+                if (getActivity() instanceof MainHome) {
+                    ((MainHome) getActivity()).onNeedsButtonClicked(); // Call the method in the activity
+                    ((MainHome) getActivity()).whatHomeScreen(2);
                 }
 
                 // Change background for needsButton and reset offersButton
@@ -62,8 +60,9 @@ public class ExchangeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (getActivity() instanceof mainHome) {
-                    ((mainHome) getActivity()).onOffersButtonClicked(); // Call the method in the activity
+                if (getActivity() instanceof MainHome) {
+                    ((MainHome) getActivity()).onOffersButtonClicked(); // Call the method in the activity
+                    ((MainHome) getActivity()).whatHomeScreen(2);
                 }
                 // Change background for offersButton and reset needsButton
                 offersButton.setBackgroundResource(R.drawable.srv_gradient_background);

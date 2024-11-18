@@ -23,11 +23,20 @@ import com.google.firebase.auth.FirebaseAuth;
 public class findacc extends AppCompatActivity {
 
     // Define ProgressBar at the top
-    ProgressBar progressBar = findViewById(R.id.progressBar);
+    ProgressBar progressBar;
+
+    Button search, cancel;
+    EditText emailAdd;
+
+    String email;
+    boolean isLoggedIn;
+
+    UserDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         // Enable Edge-to-Edge mode
         EdgeToEdge.enable(this);
@@ -35,10 +44,24 @@ public class findacc extends AppCompatActivity {
         // Set the content view
         setContentView(R.layout.activity_findacc);
 
+        progressBar = findViewById(R.id.progressBar);
+
         // Find the buttons and layouts
-        Button search = findViewById(R.id.searchh);
-        Button cancel = findViewById(R.id.cancel);
-        EditText emailAdd = findViewById(R.id.facc);
+        search = findViewById(R.id.searchh);
+        cancel = findViewById(R.id.cancel);
+        emailAdd = findViewById(R.id.facc);
+
+        isLoggedIn = getIntent().getBooleanExtra("isLoggedIn", false);
+
+        if(isLoggedIn) {
+            dbHelper = new UserDatabaseHelper(findacc.this);
+            String[] userDetails = dbHelper.getUserDetails();
+            if (userDetails != null) {
+                email = userDetails[0].toString().trim();
+                emailAdd.setText(email);
+                emailAdd.setEnabled(false);
+            }
+        }
 
         // Set click listener for the search button
 
@@ -60,9 +83,9 @@ public class findacc extends AppCompatActivity {
 
                             // Delay the intent by 3 seconds (3000 milliseconds)
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                Intent intent = new Intent(this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
+
+                                goBackToPrevScreen();
+
                             }, 3000);
 
                         } else {
@@ -73,10 +96,7 @@ public class findacc extends AppCompatActivity {
 
 
         cancel.setOnClickListener(v -> {
-            // Create an intent to start the MainActivity
-            Intent back = new Intent(findacc.this, MainActivity.class);
-            startActivity(back);
-            finish();
+            goBackToPrevScreen();
         });
 
         // Handle window insets for Edge-to-Edge layout
@@ -85,4 +105,25 @@ public class findacc extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }}
+
+    }
+
+    private void goBackToPrevScreen() {
+        if(isLoggedIn) {
+            Intent intent = new Intent(this, Account_Settings.class);
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        goBackToPrevScreen();
+    }
+
+}

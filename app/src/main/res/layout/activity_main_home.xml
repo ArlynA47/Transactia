@@ -6,7 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/extrawhite"
-    tools:context=".mainHome">
+    tools:context=".MainHome">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/holder"
@@ -35,6 +45,7 @@
             android:layout_height="0dp"
             app:layout_constraintHeight_percent="0.90"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.25"
             app:srcCompat="@drawable/selecthome" />
 
@@ -201,6 +212,7 @@
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
+        app:layout_constraintWidth_percent="0.9"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
@@ -210,7 +222,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myReceivedRequests"
-        app:layout_constraintWidth_percent="0.9" />
+         />
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
@@ -235,7 +247,7 @@
         android:layout_marginBottom="30dp"
         android:clickable="true"
         android:foreground="@drawable/fab_gradient_background"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:backgroundTint="@color/Transparent"
         app:elevation="7dp"
         app:fabSize="normal"
