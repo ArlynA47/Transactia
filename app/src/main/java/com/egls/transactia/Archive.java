@@ -114,4 +114,10 @@ public class Archive extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error loading listings", e));
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // Apply the transition when back button is pressed
+        overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);
+    }
 }
