@@ -29,20 +29,23 @@ import java.util.List;
 
 public class mainHome extends AppCompatActivity {
 
-    ConstraintLayout mainLay;
+        ConstraintLayout mainLay;
+        ConstraintLayout viewSentRequests, myReceivedRequests;
 
-    int displayed = 1;
 
-    private RecyclerView recyclerView;
-    private MyNeedsAdapter adapter;
-    private List<Listing> listings = new ArrayList<>();
+        int displayed = 1;
 
-    FragmentContainerView fragmentContainerView;
-    FragmentContainerView fragmentContainerHome;
-    FragmentContainerView fragmentContainerNotHome;
+        private RecyclerView recyclerView;
+        private RecyclerView rvTransaction;
+        private MyNeedsAdapter adapter;
+        private List<Listing> listings = new ArrayList<>();
 
-    boolean newLogin;
-    boolean isNeed;
+        FragmentContainerView fragmentContainerView;
+        FragmentContainerView fragmentContainerHome;
+        FragmentContainerView fragmentContainerNotHome;
+
+        boolean newLogin;
+        boolean isNeed;
 
         private boolean isFragmentTransitioning = false;
 
@@ -67,6 +70,10 @@ public class mainHome extends AppCompatActivity {
             setContentView(R.layout.activity_main_home);
 
             recyclerView = findViewById(R.id.recyclerView);
+            rvTransaction = findViewById(R.id.rvTransaction);
+
+            viewSentRequests = findViewById(R.id.viewSentRequests);
+            myReceivedRequests = findViewById(R.id.myReceivedRequests);
 
 
             newLogin = getIntent().getBooleanExtra("newLogin", false);
@@ -190,16 +197,16 @@ public class mainHome extends AppCompatActivity {
                 fragmentContainerView.setVisibility(View.VISIBLE);
                 fragmentContainerHome.setVisibility(View.VISIBLE);
                 listButton.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
             }
         }
 
     private void HideHome() {
+            hideHomeRv();
             fragmentContainerView.setVisibility(View.GONE);
             fragmentContainerHome.setVisibility(View.GONE);
             listButton.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.GONE);
             fragmentContainerNotHome.setVisibility(View.VISIBLE);
+            hideViewRequestSent();
     }
 
         public void onNeedsButtonClicked() {
@@ -213,25 +220,27 @@ public class mainHome extends AppCompatActivity {
         }
 
     public void showMyNeeds() {
+
+            switchrvExchange();
+
         // Only set the adapter if it's null
         if (adapter == null) {
             adapter = new MyNeedsAdapter(this, listings, fireBUserID);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(adapter);
         }
-        recyclerView.setVisibility(View.VISIBLE); // Make RecyclerView visible
         loadListings("Need"); // Load "Need" listings
     }
 
     // Show My Offers
     public void showMyOffers() {
+
         // Only set the adapter if it's null
         if (adapter == null) {
             adapter = new MyNeedsAdapter(this, listings, fireBUserID);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(adapter);
         }
-        recyclerView.setVisibility(View.VISIBLE); // Make RecyclerView visible
         loadListings("Offer"); // Load "Offer" listings
     }
 
@@ -294,6 +303,57 @@ public class mainHome extends AppCompatActivity {
                 .replace(R.id.fragmentContainerView, fragment, "MY_FRAGMENT_TAG")
                 .commit();
     }
+
+    public void showViewRequestSent() {
+        viewSentRequests.setVisibility(View.VISIBLE);
+        myReceivedRequests.setVisibility(View.VISIBLE);
+    }
+
+    public void hideViewRequestSent() {
+        viewSentRequests.setVisibility(View.GONE);
+        myReceivedRequests.setVisibility(View.GONE);
+    }
+
+    public void fetchTransactions() {
+        String currentUserId = fireBUserID;
+
+        FirebaseFirestore.getInstance()
+                .collection("Transactions")
+                .whereEqualTo("receiverID", currentUserId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Transaction> transactionList = new ArrayList<>();
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        Transaction transaction = document.toObject(Transaction.class);
+                        transactionList.add(transaction);
+                    }
+
+                    // Set up RecyclerView with adapter
+                    TransactionAdapter tAdapter = new TransactionAdapter(this, transactionList, currentUserId);
+                    rvTransaction.setAdapter(tAdapter);
+                })
+                .addOnFailureListener(e -> {
+                    CustomToast.show(this, "Error fetching transactions: " + e.getMessage());
+                });
+    }
+
+    public void switchrvExchange() {
+        recyclerView.setVisibility(View.VISIBLE);
+        rvTransaction.setVisibility(View.GONE);
+    }
+
+    public void switchrvTransaction() {
+        recyclerView.setVisibility(View.GONE);
+        rvTransaction.setVisibility(View.VISIBLE);
+    }
+
+    public void hideHomeRv() {
+        recyclerView.setVisibility(View.GONE);
+        rvTransaction.setVisibility(View.GONE);
+    }
+
+
+
 
 
 }

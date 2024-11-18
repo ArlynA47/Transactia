@@ -11,6 +11,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.DateFormat;
@@ -23,12 +25,20 @@ import java.util.Locale;
 public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdapter.ViewHolder> {
     private List<ListingWithUserDetails> listingsWithUserDetails;
 
+    FirebaseUser user;
+    String fireBUserID;
+
+
     public ListingResultAdapter(List<ListingWithUserDetails> listingsWithUserDetails) {
         this.listingsWithUserDetails = listingsWithUserDetails;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        fireBUserID = user.getUid();
+
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.listingresult_row, parent, false);
         return new ViewHolder(view);
@@ -79,41 +89,58 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
             holder.listingImage.setImageResource(R.drawable.addimage_profile);
         }
 
+
         // Handle CardView click to navigate to Request activity
         holder.cardView.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), Request.class);
 
-            // Add user details to the intent
-            intent.putExtra("ownerUserId", listing.getUserId()); // Add owner User ID
-            intent.putExtra("ownerImage", userDetails.getImageUrl()); // Add owner Image URL
-            intent.putExtra("ownerName", userDetails.getName()); // Add owner Name
-            intent.putExtra("ownerLocation", userDetails.getLocation()); // Add owner Location
-
-            // Add listing details to the intent
-            // Since there is no 'listingId' field, you can pass the document ID here
+            String listingOwner = listing.getUserId();
             String listingId = item.getListing().getListingId(); // Get the document ID
-            intent.putExtra("listingId", listingId); // Pass the listing ID (document ID)
-            intent.putExtra("listingTitle", listing.getTitle());
-            intent.putExtra("listingDescription", listing.getListingDescription());
-            intent.putExtra("listingType", listing.getListingType());
-            intent.putExtra("listingCategory", listing.getListingCategory());
-            intent.putExtra("listingValue", listing.getListingValue());
-            intent.putExtra("listingInExchange", listing.getInExchange());
-            intent.putExtra("listingImage", listing.getListingImage()); // URL for the image
 
-            // Add timestamp if available
-            if (listing.getCreatedTimestamp() != null) {
-                long timestampMillis = listing.getCreatedTimestamp().getSeconds() * 1000; // Firestore Timestamp to milliseconds
-                Date date = new Date(timestampMillis);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
-                String formattedDate = dateFormat.format(date);
-                intent.putExtra("listingTimestamp", formattedDate);
+            if(listingOwner.equals(fireBUserID)) {
+                // If the search result is the user's own listing
+                Intent intent = new Intent(holder.itemView.getContext(), MyNeeds.class);
+                intent.putExtra("newListing", false);
+                intent.putExtra("listingId", listingId);
+                holder.itemView.getContext().startActivity(intent);
+
             } else {
-                intent.putExtra("listingTimestamp", "No Timestamp available");
+                Intent intent = new Intent(holder.itemView.getContext(), Request.class);
+
+                // Add user details to the intent
+                intent.putExtra("ownerUserId", listingOwner); // Add owner User ID
+                intent.putExtra("ownerImage", userDetails.getImageUrl()); // Add owner Image URL
+                intent.putExtra("ownerName", userDetails.getName()); // Add owner Name
+                intent.putExtra("ownerLocation", userDetails.getLocation()); // Add owner Location
+
+                // Add listing details to the intent
+                // Since there is no 'listingId' field, you can pass the document ID here
+
+                intent.putExtra("listingId", listingId); // Pass the listing ID (document ID)
+                intent.putExtra("listingTitle", listing.getTitle());
+                intent.putExtra("listingDescription", listing.getListingDescription());
+                intent.putExtra("listingType", listing.getListingType());
+                intent.putExtra("listingCategory", listing.getListingCategory());
+                intent.putExtra("listingValue", listing.getListingValue());
+                intent.putExtra("listingInExchange", listing.getInExchange());
+                intent.putExtra("listingImage", listing.getListingImage()); // URL for the image
+
+                // Add timestamp if available
+                if (listing.getCreatedTimestamp() != null) {
+                    long timestampMillis = listing.getCreatedTimestamp().getSeconds() * 1000; // Firestore Timestamp to milliseconds
+                    Date date = new Date(timestampMillis);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
+                    String formattedDate = dateFormat.format(date);
+                    intent.putExtra("listingTimestamp", formattedDate);
+                } else {
+                    intent.putExtra("listingTimestamp", "No Timestamp available");
+                }
+
+                // Start the Request activity
+                holder.itemView.getContext().startActivity(intent);
             }
 
-            // Start the Request activity
-            holder.itemView.getContext().startActivity(intent);
+
+
         });
     }
 

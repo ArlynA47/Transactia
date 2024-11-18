@@ -637,14 +637,7 @@ public class MyNeeds extends AppCompatActivity {
 
                         // Format listingValue as currency
                         if (listingValue != null && !listingValue.isEmpty()) {
-                            try {
-                                double parsedValue = Double.parseDouble(listingValue.replaceAll("[^\\d.]", "")); // Remove non-numeric characters
-                                String formattedValue = NumberFormat.getCurrencyInstance(new Locale("en", "PH")).format(parsedValue / 100); // Divide by 100 to handle fractional values
-                                listvalue.setText(formattedValue);
-                            } catch (NumberFormatException e) {
-                                // Handle invalid number format (e.g., empty or non-numeric input)
-                                e.printStackTrace();
-                            }
+                            listvalue.setText(listingValue);
                         } else {
                             // If listingValue is empty, display "₱0.00"
                             double parsedValue = 0;

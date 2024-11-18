@@ -19,6 +19,9 @@
             android:name=".Traderprofile"
             android:exported="false" />
         <activity
+            android:name=".ManageRequest"
+            android:exported="false" />
+        <activity
             android:name=".ArchiveDetails"
             android:exported="false" />
         <activity

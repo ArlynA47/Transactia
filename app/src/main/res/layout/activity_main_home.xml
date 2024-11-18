@@ -134,6 +134,70 @@
         app:layout_constraintWidth_percent="0.9"
          />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewSentRequests"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerHome">
+
+        <TextView
+            android:id="@+id/textView36"
+            android:layout_width="391dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:backgroundTint="#33443C"
+            android:gravity="start"
+            android:paddingStart="30dp"
+            android:text="View Sent Requests"
+            android:textColor="@color/grey"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.75"/>
+
+        <View
+            android:id="@+id/requestLine"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#AFA6A5A5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView36"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.85"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/myReceivedRequests"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewSentRequests">
+
+        <TextView
+            android:id="@+id/requestLabel"
+            android:layout_width="391dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:backgroundTint="#33443C"
+            android:gravity="start"
+            android:paddingStart="30dp"
+            android:text="Transaction Requests"
+            android:textColor="@color/mediumgreen"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.75"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -145,7 +209,22 @@
         app:layout_constraintBottom_toTopOf="@+id/holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentContainerHome"
+        app:layout_constraintTop_toBottomOf="@+id/myReceivedRequests"
+        app:layout_constraintWidth_percent="0.9" />
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTransaction"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/holder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myReceivedRequests"
         app:layout_constraintWidth_percent="0.9" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

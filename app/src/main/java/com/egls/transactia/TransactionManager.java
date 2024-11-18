@@ -57,4 +57,41 @@ public class TransactionManager {
         void onTransactionFailure(String errorMessage);
     }
 
+    public void updateTransaction(
+            String transactionId,
+            String senderListing,
+            String paymentTransaction,
+            String paymentMode,
+            String senderNote,
+            OnTransactionUpdateListener listener // Callback interface
+    ) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Create a map for the fields to update
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("senderListing", senderListing);
+        updates.put("paymentTransaction", paymentTransaction);
+        updates.put("paymentMode", paymentMode);
+        updates.put("senderNote", senderNote); // Add senderNote to the update
+        updates.put("timestamp", FieldValue.serverTimestamp()); // Update the timestamp
+
+        // Update the document in Firestore
+        db.collection("Transactions").document(transactionId)
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    // Notify success via the callback
+                    listener.onTransactionUpdateSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    // Notify failure via the callback
+                    listener.onTransactionUpdateFailure(e.getMessage());
+                });
+    }
+
+    // Callback interface for transaction updates
+    public interface OnTransactionUpdateListener {
+        void onTransactionUpdateSuccess();
+        void onTransactionUpdateFailure(String errorMessage);
+    }
+
 }

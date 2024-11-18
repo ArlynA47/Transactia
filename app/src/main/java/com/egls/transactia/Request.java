@@ -86,6 +86,8 @@ public class Request extends AppCompatActivity {
     String paymentMode;
     String senderNote = "";
 
+    String selectedTransactionId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,41 +145,34 @@ public class Request extends AppCompatActivity {
         // Retrieve the intent
         Intent intent = getIntent();
 
-        // Get user details
-        ownerUserId = intent.getStringExtra("ownerUserId");
-        ownerImageUrl = intent.getStringExtra("ownerImage");
-        ownerNameStr = intent.getStringExtra("ownerName");
-        ownerLocationStr = intent.getStringExtra("ownerLocation");
+            // Get user details
+            ownerUserId = intent.getStringExtra("ownerUserId");
+            ownerImageUrl = intent.getStringExtra("ownerImage");
+            ownerNameStr = intent.getStringExtra("ownerName");
+            ownerLocationStr = intent.getStringExtra("ownerLocation");
 
-        // Get listing details
-        listingId = intent.getStringExtra("listingId");
+            // Get listing details
+            listingId = intent.getStringExtra("listingId");
 
-        listingTitleStr = intent.getStringExtra("listingTitle");
-        listingTypeStr = intent.getStringExtra("listingType");
-        listingDescriptionStr = intent.getStringExtra("listingDescription");
-        listingCategoryStr = intent.getStringExtra("listingCategory");
-        listingValueStr = intent.getStringExtra("listingValue");
-        listingInExchangeStr = intent.getStringExtra("listingInExchange");
-        listingImageUrl = intent.getStringExtra("listingImage");
+            listingTitleStr = intent.getStringExtra("listingTitle");
+            listingTypeStr = intent.getStringExtra("listingType");
+            listingDescriptionStr = intent.getStringExtra("listingDescription");
+            listingCategoryStr = intent.getStringExtra("listingCategory");
+            listingValueStr = intent.getStringExtra("listingValue");
+            listingInExchangeStr = intent.getStringExtra("listingInExchange");
+            listingImageUrl = intent.getStringExtra("listingImage");
 
-        // Get timestamp
-        timestampStr = intent.getStringExtra("listingTimestamp");
+            // Get timestamp
+            timestampStr = intent.getStringExtra("listingTimestamp");
 
-        if(listingTypeStr.equals("Need")) {
-            counterListingType = "Offer";
-        } else if(listingTypeStr.equals("Offer")) {
-            counterListingType = "Need";
-        }
+            if(listingTypeStr.equals("Need")) {
+                counterListingType = "Offer";
+            } else if(listingTypeStr.equals("Offer")) {
+                counterListingType = "Need";
+            }
 
-
-        setValues();
-
-
+            setValues();
         // AFTER DECLARATIONS
-
-        requestNote.setOnClickListener(v -> {
-            handleMissingInfo();
-        });
 
         inexchange.setOnClickListener(v -> {
             fetchInExchangeOptions(fireBUserID, ownerUserId);
@@ -317,11 +312,11 @@ public class Request extends AppCompatActivity {
     // Separate methods to handle each field's action
     private boolean handleMissingInfo() {
 
-        if (inexchange.getText().toString().trim().isEmpty() && listvalue.getText().toString().trim().isEmpty()) {
+        if (inexchange.getText().toString().trim().isEmpty() && listvalue.getText().toString().trim().isEmpty() && requestNote.getText().toString().trim().isEmpty()) {
             // Set red border when validation fails
             inexchange.setBackgroundResource(R.drawable.edittext_red_border);
             listvalue.setBackgroundResource(R.drawable.edittext_red_border);
-            requestNote.clearFocus();
+            requestNote.setBackgroundResource(R.drawable.edittext_red_border);
             errorTv.setVisibility(View.VISIBLE);
 
             return true;
@@ -329,6 +324,7 @@ public class Request extends AppCompatActivity {
             // Reset to default background after valid input
             inexchange.setBackground(defaultBgET);
             listvalue.setBackground(defaultBgET);
+            requestNote.setBackground(defaultBgET);
             errorTv.setVisibility(View.INVISIBLE);
             return false;
         }
@@ -545,6 +541,40 @@ public class Request extends AppCompatActivity {
                 }
         );
     }
+
+
+    private void updateTransactionDetails() {
+        progressBar.setVisibility(View.VISIBLE);
+
+        String transactionId = selectedTransactionId; // The ID of the transaction to update
+        String updatedSenderListing = selectedListingId;
+        String updatedPaymentTransaction = listvalue.getText().toString().replaceAll("[^\\d.]", "");
+        String updatedPaymentMode = paymentMode;
+        String updatedSenderNote = requestNote.getText().toString();
+
+        TransactionManager transactionManager = new TransactionManager();
+        transactionManager.updateTransaction(
+                transactionId,
+                updatedSenderListing,
+                updatedPaymentTransaction,
+                updatedPaymentMode,
+                updatedSenderNote, // Pass the updated senderNote
+                new TransactionManager.OnTransactionUpdateListener() {
+                    @Override
+                    public void onTransactionUpdateSuccess() {
+                        progressBar.setVisibility(View.GONE);
+                        CustomToast.show(Request.this, "Transaction updated successfully!");
+                    }
+
+                    @Override
+                    public void onTransactionUpdateFailure(String errorMessage) {
+                        progressBar.setVisibility(View.GONE);
+
+                    }
+                }
+        );
+    }
+
 
 
 
