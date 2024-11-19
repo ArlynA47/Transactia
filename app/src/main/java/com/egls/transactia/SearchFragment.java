@@ -47,6 +47,8 @@ public class SearchFragment extends Fragment {
 
     EditText searchBar;
 
+    String userCountry;
+
     String selectedCountry, selectedState, selectedRegion, selectedCity;
     Spinner listingTypeFltr, listingCategFltr;
     EditText loctx;
@@ -236,7 +238,12 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                StartSearch();
+
+                if(searchBar.getText().toString().trim().isEmpty() || searchBar.getText().toString().trim()==null) {
+                    InitialSearch();
+                } else {
+                    StartSearch();
+                }
             }
         });
 
@@ -244,10 +251,80 @@ public class SearchFragment extends Fragment {
             publicSearch();
         } else {
             getSelectedCountry();
-            StartSearch(); // start by initially searching the listings in the user's country
+            InitialSearch(); // start by initially searching the listings in the user's country
         }
 
         return view;
+    }
+
+    private void InitialSearch() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference listingsRef = db.collection("Listings");
+
+        // Step 1: Apply search text filter as a priority
+        Query query = listingsRef;
+
+        // Step 2: Apply "storedIn" filter to search for listings with "Active" status
+        query = query.whereEqualTo("storedIn", "Active");
+
+        // Step 3: Execute Listings query first to narrow results, then filter users based on location
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<ListingWithUserDetails> listingsWithUserDetails = new ArrayList<>();
+                List<Listing> initialResults = new ArrayList<>();
+
+                // Step 1: Fetch listings along with their document IDs
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Listing listing = document.toObject(Listing.class);
+                    String listingId = document.getId(); // Firestore's document ID
+                    listing.setListingId(listingId); // Optionally set listingId in the Listing object (if you add it as a field)
+                    initialResults.add(listing);
+                }
+
+                if (initialResults.isEmpty()) {
+                    displayNoResultsFound();
+                    return;
+                }
+
+                // Step 2: Filter initial results by location in UserDetails
+                CollectionReference userDetailsRef = db.collection("UserDetails");
+                Query userQuery = userDetailsRef;
+
+                if (userCountry != null && !userCountry.equals("All Countries")) {
+                    userQuery = userQuery.whereEqualTo("locationMap.country", userCountry);
+                }
+
+                userQuery.get().addOnCompleteListener(userTask -> {
+                    if (userTask.isSuccessful()) {
+                        List<String> userIds = new ArrayList<>();
+                        for (QueryDocumentSnapshot userDoc : userTask.getResult()) {
+                            userIds.add(userDoc.getId());
+                        }
+
+                        // Filter initial results by matching user IDs from UserDetails
+                        List<Listing> finalResults = new ArrayList<>();
+                        for (Listing listing : initialResults) {
+                            if (userIds.contains(listing.getUserId())) {
+                                finalResults.add(listing);
+                            }
+                        }
+
+                        if (finalResults.isEmpty()) {
+                            displayNoResultsFound();
+                        } else {
+                            fetchUserDetailsAndUpdateRecyclerView(finalResults);
+                            searchrv.setVisibility(View.VISIBLE);
+                            noResultsTextView.setVisibility(View.GONE);
+                        }
+                    } else {
+                        displayNoResultsFound();
+                        Log.d("SearchFragment", "No users found matching location filters.");
+                    }
+                });
+            } else {
+                Log.e("SearchFragment", "Error getting listings: ", task.getException());
+            }
+        });
     }
 
     private void StartSearch() {
@@ -410,9 +487,99 @@ public class SearchFragment extends Fragment {
         // Apply the updated layout parameters
         searchrv.setLayoutParams(layoutParams);
 
-        StartSearch(); // start by initially searching the listings in the user's country
+        getListingsInUserCountry(); // start by initially searching the listings in the user's country
 
     }
+
+    private void getListingsInUserCountry() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Log.e("getListingsInUserCountry", "User not logged in.");
+            return;
+        }
+        String fireBUserID = user.getUid();
+
+        // Step 1: Fetch Listings first
+        CollectionReference listingsRef = db.collection("Listings");
+        Query listingsQuery = listingsRef.whereEqualTo("storedIn", "Active");
+
+        listingsQuery.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<Listing> initialResults = new ArrayList<>();
+
+                // Step 1.1: Gather all listings with "Active" status
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Listing listing = document.toObject(Listing.class);
+                    String listingId = document.getId(); // Firestore's document ID
+                    listing.setListingId(listingId); // Set listingId in the Listing object
+                    initialResults.add(listing);
+                }
+
+                if (initialResults.isEmpty()) {
+                    displayNoResultsFound();
+                    return;
+                }
+
+                // Step 2: Fetch User's Country and Filter User IDs
+                db.collection("UserDetails")
+                        .document(fireBUserID) // Get user's country from their details
+                        .get()
+                        .addOnCompleteListener(userTask -> {
+                            if (userTask.isSuccessful() && userTask.getResult().exists()) {
+                                Map<String, String> locationMap = (Map<String, String>) userTask.getResult().get("locationMap");
+                                if (locationMap != null && locationMap.containsKey("country")) {
+                                    String userCountry = locationMap.get("country");
+
+                                    // Step 2.1: Query users in the same country
+                                    CollectionReference userDetailsRef = db.collection("UserDetails");
+                                    Query userQuery = userDetailsRef.whereEqualTo("locationMap.country", userCountry);
+
+                                    userQuery.get().addOnCompleteListener(locationTask -> {
+                                        if (locationTask.isSuccessful()) {
+                                            List<String> userIds = new ArrayList<>();
+                                            for (QueryDocumentSnapshot userDoc : locationTask.getResult()) {
+                                                userIds.add(userDoc.getId());
+                                            }
+
+                                            // Step 3: Filter Listings by User IDs and Exclude Current User
+                                            List<Listing> finalResults = new ArrayList<>();
+                                            for (Listing listing : initialResults) {
+                                                if (userIds.contains(listing.getUserId()) && !listing.getUserId().equals(fireBUserID)) {
+                                                    finalResults.add(listing);
+                                                }
+                                            }
+
+                                            // Step 4: Display Results
+                                            if (finalResults.isEmpty()) {
+                                                displayNoResultsFound();
+                                            } else {
+                                                fetchUserDetailsAndUpdateRecyclerView(finalResults);
+                                                searchrv.setVisibility(View.VISIBLE);
+                                                noResultsTextView.setVisibility(View.GONE);
+                                            }
+                                        } else {
+                                            displayNoResultsFound();
+                                            Log.d("SearchFragment", "Error fetching users by location.");
+                                        }
+                                    });
+                                } else {
+                                    Log.d("UserCountry", "User's country information is missing.");
+                                    displayNoResultsFound();
+                                }
+                            } else {
+                                Log.e("UserCountry", "Error retrieving user details: ", userTask.getException());
+                                displayNoResultsFound();
+                            }
+                        });
+            } else {
+                Log.e("ListingsQuery", "Error fetching listings: ", task.getException());
+                displayNoResultsFound();
+            }
+        });
+    }
+
+
 
     private void ApplyFilters() {
         slt = selectedLt;
@@ -607,7 +774,7 @@ public class SearchFragment extends Fragment {
                         // Access the locationMap and retrieve the country
                         Map<String, String> locationMap = (Map<String, String>) documentSnapshot.get("locationMap");
                         if (locationMap != null && locationMap.containsKey("country")) {
-                            selectedCountry = locationMap.get("country");
+                            userCountry = locationMap.get("country");
                             // Use the selectedCountry as needed
                         } else {
                             Log.d("SelectedCountry", "Country field is missing in locationMap.");
