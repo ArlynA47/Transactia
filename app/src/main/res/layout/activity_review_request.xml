@@ -540,10 +540,9 @@
             <TextView
                 android:id="@+id/rateUser"
                 android:layout_width="200dp"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="15dp"
-                android:background="@drawable/button"
                 android:gravity="center"
                 android:text="RATE TRADER"
                 android:textStyle="bold"

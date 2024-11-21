@@ -32,6 +32,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -41,13 +42,13 @@ public class ManageRequest extends AppCompatActivity {
 
     String transactionid;
     ConstraintLayout constraintLayoutMine;
-    TextView cancelreqbt, updatereqbt, completebt;
+    TextView cancelreqbt, updatereqbt, completebt, rateUser;
 
     private static String listingOwnerParam, listingIDParam;
 
     TextView transactionTitle, transactiontimestamp;
 
-    boolean isAccepted;
+    boolean isAccepted, isCompleted;
     String fireBUserID;
 
     @Override
@@ -74,76 +75,103 @@ public class ManageRequest extends AppCompatActivity {
 
         completebt = findViewById(R.id.completebt);
 
+        rateUser = findViewById(R.id.rateUser);
+
         transactionid = getIntent().getStringExtra("transactionid");
         loadTransactionDetails(transactionid);
 
-        isAccepted = getIntent().getBooleanExtra("isAccepted", false);
+        isCompleted = getIntent().getBooleanExtra("isCompleted", false);
 
-        completebt.setOnClickListener(v -> {
+        if(isCompleted) {
+            CompletedTransaction();
+        } else {
+            isAccepted = getIntent().getBooleanExtra("isAccepted", false);
 
-            // Build the dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
-            builder.setTitle("Confirm Transaction Completion")
-                    .setPositiveButton("Confirm", (dialog, which) -> {
-                        markTransactionAsCompleted(transactionid, fireBUserID);
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss(); // Close the dialog
-                    });
+            completebt.setOnClickListener(v -> {
 
-            // Show the dialog
-            builder.show();
-        });
+                // Build the dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+                builder.setTitle("Confirm Transaction Completion")
+                        .setPositiveButton("Confirm", (dialog, which) -> {
+                            markTransactionAsCompleted(transactionid, fireBUserID);
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {
+                            dialog.dismiss(); // Close the dialog
+                        });
 
-        updatereqbt.setOnClickListener(v -> {
+                // Show the dialog
+                builder.show();
+            });
 
-            String lop = listingOwnerParam;
-            String lip = listingIDParam;
+            updatereqbt.setOnClickListener(v -> {
 
-            Intent intent = new Intent(ManageRequest.this, Request.class);
-            intent.putExtra("newRequest", false);
-            intent.putExtra("transactionid", transactionid);
-            intent.putExtra("ownerUserId", lop); // Add owner User ID
-            intent.putExtra("listingId", lip); // Pass the listing ID (document ID)
-            startActivity(intent);
-            finish();
-        });
+                String lop = listingOwnerParam;
+                String lip = listingIDParam;
 
-        cancelreqbt.setOnClickListener(v -> {
-
-            // Build the dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
-            builder.setTitle("Cancel Transaction Request")
-                    .setMessage("Are you sure you want to cancel this transaction request?")
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        cancelTransactionRequest(transactionid);
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss(); // Close the dialog
-                    });
-
-            // Show the dialog
-            builder.show();
-
-            // Delay the intent by 2 seconds (2000 milliseconds)
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                Intent intent = new Intent(ManageRequest.this, MyRequests.class);
+                Intent intent = new Intent(ManageRequest.this, Request.class);
+                intent.putExtra("newRequest", false);
+                intent.putExtra("transactionid", transactionid);
+                intent.putExtra("ownerUserId", lop); // Add owner User ID
+                intent.putExtra("listingId", lip); // Pass the listing ID (document ID)
                 startActivity(intent);
                 finish();
-            }, 2000); // 2000 milliseconds = 2 seconds
-        });
+            });
 
-        if(isAccepted) {
-            completebt.setVisibility(View.VISIBLE);
-            cancelreqbt.setVisibility(View.GONE);
-            updatereqbt.setVisibility(View.GONE);
-        } else {
-            completebt.setVisibility(View.GONE);
-            cancelreqbt.setVisibility(View.VISIBLE);
-            updatereqbt.setVisibility(View.VISIBLE);
+            cancelreqbt.setOnClickListener(v -> {
+
+                // Build the dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+                builder.setTitle("Cancel Transaction Request")
+                        .setMessage("Are you sure you want to cancel this transaction request?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            cancelTransactionRequest(transactionid);
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {
+                            dialog.dismiss(); // Close the dialog
+                        });
+
+                // Show the dialog
+                builder.show();
+
+                // Delay the intent by 2 seconds (2000 milliseconds)
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    Intent intent = new Intent(ManageRequest.this, MyRequests.class);
+                    startActivity(intent);
+                    finish();
+                }, 2000); // 2000 milliseconds = 2 seconds
+            });
+
+            if(isAccepted) {
+                completebt.setVisibility(View.VISIBLE);
+                cancelreqbt.setVisibility(View.GONE);
+                updatereqbt.setVisibility(View.GONE);
+            } else {
+                completebt.setVisibility(View.GONE);
+                cancelreqbt.setVisibility(View.VISIBLE);
+                updatereqbt.setVisibility(View.VISIBLE);
+            }
+
+            checkCompletion(transactionid, fireBUserID);
         }
 
-        checkCompletion(transactionid, fireBUserID);
+
+
+    }
+
+    private void CompletedTransaction() {
+
+        cancelreqbt.setVisibility(View.GONE);
+        updatereqbt.setVisibility(View.GONE);
+
+        rateUser.setVisibility(View.VISIBLE);
+        completebt.setVisibility(View.VISIBLE);
+        completebt.setEnabled(false);
+        completebt.setText("Transaction Completed");
+        completebt.setTextColor(ContextCompat.getColor(ManageRequest.this, R.color.lightgreen));
+
+        rateUser.setOnClickListener(v -> {
+            markTransactionAsRated(transactionid, fireBUserID);
+        });
 
     }
 
@@ -233,12 +261,7 @@ public class ManageRequest extends AppCompatActivity {
                                                                 transactionRef.update("status", "Completed", "timestamp", FieldValue.serverTimestamp())
                                                                         .addOnSuccessListener(aVoid1 -> {
                                                                             CustomToast.show(ManageRequest.this, "Transaction marked as Completed!");
-                                                                            // Delay the intent by 2 seconds (2000 milliseconds)
-                                                                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                                                                Intent intent = new Intent(ManageRequest.this, TransactionsInProgress.class);
-                                                                                startActivity(intent);
-                                                                                finish();
-                                                                            }, 2000); // 2000 milliseconds = 2 seconds
+                                                                            CompletedTransaction();
                                                                         })
                                                                         .addOnFailureListener(e -> {
                                                                             CustomToast.show(ManageRequest.this, "Error updating transaction status: " + e.getMessage());
@@ -511,6 +534,44 @@ public class ManageRequest extends AppCompatActivity {
                     // Handle the error gracefully
                     Toast.makeText(this, "Error fetching listing: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     ((TextView) findViewById(R.id.Exchangefor)).setText(""); // Clear the EditText in case of an error
+                });
+    }
+
+    private void markTransactionAsRated(String transactionId, String currentUserId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Query for the document with the matching transaction ID
+        db.collection("Transactions")
+                .whereEqualTo("transactionid", transactionId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        // Assuming there is only one matching document
+                        DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+
+                        // Get the current list of users who rated
+                        List<String> ratedList = (List<String>) document.get("rated");
+
+                        if (ratedList == null) {
+                            ratedList = new ArrayList<>(); // Initialize if null
+                        }
+
+                        if (ratedList.contains(currentUserId)) {
+                            // User has already rated, show a message
+                            CustomToast.show(this, "You have already rated the trader for this transaction.");
+                            return;
+                        } else {
+                            Intent intentRate = new Intent(ManageRequest.this, RateTrader.class);
+                            intentRate.putExtra("transactionid", transactionid);
+                            startActivity(intentRate);
+                        }
+
+                    } else {
+                        CustomToast.show(this, "Transaction not found.");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    CustomToast.show(this, "Error querying transaction: " + e.getMessage());
                 });
     }
 

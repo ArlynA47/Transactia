@@ -31,6 +31,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,8 +44,8 @@ public class ReviewRequest extends AppCompatActivity {
 
     ConstraintLayout constraintLayout9, constraintLayout10;
     TextView transactionTitle, transactiontimestamp;
-    TextView acceptreqbt, declinereqbt, completebt;
-    boolean isAccepted;
+    TextView acceptreqbt, declinereqbt, completebt, rateUser;
+    boolean isAccepted, isCompleted;
     String fireBUserID;
 
     @Override
@@ -66,6 +67,8 @@ public class ReviewRequest extends AppCompatActivity {
 
         completebt = findViewById(R.id.completebt);
 
+        rateUser = findViewById(R.id.rateUser);
+
         transactionTitle = findViewById(R.id.transactionTitle);
         transactiontimestamp = findViewById(R.id.transactiontimestamp);
 
@@ -75,77 +78,102 @@ public class ReviewRequest extends AppCompatActivity {
         transactionid = getIntent().getStringExtra("transactionid");
         loadTransactionDetails(transactionid);
 
-        isAccepted = getIntent().getBooleanExtra("isAccepted", false);
+        isCompleted = getIntent().getBooleanExtra("isCompleted", false);
 
-        completebt.setOnClickListener(v -> {
+        if(isCompleted) {
 
-            // Build the dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
-            builder.setTitle("Confirm Transaction Completion")
-                    .setPositiveButton("Confirm", (dialog, which) -> {
-                        markTransactionAsCompleted(transactionid, fireBUserID);
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss(); // Close the dialog
-                    });
+            CompletedTransaction();
 
-            // Show the dialog
-            builder.show();
-        });
-
-        declinereqbt.setOnClickListener(v -> {
-            // Build the dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
-            builder.setTitle("Cancel Transaction Request")
-                    .setMessage("Are you sure you want to decline this transaction request?")
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        cancelTransactionRequest(transactionid);
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss(); // Close the dialog
-                    });
-
-            // Show the dialog
-            builder.show();
-
-            // Delay the intent by 2 seconds (2000 milliseconds)
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                finish();
-            }, 2000); // 2000 milliseconds = 2 seconds
-        });
-
-        acceptreqbt.setOnClickListener(v -> {
-            // Build the dialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
-            builder.setTitle("Accept Transaction Request")
-                    .setPositiveButton("Confirm", (dialog, which) -> {
-                        updateTransactionStatus(transactionid);
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.dismiss(); // Close the dialog
-                    });
-
-            // Show the dialog
-            builder.show();
-
-            // Delay the intent by 2 seconds (2000 milliseconds)
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                finish();
-            }, 2000); // 2000 milliseconds = 2 seconds
-        });
-
-
-        if(isAccepted) {
-            completebt.setVisibility(View.VISIBLE);
-            declinereqbt.setVisibility(View.GONE);
-            acceptreqbt.setVisibility(View.GONE);
         } else {
-            completebt.setVisibility(View.GONE);
-            declinereqbt.setVisibility(View.VISIBLE);
-            acceptreqbt.setVisibility(View.VISIBLE);
-        }
+            isAccepted = getIntent().getBooleanExtra("isAccepted", false);
+            completebt.setOnClickListener(v -> {
 
-        checkCompletion(transactionid, fireBUserID);
+                // Build the dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+                builder.setTitle("Confirm Transaction Completion")
+                        .setPositiveButton("Confirm", (dialog, which) -> {
+                            markTransactionAsCompleted(transactionid, fireBUserID);
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {
+                            dialog.dismiss(); // Close the dialog
+                        });
+
+                // Show the dialog
+                builder.show();
+            });
+
+            declinereqbt.setOnClickListener(v -> {
+                // Build the dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+                builder.setTitle("Cancel Transaction Request")
+                        .setMessage("Are you sure you want to decline this transaction request?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            cancelTransactionRequest(transactionid);
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {
+                            dialog.dismiss(); // Close the dialog
+                        });
+
+                // Show the dialog
+                builder.show();
+
+                // Delay the intent by 2 seconds (2000 milliseconds)
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    finish();
+                }, 2000); // 2000 milliseconds = 2 seconds
+            });
+
+            acceptreqbt.setOnClickListener(v -> {
+                // Build the dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+                builder.setTitle("Accept Transaction Request")
+                        .setPositiveButton("Confirm", (dialog, which) -> {
+                            updateTransactionStatus(transactionid);
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {
+                            dialog.dismiss(); // Close the dialog
+                        });
+
+                // Show the dialog
+                builder.show();
+
+                // Delay the intent by 2 seconds (2000 milliseconds)
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    finish();
+                }, 2000); // 2000 milliseconds = 2 seconds
+            });
+
+
+            if(isAccepted) {
+                completebt.setVisibility(View.VISIBLE);
+                declinereqbt.setVisibility(View.GONE);
+                acceptreqbt.setVisibility(View.GONE);
+            } else {
+                completebt.setVisibility(View.GONE);
+                declinereqbt.setVisibility(View.VISIBLE);
+                acceptreqbt.setVisibility(View.VISIBLE);
+            }
+
+            checkCompletion(transactionid, fireBUserID);
+        }
+    }
+
+    private void CompletedTransaction() {
+
+        declinereqbt.setVisibility(View.GONE);
+        acceptreqbt.setVisibility(View.GONE);
+
+        rateUser.setVisibility(View.VISIBLE);
+        completebt.setVisibility(View.VISIBLE);
+        completebt.setEnabled(false);
+        completebt.setText("Transaction Completed");
+        completebt.setTextColor(ContextCompat.getColor(ReviewRequest.this, R.color.lightgreen));
+
+
+        rateUser.setOnClickListener(v -> {
+            markTransactionAsRated(transactionid, fireBUserID);
+        });
+
     }
 
 
@@ -235,12 +263,7 @@ public class ReviewRequest extends AppCompatActivity {
                                                                 transactionRef.update("status", "Completed", "timestamp", FieldValue.serverTimestamp())
                                                                         .addOnSuccessListener(aVoid1 -> {
                                                                             CustomToast.show(ReviewRequest.this, "Transaction marked as Completed!");
-                                                                            // Delay the intent by 2 seconds (2000 milliseconds)
-                                                                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                                                                Intent intent = new Intent(ReviewRequest.this, TransactionsInProgress.class);
-                                                                                startActivity(intent);
-                                                                                finish();
-                                                                            }, 2000); // 2000 milliseconds = 2 seconds
+                                                                            CompletedTransaction();
                                                                         })
                                                                         .addOnFailureListener(e -> {
                                                                             CustomToast.show(ReviewRequest.this, "Error updating transaction status: " + e.getMessage());
@@ -446,7 +469,7 @@ public class ReviewRequest extends AppCompatActivity {
                                 String cleanString = priceValue.toString().replaceAll("[^\\d]", ""); // Remove all non-numeric characters
                                 double parsed = Double.parseDouble(cleanString);
                                 String formatted = NumberFormat.getCurrencyInstance(new Locale("en", "PH")).format(parsed / 100);
-                                ((TextView) findViewById(R.id.valuemine)).setText(priceValue);
+                                ((TextView) findViewById(R.id.valuemine)).setText(formatted);
                             } else {
                                 // If listingValue is empty, display "₱0.00"
                                 double parsedValue = 0;
@@ -518,4 +541,43 @@ public class ReviewRequest extends AppCompatActivity {
             Glide.with(this).load(imageUrl).into(imageView);
         }
     }
+
+    private void markTransactionAsRated(String transactionId, String currentUserId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Query for the document with the matching transaction ID
+        db.collection("Transactions")
+                .whereEqualTo("transactionid", transactionId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        // Assuming there is only one matching document
+                        DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+
+                        // Get the current list of users who rated
+                        List<String> ratedList = (List<String>) document.get("rated");
+
+                        if (ratedList == null) {
+                            ratedList = new ArrayList<>(); // Initialize if null
+                        }
+
+                        if (ratedList.contains(currentUserId)) {
+                            // User has already rated, show a message
+                            CustomToast.show(this, "You have already rated the trader for this transaction.");
+                            return;
+                        } else {
+                            Intent intentRate = new Intent(ReviewRequest.this, RateTrader.class);
+                            intentRate.putExtra("transactionid", transactionid);
+                            startActivity(intentRate);
+                        }
+
+                    } else {
+                        CustomToast.show(this, "Transaction not found.");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    CustomToast.show(this, "Error querying transaction: " + e.getMessage());
+                });
+    }
+
 }

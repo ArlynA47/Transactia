@@ -108,7 +108,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             if (senderIdStr.equals(currentUserId)) {
 
                 if(transStatus.equals("Completed")) {
-
+                    Intent intent = new Intent(context, ManageRequest.class);
+                    intent.putExtra("transactionid", transaction.getTransactionid());
+                    intent.putExtra("isCompleted", true);
+                    context.startActivity(intent);
                 } else if (transStatus.equals("Accepted")) {
                     Intent intent = new Intent(context, ManageRequest.class);
                     intent.putExtra("transactionid", transaction.getTransactionid());
@@ -124,7 +127,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             } else {
 
                 if(transStatus.equals("Completed")) {
-
+                    Intent intent = new Intent(context, ReviewRequest.class);
+                    intent.putExtra("transactionid", transaction.getTransactionid());
+                    intent.putExtra("isCompleted", true);
+                    context.startActivity(intent);
                 } else if (transStatus.equals("Accepted")) {
                     Intent intent = new Intent(context, ReviewRequest.class);
                     intent.putExtra("transactionid", transaction.getTransactionid());
