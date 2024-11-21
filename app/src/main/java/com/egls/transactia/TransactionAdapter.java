@@ -30,6 +30,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     private final String currentUserId;
     Transaction transaction;
 
+    String senderIdStr;
+
     public TransactionAdapter(Context context, List<Transaction> transactionList, String currentUserId) {
         this.context = context;
         this.transactionList = transactionList;
@@ -45,7 +47,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
-        transaction = transactionList.get(position);
+        Transaction transaction = transactionList.get(position); // Local variable for the current transaction
 
         // Set timestamp
         if (transaction.getTimestamp() != null) {
@@ -100,9 +102,41 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         // Handle CardView click to navigate to MyNeeds activity
         holder.cardView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, Request.class);
-            intent.putExtra("transactionId", transaction.getTransactionId());  // Pass the transactionId
-            context.startActivity(intent);
+            String senderIdStr = transaction.getSenderID();
+            String transStatus = transaction.getStatus();
+
+            if (senderIdStr.equals(currentUserId)) {
+
+                if(transStatus.equals("Completed")) {
+
+                } else if (transStatus.equals("Accepted")) {
+                    Intent intent = new Intent(context, ManageRequest.class);
+                    intent.putExtra("transactionid", transaction.getTransactionid());
+                    intent.putExtra("isAccepted", true);
+                    context.startActivity(intent);
+                } else {
+                    Intent intent = new Intent(context, ManageRequest.class);
+                    intent.putExtra("transactionid", transaction.getTransactionid());
+                    intent.putExtra("isAccepted", false);
+                    context.startActivity(intent);
+                }
+
+            } else {
+
+                if(transStatus.equals("Completed")) {
+
+                } else if (transStatus.equals("Accepted")) {
+                    Intent intent = new Intent(context, ReviewRequest.class);
+                    intent.putExtra("transactionid", transaction.getTransactionid());
+                    intent.putExtra("isAccepted", true);
+                    context.startActivity(intent);
+                } else {
+                    Intent intent = new Intent(context, ReviewRequest.class);
+                    intent.putExtra("transactionid", transaction.getTransactionid());
+                    intent.putExtra("isAccepted", false);
+                    context.startActivity(intent);
+                }
+            }
         });
 
         // Apply animation
@@ -111,6 +145,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         translateAnim.setStartOffset(delay); // Add delay based on the position
         holder.cardView.startAnimation(translateAnim);
     }
+
 
 
     @Override

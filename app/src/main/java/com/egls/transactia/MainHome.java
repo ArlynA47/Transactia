@@ -1,5 +1,6 @@
 package com.egls.transactia;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ import java.util.List;
 public class MainHome extends AppCompatActivity {
 
         ConstraintLayout mainLay;
-        ConstraintLayout viewSentRequests, myReceivedRequests;
+        ConstraintLayout viewSentRequests, myReceivedRequests, viewInProgress;
 
 
         int displayed = 1;
@@ -86,18 +88,24 @@ public class MainHome extends AppCompatActivity {
 
             viewSentRequests = findViewById(R.id.viewSentRequests);
             myReceivedRequests = findViewById(R.id.myReceivedRequests);
+            viewInProgress = findViewById(R.id.viewInProgress);
 
-                newLogin = getIntent().getBooleanExtra("newLogin", false);
+            Intent intent = getIntent();
+
+                newLogin = intent.getBooleanExtra("newLogin", true);
 
                 if(newLogin) {
-                    // Retrieve the FirebaseUser instance from the intent
-                    emailAuth = getIntent().getStringExtra("emailAuth");
-                    passAuth = getIntent().getStringExtra("passAuth");
-
-                    // Save the credentials into sqlite db
                     UserDatabaseHelper dbHelper = new UserDatabaseHelper(MainHome.this);
-                    dbHelper.saveUserDetails(emailAuth, passAuth);
-                    AuthenticateUser();
+
+                    // Retrieve the saved unauthenticated user details
+                    String[] userDetails = dbHelper.getUnauthenticatedUser();
+                    if (userDetails != null) {
+                        emailAuth = userDetails[0];
+                        passAuth = userDetails[1];
+                        // Save the credentials into sqlite db
+                        dbHelper.saveUserDetails(emailAuth, passAuth);
+                        AuthenticateUser();
+                    }
                 } else {
                     dbHelper = new UserDatabaseHelper(MainHome.this);
                     String[] userDetails = dbHelper.getUserDetails();
@@ -139,17 +147,18 @@ public class MainHome extends AppCompatActivity {
     private static final int EXIT_DELAY = 3000; // Time delay in milliseconds
     private Handler handler = new Handler();
 
+    @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
         backPressCount++;
 
         if (backPressCount == 1) {
-            if(displayed!=1) {
+            if (displayed != 1) {
                 displayHome();
                 loadInitialFragment();
                 showMyNeeds();
             } else {
-                backPressCount =2;
+                backPressCount = 2; // Skip directly to second press behavior
             }
         }
 
@@ -157,14 +166,15 @@ public class MainHome extends AppCompatActivity {
             // Second back press: Show a toast
             CustomToast.show(MainHome.this, "Press once again to exit.");
         } else if (backPressCount == 3) {
-            // Third back press: Exit the app
-            super.onBackPressed();
+            // Close the app
+            finishAffinity(); // Closes all activities and exits the app
         }
 
         // Reset the counter after the delay
         handler.removeCallbacks(resetBackPressCount); // Avoid multiple callbacks
         handler.postDelayed(resetBackPressCount, EXIT_DELAY);
     }
+
 
     // Custom method to reset the back press count
     private Runnable resetBackPressCount = new Runnable() {
@@ -207,6 +217,7 @@ public class MainHome extends AppCompatActivity {
                 HideHome();
                 updateSelectedImage(message, "selectmessage");
                 loadFragment(new MessageFragment());
+
             }
         });
         prof2.setOnClickListener(view -> {
@@ -241,6 +252,16 @@ public class MainHome extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        viewInProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start MyNeeds activity when the button is clicked
+                Intent intent = new Intent(MainHome.this, TransactionsInProgress.class);
+                startActivity(intent);
+            }
+        });
+
 
         // Set up a listener for window insets to apply padding to the main layout
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -390,11 +411,13 @@ public class MainHome extends AppCompatActivity {
     public void showViewRequestSent() {
         viewSentRequests.setVisibility(View.VISIBLE);
         myReceivedRequests.setVisibility(View.VISIBLE);
+        viewInProgress.setVisibility(View.VISIBLE);
     }
 
     public void hideViewRequestSent() {
         viewSentRequests.setVisibility(View.GONE);
         myReceivedRequests.setVisibility(View.GONE);
+        viewInProgress.setVisibility(View.GONE);
     }
 
     public void fetchTransactions() {
@@ -404,6 +427,7 @@ public class MainHome extends AppCompatActivity {
         FirebaseFirestore.getInstance()
                 .collection("Transactions")
                 .whereEqualTo("receiverID", currentUserId)
+                .whereEqualTo("status", "Request")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Transaction> transactionList = new ArrayList<>();
@@ -411,6 +435,7 @@ public class MainHome extends AppCompatActivity {
                         Transaction transaction = document.toObject(Transaction.class);
                         transactionList.add(transaction);
                     }
+                    rvTransaction.setAdapter(null);
 
                     // Set up RecyclerView with adapter
                     TransactionAdapter tAdapter = new TransactionAdapter(this, transactionList, currentUserId);
@@ -420,6 +445,50 @@ public class MainHome extends AppCompatActivity {
                     CustomToast.show(this, "Error fetching transactions: " + e.getMessage());
                 });
         progressBar.setVisibility(View.GONE);
+    }
+
+    public void fetchCompletedTransactions() {
+        String currentUserId = fireBUserID;
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Query for transactions where the current user is the sender
+        Query senderQuery = db.collection("Transactions")
+                .whereEqualTo("senderID", currentUserId)
+                .whereEqualTo("status", "Completed");
+
+        // Query for transactions where the current user is the receiver
+        Query receiverQuery = db.collection("Transactions")
+                .whereEqualTo("receiverID", currentUserId)
+                .whereEqualTo("status", "Completed");
+
+        // Execute both queries and merge the results
+        senderQuery.get().addOnSuccessListener(senderSnapshot -> {
+            receiverQuery.get().addOnSuccessListener(receiverSnapshot -> {
+                List<Transaction> transactionList = new ArrayList<>();
+
+                // Add transactions where the user is the sender
+                for (DocumentSnapshot document : senderSnapshot) {
+                    Transaction transaction = document.toObject(Transaction.class);
+                    transactionList.add(transaction);
+                }
+
+                // Add transactions where the user is the receiver
+                for (DocumentSnapshot document : receiverSnapshot) {
+                    Transaction transaction = document.toObject(Transaction.class);
+                    transactionList.add(transaction);
+                }
+                rvTransaction.setAdapter(null);
+
+                // Set up RecyclerView with adapter
+                TransactionAdapter tAdapter = new TransactionAdapter(this, transactionList, currentUserId);
+                rvTransaction.setAdapter(tAdapter);
+            }).addOnFailureListener(e -> {
+                CustomToast.show(this, "Error fetching receiver transactions: " + e.getMessage());
+            });
+        }).addOnFailureListener(e -> {
+            CustomToast.show(this, "Error fetching sender transactions: " + e.getMessage());
+        });
     }
 
     public void switchrvExchange() {

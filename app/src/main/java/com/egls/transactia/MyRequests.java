@@ -51,6 +51,7 @@ public class MyRequests extends AppCompatActivity {
         FirebaseFirestore.getInstance()
                 .collection("Transactions")
                 .whereEqualTo("senderID", currentUserId)
+                .whereEqualTo("status", "Request")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Transaction> transactionList = new ArrayList<>();

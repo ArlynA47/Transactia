@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button; // Import Button
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -81,11 +84,23 @@ public class Account_Settings extends AppCompatActivity {
 
         // LOG OUT
         logoutlay.setOnClickListener(v -> {
-            UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
-            dbHelper.deleteUserDetails();
-            Intent intent = new Intent(Account_Settings.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+            builder.setTitle("Log out")
+                    .setMessage("Are you sure you want to log out?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
+                        dbHelper.deleteUserDetails();
+                        Intent intent = new Intent(Account_Settings.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.dismiss(); // Close the dialog
+                    });
+
+            // Show the dialog
+            builder.show();
         });
     }
     @Override

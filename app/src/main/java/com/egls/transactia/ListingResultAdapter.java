@@ -106,34 +106,11 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
             } else {
                 Intent intent = new Intent(holder.itemView.getContext(), Request.class);
 
+                intent.putExtra("newRequest", true);
+
                 // Add user details to the intent
                 intent.putExtra("ownerUserId", listingOwner); // Add owner User ID
-                intent.putExtra("ownerImage", userDetails.getImageUrl()); // Add owner Image URL
-                intent.putExtra("ownerName", userDetails.getName()); // Add owner Name
-                intent.putExtra("ownerLocation", userDetails.getLocation()); // Add owner Location
-
-                // Add listing details to the intent
-                // Since there is no 'listingId' field, you can pass the document ID here
-
                 intent.putExtra("listingId", listingId); // Pass the listing ID (document ID)
-                intent.putExtra("listingTitle", listing.getTitle());
-                intent.putExtra("listingDescription", listing.getListingDescription());
-                intent.putExtra("listingType", listing.getListingType());
-                intent.putExtra("listingCategory", listing.getListingCategory());
-                intent.putExtra("listingValue", listing.getListingValue());
-                intent.putExtra("listingInExchange", listing.getInExchange());
-                intent.putExtra("listingImage", listing.getListingImage()); // URL for the image
-
-                // Add timestamp if available
-                if (listing.getCreatedTimestamp() != null) {
-                    long timestampMillis = listing.getCreatedTimestamp().getSeconds() * 1000; // Firestore Timestamp to milliseconds
-                    Date date = new Date(timestampMillis);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
-                    String formattedDate = dateFormat.format(date);
-                    intent.putExtra("listingTimestamp", formattedDate);
-                } else {
-                    intent.putExtra("listingTimestamp", "No Timestamp available");
-                }
 
                 // Start the Request activity
                 holder.itemView.getContext().startActivity(intent);

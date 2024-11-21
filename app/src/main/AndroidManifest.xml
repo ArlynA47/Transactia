@@ -16,6 +16,12 @@
         android:theme="@style/Theme.Transactia"
         tools:targetApi="31">
         <activity
+            android:name=".TransactionsInProgress"
+            android:exported="false" />
+        <activity
+            android:name=".ReviewRequest"
+            android:exported="false" />
+        <activity
             android:name=".MyRequests"
             android:exported="false" />
         <activity

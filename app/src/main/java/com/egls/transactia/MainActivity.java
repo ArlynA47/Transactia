@@ -6,6 +6,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent; // Import this for the Intent
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Patterns;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -45,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        UserDatabaseHelper dbh = new UserDatabaseHelper(MainActivity.this);
+
+        // Delete unauthenticated user details
+        dbh.deleteUnauthenticatedUser();
 
         UserDatabaseHelper dbHelper = new UserDatabaseHelper(this);
         // If the user is already logged in
@@ -102,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
             String email = usernameEditText.getText().toString().trim();
             String pass = passwordEditText.getText().toString().trim();
 
+            dbh.saveUnauthenticatedUser(email, pass);
+
+
             // Check if email is valid
             if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 if (!pass.isEmpty()) {
@@ -126,7 +136,10 @@ public class MainActivity extends AppCompatActivity {
                                                     intent.putExtra("newLogin", true);
                                                     intent.putExtra("firebaseUser", user);
                                                     startActivity(intent);
-                                                    finish();
+                                                    // Delay the intent by 2 seconds (2000 milliseconds)
+                                                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                                        finish();
+                                                    }, 4000); // 2000 milliseconds = 2 seconds
                                                 } else {
                                                     CustomToast.show(MainActivity.this, "Failed to send verification email: " + task.getException().getMessage());
                                                 }
@@ -137,7 +150,10 @@ public class MainActivity extends AppCompatActivity {
                                             Intent intent = new Intent(MainActivity.this, ConfirmEmail.class);
                                             intent.putExtra("firebaseUser", user);
                                             startActivity(intent);
-                                            finish();
+                                            // Delay the intent by 2 seconds (2000 milliseconds)
+                                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                                finish();
+                                            }, 4000); // 2000 milliseconds = 2 seconds
                                         });
 
                                         AlertDialog dialog = builder.create();
@@ -155,8 +171,6 @@ public class MainActivity extends AppCompatActivity {
                                             if (documentSnapshot.exists()) {
                                                 // UserDetails exists, redirect to mainHome
                                                 Intent intent = new Intent(MainActivity.this, MainHome.class);
-                                                intent.putExtra("emailAuth", email);
-                                                intent.putExtra("passAuth", pass);
                                                 intent.putExtra("newLogin", true);
                                                 startActivity(intent);
                                                 finish();
@@ -166,7 +180,10 @@ public class MainActivity extends AppCompatActivity {
                                                 Intent intent = new Intent(MainActivity.this, UserAccountDetailSignup.class);
                                                 intent.putExtra("firebaseUser", user);
                                                 startActivity(intent);
-                                                finish();
+                                                // Delay the intent by 2 seconds (2000 milliseconds)
+                                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                                    finish();
+                                                }, 4000); // 2000 milliseconds = 2 seconds
                                             }
                                         }).addOnFailureListener(e -> {
                                             progressBar.setVisibility(View.GONE); // Hide on failure

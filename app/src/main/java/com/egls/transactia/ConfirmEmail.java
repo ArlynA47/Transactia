@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler; // Import Handler
+import android.os.Looper;
 import android.util.Log;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ public class ConfirmEmail extends AppCompatActivity {
     private boolean verificationChecked = false;
     private FirebaseAuth.AuthStateListener authListener;
     private AnimatorSet animatorSet;  // To control the animation set
+    String emailAuth ="", passAuth ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,10 @@ public class ConfirmEmail extends AppCompatActivity {
         // Initialize FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 
-        // Retrieve the FirebaseUser instance from the intent
-        user = getIntent().getParcelableExtra("firebaseUser");
+        Intent intent = getIntent();
 
+        // Retrieve the FirebaseUser instance from the intent
+        user = intent.getParcelableExtra("firebaseUser");
         if (user == null) {
             Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
             return;
@@ -116,6 +119,10 @@ public class ConfirmEmail extends AppCompatActivity {
                                     Intent intent = new Intent(ConfirmEmail.this, UserAccountDetailSignup.class);
                                     intent.putExtra("firebaseUser", currentUser);
                                     startActivity(intent);
+                                    // Delay the intent by 2 seconds (2000 milliseconds)
+                                    new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                        finish();
+                                    }, 4000); // 2000 milliseconds = 2 seconds
                                     finish();
                                 }, 2000); // 2000ms = 2 seconds delay
                             });
@@ -155,10 +162,12 @@ public class ConfirmEmail extends AppCompatActivity {
                             new Handler().postDelayed(() -> {
                                 // Move to the next activity after the image update
                                 Intent intent = new Intent(ConfirmEmail.this, UserAccountDetailSignup.class);
-                                intent.putExtra("userId", user.getUid());
-                                Toast.makeText(ConfirmEmail.this, "ID" + user.getUid(), Toast.LENGTH_SHORT).show();
+                                intent.putExtra("firebaseUser", user.getUid());
                                 startActivity(intent);
-                                finish();
+                                // Delay the intent by 2 seconds (2000 milliseconds)
+                                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                    finish();
+                                }, 4000); // 2000 milliseconds = 2 seconds
                             }, 2000); // 2000ms = 2 seconds delay
                         });
                     } else {

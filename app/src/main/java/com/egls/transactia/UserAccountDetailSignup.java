@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -47,6 +49,8 @@ public class UserAccountDetailSignup extends AppCompatActivity {
     String name, sex, bio, birthdate, contactInfo, location;
     String selectedCountry, selectedState, selectedRegion, selectedCity;
 
+    String emailAuth ="", passAuth ="";
+
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri imageUri;
     private FirebaseStorage storage;
@@ -77,8 +81,10 @@ public class UserAccountDetailSignup extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_signuptwo);
 
+        Intent intent = getIntent();
+
         // Retrieve the FirebaseUser instance from the intent
-        currUser = getIntent().getParcelableExtra("firebaseUser");
+        currUser = intent.getParcelableExtra("firebaseUser");
 
         // initialize Firebase Storage
         storage = FirebaseStorage.getInstance();
@@ -455,11 +461,6 @@ public class UserAccountDetailSignup extends AppCompatActivity {
 
                                 // Save user details along with image URL to Firestore
                                 saveUserDetailsToFirestore(db, userDetails);
-                                CustomToast.show(this, "Account details added successfully.");
-                                Intent intent = new Intent(UserAccountDetailSignup.this, MainHome.class);
-                                intent.putExtra("newLogin", true);
-                                intent.putExtra("firebaseUser", currUser);
-                                startActivity(intent);
                             }).addOnFailureListener(e -> {
                                 CustomToast.show(this, "Error getting image URL: " + e.getMessage());
                             }).addOnCompleteListener(task -> {
@@ -494,9 +495,9 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     CustomToast.show(this, "User details saved successfully!");
                     Intent intent = new Intent(UserAccountDetailSignup.this, MainHome.class);
-                    intent.putExtra("firebaseUser", currUser);
+                    intent.putExtra("newLogin", true);
                     startActivity(intent);
-                    finish(); // Close current activity
+                    finish();
                 })
                 .addOnFailureListener(e -> {
                     CustomToast.show(this, "Error saving user details: " + e.getMessage());

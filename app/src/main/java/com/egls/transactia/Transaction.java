@@ -3,28 +3,30 @@ package com.egls.transactia;
 import com.google.firebase.Timestamp;
 
 public class Transaction {
-    private String transactionId; // New field for the transaction ID
+    private String transactionid; // New field for the transaction ID
     private String transactionTitle;
     private String senderID;
     private String receiverID;
     private Timestamp timestamp;
+    private String status;
 
     public Transaction() {}
 
-    public Transaction(String transactionId, String transactionTitle, String senderID, String receiverID, Timestamp timestamp) {
-        this.transactionId = transactionId;
+    public Transaction(String transactionid, String transactionTitle, String senderID, String receiverID, Timestamp timestamp, String status) {
+        this.transactionid = transactionid;
         this.transactionTitle = transactionTitle;
         this.senderID = senderID;
         this.receiverID = receiverID;
         this.timestamp = timestamp;
+        this.status = status;
     }
 
-    public String getTransactionId() {
-        return transactionId;
+    public String getTransactionid() {
+        return transactionid;
     }
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
+    public void setTransactionid(String transactionid) {
+        this.transactionid = transactionid;
     }
 
     public String getTransactionTitle() {
@@ -57,5 +59,13 @@ public class Transaction {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -127,7 +128,7 @@ public class MyNeeds extends AppCompatActivity {
         ShowGal = findViewById(R.id.ShowGal);
 
         // ImageView to display the selected image from the gallery
-        selectedImageView = findViewById(R.id.selectedImageView);
+        selectedImageView = findViewById(R.id.imageViewMine);
 
         progressBar = findViewById(R.id.progressBar);
         TextView changeTextView = findViewById(R.id.change);
@@ -139,10 +140,12 @@ public class MyNeeds extends AppCompatActivity {
 
         saveTextView = findViewById(R.id.savetx);
 
-        newListing = getIntent().getBooleanExtra("newListing", false);
+        Intent intent1 = getIntent();
+
+        newListing = intent1.getBooleanExtra("newListing", false);
 
         if(newListing) {
-            isNeed = getIntent().getBooleanExtra("isNeed", true);
+            isNeed = intent1.getBooleanExtra("isNeed", true);
             if(isNeed) {
                 inNeedPage();
             } else {
@@ -345,7 +348,7 @@ public class MyNeeds extends AppCompatActivity {
                 findViewById(R.id.favors),
                 findViewById(R.id.skills),
                 findViewById(R.id.items),
-                findViewById(R.id.selectedImageView),
+                findViewById(R.id.imageView),
                 findViewById(R.id.ShowGal)// Add other ImageViews as needed
         };
         TextView[] textViews = {
@@ -760,9 +763,9 @@ public class MyNeeds extends AppCompatActivity {
 
     private void updateListingInFirestore(FirebaseFirestore db, String idToUse, Map<String, Object> listingData) {
         db.collection("Listings").document(idToUse)
-                .update(listingData) // Update existing fields, without overwriting unspecified fields
+                .set(listingData, SetOptions.merge()) // Creates document if it doesn't exist or updates fields if it does
                 .addOnSuccessListener(aVoid -> {
-                    CustomToast.show(this, "Listing created successfully!");
+                    CustomToast.show(this, "Listing saved successfully!");
                     progressBar.setVisibility(View.GONE);
                     finish();
                 })
@@ -771,5 +774,6 @@ public class MyNeeds extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                 });
     }
+
 
 }

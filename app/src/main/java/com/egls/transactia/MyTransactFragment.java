@@ -39,9 +39,8 @@ public class MyTransactFragment extends Fragment {
 
                 if (getActivity() instanceof MainHome) {
                     ((MainHome) getActivity()).hideViewRequestSent(); // Call the method in the activity
-
+                    ((MainHome) getActivity()).fetchCompletedTransactions();
                 }
-
             }
         });
 

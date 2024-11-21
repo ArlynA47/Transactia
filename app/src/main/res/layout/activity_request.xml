@@ -306,7 +306,7 @@
                     android:id="@+id/paymentOption"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginTop="11dp"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@+id/inexchange">
 
@@ -412,7 +412,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tradername" />
 
             <TextView
-                android:id="@+id/requestbt"
+                android:id="@+id/cancelreqbt"
                 android:layout_width="150dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="30dp"

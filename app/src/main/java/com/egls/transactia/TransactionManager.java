@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.ArrayList;
 
 public class TransactionManager {
 
@@ -35,8 +36,7 @@ public class TransactionManager {
         transactionData.put("paymentMode", paymentMode);
         transactionData.put("senderNote", senderNote);
         transactionData.put("receiverNote", "");
-        transactionData.put("senderAcceptTimestamp", "");
-        transactionData.put("transactionDoneTimestamp", "");
+        transactionData.put("completionMarkedBy", new ArrayList<String>());  // Initialize as an empty List<String>
         transactionData.put("timestamp", FieldValue.serverTimestamp());
 
         // Save the transaction to Firestore
@@ -57,41 +57,57 @@ public class TransactionManager {
         void onTransactionFailure(String errorMessage);
     }
 
-    public void updateTransaction(
-            String transactionId,
-            String senderListing,
-            String paymentTransaction,
-            String paymentMode,
-            String senderNote,
-            OnTransactionUpdateListener listener // Callback interface
-    ) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        // Create a map for the fields to update
-        Map<String, Object> updates = new HashMap<>();
-        updates.put("senderListing", senderListing);
-        updates.put("paymentTransaction", paymentTransaction);
-        updates.put("paymentMode", paymentMode);
-        updates.put("senderNote", senderNote); // Add senderNote to the update
-        updates.put("timestamp", FieldValue.serverTimestamp()); // Update the timestamp
-
-        // Update the document in Firestore
-        db.collection("Transactions").document(transactionId)
-                .update(updates)
-                .addOnSuccessListener(aVoid -> {
-                    // Notify success via the callback
-                    listener.onTransactionUpdateSuccess();
-                })
-                .addOnFailureListener(e -> {
-                    // Notify failure via the callback
-                    listener.onTransactionUpdateFailure(e.getMessage());
-                });
-    }
-
-    // Callback interface for transaction updates
     public interface OnTransactionUpdateListener {
         void onTransactionUpdateSuccess();
         void onTransactionUpdateFailure(String errorMessage);
     }
 
+    public void updateTransaction(
+            String transactionId, // This is the transactionId field within the document
+            String senderListing,
+            String paymentTransaction,
+            String paymentMode,
+            String senderNote,
+            OnTransactionUpdateListener listener
+    ) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Query to find the document by the transactionId field
+        db.collection("Transactions")
+                .whereEqualTo("transactionid", transactionId) // Search for transactionId field
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        // Get the document ID of the first matching document
+                        String documentId = querySnapshot.getDocuments().get(0).getId();
+
+                        // Create a map for the fields to update
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("senderListing", senderListing);
+                        updates.put("paymentTransaction", paymentTransaction);
+                        updates.put("paymentMode", paymentMode);
+                        updates.put("senderNote", senderNote);
+                        updates.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
+
+                        // Perform the update
+                        db.collection("Transactions").document(documentId)
+                                .update(updates)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Notify success via the callback
+                                    listener.onTransactionUpdateSuccess();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Notify failure via the callback
+                                    listener.onTransactionUpdateFailure("Update failed: " + e.getMessage());
+                                });
+                    } else {
+                        // No matching document found
+                        listener.onTransactionUpdateFailure("No transaction found with the specified ID.");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Notify query failure
+                    listener.onTransactionUpdateFailure("Query failed: " + e.getMessage());
+                });
+    }
 }
