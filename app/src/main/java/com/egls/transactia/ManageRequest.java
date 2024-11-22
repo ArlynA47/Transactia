@@ -169,6 +169,7 @@ public class ManageRequest extends AppCompatActivity {
         completebt.setText("Transaction Completed");
         completebt.setTextColor(ContextCompat.getColor(ManageRequest.this, R.color.lightgreen));
 
+
         rateUser.setOnClickListener(v -> {
             markTransactionAsRated(transactionid, fireBUserID);
         });
