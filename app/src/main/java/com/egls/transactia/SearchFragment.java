@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -39,6 +40,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SearchFragment extends Fragment {
 
     public boolean isFromRequest = false;
+
+    ImageView bgprofile;
 
     ConstraintLayout filteritems;
     RadioButton listingbt, Usersbt, filtersbtt;
@@ -71,6 +74,8 @@ public class SearchFragment extends Fragment {
 
     ConstraintLayout constraintLayout;
 
+    boolean isListingSearch = true;
+
 
     public SearchFragment() {
         // Required empty public constructor
@@ -94,6 +99,8 @@ public class SearchFragment extends Fragment {
         clearbt  = view.findViewById(R.id.Clearbt);
         noResultsTextView = view.findViewById(R.id.noResultsTextView);
 
+        bgprofile = view.findViewById(R.id.bgprofile);
+
         searchBar  = view.findViewById(R.id.searchBar);
 
         searchrv = view.findViewById(R.id.searchrv);
@@ -108,6 +115,8 @@ public class SearchFragment extends Fragment {
                 // Set the button tint for the selected listingbt
                 listingbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
                 selectedType = 1;
+                isListingSearch = true;
+                InitialSearch();
 
             } else if (checkedId == Usersbt.getId()) {
                 Usersbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
@@ -115,6 +124,9 @@ public class SearchFragment extends Fragment {
 
                 listingTypeFltr.setVisibility(View.GONE);
                 listingCategFltr.setVisibility(View.GONE);
+
+                isListingSearch = false;
+                startUserSearch();
             }
         });
 
@@ -237,7 +249,12 @@ public class SearchFragment extends Fragment {
                 // This is called every time the text is changed.
                 if (charSequence.length() > 0) {
                     // Call StartSearch() when text is not empty
-                    StartSearch();
+
+                    if(isListingSearch) {
+                        StartSearch();
+                    } else {
+                        startUserSearch();
+                    }
                 }
             }
 
@@ -247,7 +264,11 @@ public class SearchFragment extends Fragment {
                 if(searchBar.getText().toString().trim().isEmpty() || searchBar.getText().toString().trim()==null) {
                     InitialSearch();
                 } else {
-                    StartSearch();
+                    if(isListingSearch) {
+                        StartSearch();
+                    } else {
+                        startUserSearch();
+                    }
                 }
             }
         });
@@ -465,6 +486,9 @@ public class SearchFragment extends Fragment {
 
 
     private void updateRecyclerView(List<ListingWithUserDetails> listingsWithUserDetails) {
+
+        searchrv.setAdapter(null);
+
         ListingResultAdapter adapter = new ListingResultAdapter(listingsWithUserDetails);
         searchrv.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -480,6 +504,7 @@ public class SearchFragment extends Fragment {
         filteritems.setVisibility(View.GONE);
         filterDisp.setVisibility(View.GONE);
         constraintLayout.setVisibility(View.GONE);
+        bgprofile.setVisibility(View.GONE);
 
         getSelectedCountry();
 
@@ -592,10 +617,19 @@ public class SearchFragment extends Fragment {
         sl = selectedLoc;
 
         if(slt ==null) {
-            slt = "All Types";
+            if(isListingSearch) {
+                slt = "All Types";
+            } else {
+                slt = null;
+            }
         }
-        if(slt ==null) {
-            slc = "All Categories";
+        if(slc ==null) {
+            if(isListingSearch) {
+                slc = "All Categories";
+            } else {
+                slc = null;
+            }
+
         }
 
         StringBuilder filterStr = new StringBuilder();
@@ -607,7 +641,11 @@ public class SearchFragment extends Fragment {
         filterDisp.setVisibility(View.VISIBLE);
         filteritems.setVisibility(View.GONE);
         checkAlr = false;
-        StartSearch();
+        if(isListingSearch) {
+            StartSearch();
+        } else {
+            startUserSearch();
+        }
     }
 
     private void ClearFilters() {
@@ -624,7 +662,11 @@ public class SearchFragment extends Fragment {
         filterDisp.setVisibility(View.GONE);
         filteritems.setVisibility(View.GONE);
         checkAlr = false;
-        StartSearch();
+        if(isListingSearch) {
+            StartSearch();
+        } else {
+            startUserSearch();
+        }
     }
 
     private void showLocationPickerDialog() {
@@ -792,6 +834,70 @@ public class SearchFragment extends Fragment {
                     Log.e("SelectedCountry", "Error retrieving selectedCountry: " + e.getMessage(), e);
                 });
     }
+
+    private void startUserSearch() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference userDetailsRef = db.collection("UserDetails");
+
+        // Initialize the query
+        Query query = userDetailsRef;
+
+        // Step 1: Apply search bar filter for partial name matching
+        String searchText = searchBar.getText().toString().trim().toLowerCase();
+        if (!searchText.isEmpty()) {
+            String endText = searchText + "\uf8ff"; // Firestore unicode for range matching
+            query = query.whereGreaterThanOrEqualTo("name", searchText)
+                    .whereLessThan("name", endText);
+        }
+
+        // Step 2: Apply location filters if specified
+        if (selectedCountry != null && !selectedCountry.equals("All Countries")) {
+            query = query.whereEqualTo("locationMap.country", selectedCountry);
+        }
+        if (selectedRegion != null && !selectedRegion.equals("All Regions")) {
+            query = query.whereEqualTo("locationMap.region", selectedRegion);
+        }
+        if (selectedState != null && !selectedState.equals("All States")) {
+            query = query.whereEqualTo("locationMap.state", selectedState);
+        }
+        if (selectedCity != null && !selectedCity.equals("All Cities")) {
+            query = query.whereEqualTo("locationMap.city", selectedCity);
+        }
+
+        // Execute the query and fetch the results
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                List<UserDetails> userResults = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    UserDetails user = document.toObject(UserDetails.class);
+                    String userId = document.getId(); // Firestore's document ID
+                    user.setUserId(userId); //
+                    userResults.add(user);
+                }
+
+                if (userResults.isEmpty()) {
+                    displayNoResultsFound();
+                } else {
+                    updateUserRecyclerView(userResults);
+                    searchrv.setVisibility(View.VISIBLE);
+                    noResultsTextView.setVisibility(View.GONE);
+                }
+            } else {
+                Log.e("UserSearch", "Error getting users: ", task.getException());
+                displayNoResultsFound();
+            }
+        });
+    }
+
+    private void updateUserRecyclerView(List<UserDetails> userResults) {
+
+        searchrv.setAdapter(null);
+        // Update the RecyclerView with the search results
+        TraderResultAdapter adapter = new TraderResultAdapter(userResults);
+        searchrv.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
 
 
 

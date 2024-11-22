@@ -69,7 +69,7 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
         // Set listing info
         holder.title_txt.setText(listing.getTitle());
         holder.ltype.setText(listing.getListingType());
-        holder.description_txt.setText(listing.getListingDescription());
+        holder.description_txt.setText(limitWords(listing.getListingDescription(), 10));
         holder.categ_txt.setText(listing.getListingCategory());
 
         // Set images (You may want to load images using a library like Glide or Picasso)
@@ -119,6 +119,22 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
 
 
         });
+    }
+
+    // Method to limit the number of words
+    private String limitWords(String description, int maxWords) {
+        String[] words = description.split("\\s+"); // Split the description into words
+        if (words.length <= maxWords) {
+            return description; // Return the full description if within limit
+        }
+
+        // Join the first maxWords words and return
+        StringBuilder limitedDescription = new StringBuilder();
+        for (int i = 0; i < maxWords; i++) {
+            limitedDescription.append(words[i]).append(" ");
+        }
+
+        return limitedDescription.toString().trim()+"..."; // Remove trailing space and return
     }
 
 

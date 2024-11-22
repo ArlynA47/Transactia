@@ -36,7 +36,7 @@
                     android:id="@+id/profileUser"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/circle_shape"
                     android:clipToOutline="true"
                     android:scaleType="centerCrop"
@@ -70,82 +70,78 @@
                     app:layout_constraintStart_toStartOf="@+id/UserName"
                     app:layout_constraintTop_toBottomOf="@+id/UserName" />
 
+                <TextView
+                    android:id="@+id/rateLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Rating"
+                    android:textAlignment="center"
+                    android:textColor="#FFC107"
+                    android:textSize="@dimen/text_size_small"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/rateLayout"
+                    app:layout_constraintTop_toTopOf="@+id/rateLayout" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/rateLayout"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/acctx"
-                    android:backgroundTint="@color/lightgreen"
                     app:layout_constraintStart_toStartOf="@+id/UserLoc"
                     app:layout_constraintTop_toBottomOf="@+id/UserLoc"
-                    app:layout_constraintWidth_percent="0.5"
+                    app:layout_constraintWidth_percent="0.40"
                     app:layout_constraintBottom_toBottomOf="parent">
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/gd1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.05" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/gd2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.23" />
+                        app:layout_constraintGuide_begin="28dp" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/gd3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.41" />
+                        app:layout_constraintGuide_percent="0.40" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/gd4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.59" />
+                        app:layout_constraintGuide_percent="0.60" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/gd5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.77" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/gd6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.95" />
+                        app:layout_constraintGuide_percent="0.80" />
 
                     <ImageView
                         android:id="@+id/star1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
                         android:adjustViewBounds="true"
                         android:clipToOutline="true"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/startuc"
+                        android:src="@drawable/staruf"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/gd2"
-                        app:layout_constraintStart_toStartOf="@+id/gd1"
+                        app:layout_constraintStart_toStartOf="parent"
                         />
 
                     <ImageView
                         android:id="@+id/star2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
                         android:adjustViewBounds="true"
                         android:clipToOutline="true"
                         android:background="@drawable/starbg"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/startuc"
+                        android:src="@drawable/staruf"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/gd3"
                         app:layout_constraintStart_toStartOf="@+id/gd2"
                        />
@@ -154,12 +150,12 @@
                         android:id="@+id/star3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
                         android:adjustViewBounds="true"
                         android:clipToOutline="true"
                         android:background="@drawable/starbg"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/startuc"
+                        android:src="@drawable/staruf"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/gd4"
                         app:layout_constraintStart_toStartOf="@+id/gd3"
                          />
@@ -167,12 +163,12 @@
                         android:id="@+id/star4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
                         android:adjustViewBounds="true"
                         android:clipToOutline="true"
                         android:background="@drawable/starbg"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/startuc"
+                        android:src="@drawable/staruf"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="@+id/gd5"
                         app:layout_constraintStart_toStartOf="@+id/gd4"
                         />
@@ -181,18 +177,15 @@
                         android:id="@+id/star5"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
                         android:adjustViewBounds="true"
                         android:clipToOutline="true"
                         android:background="@drawable/starbg"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/startuc"
-                        app:layout_constraintEnd_toEndOf="@+id/gd6"
+                        android:src="@drawable/staruf"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/gd5"
                        />
-
-
-
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

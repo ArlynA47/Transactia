@@ -173,7 +173,7 @@ public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHo
             limitedDescription.append(words[i]).append(" ");
         }
 
-        return limitedDescription.toString().trim(); // Remove trailing space and return
+        return limitedDescription.toString().trim()+"..."; // Remove trailing space and return
     }
 
     @Override

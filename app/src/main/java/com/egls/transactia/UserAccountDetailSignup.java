@@ -440,13 +440,12 @@ public class UserAccountDetailSignup extends AppCompatActivity {
             // Reference to the ProgressBar
             ProgressBar progressBar = findViewById(R.id.progressBar);
 
+            String udid = db.collection("UserDetails").document().getId();
+
             // Check if there's an image to upload
             if (imageUri != null) {
                 // Show the progress bar
                 progressBar.setVisibility(View.VISIBLE);
-
-                // Create a unique listing ID if needed
-                String udid = db.collection("UserDetails").document().getId();
 
                 // Firebase Storage reference with listing ID subfolder
                 StorageReference storageRef = storage.getReference().child("images/pfp/" + udid + "/image.jpg");
