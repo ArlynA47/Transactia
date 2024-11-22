@@ -159,16 +159,18 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:backgroundTint="#33443C"
+            android:drawablePadding="8dp"
             android:gravity="start"
             android:paddingStart="30dp"
             android:text="View Sent Requests"
             android:textColor="@color/grey"
-            android:textStyle="bold"
             android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+            app:drawableLeftCompat="@drawable/sricon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.75"/>
+            app:layout_constraintVertical_bias="0.75" />
 
         <View
             android:id="@+id/requestLine"
@@ -176,9 +178,9 @@
             android:layout_height="1dp"
             android:background="#AFA6A5A5"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView36"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintWidth_percent="0.85"/>
+            app:layout_constraintStart_toStartOf="@+id/textView36"
+            app:layout_constraintWidth_percent="0.85" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -197,16 +199,18 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:backgroundTint="#33443C"
+            android:drawablePadding="8dp"
             android:gravity="start"
             android:paddingStart="30dp"
             android:text="View Transactions in Progress"
             android:textColor="@color/grey"
-            android:textStyle="bold"
             android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+            app:drawableLeftCompat="@drawable/progress"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.75"/>
+            app:layout_constraintVertical_bias="0.75" />
 
         <View
             android:id="@+id/requestLine2"
@@ -214,9 +218,9 @@
             android:layout_height="1dp"
             android:background="#AFA6A5A5"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView37"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintWidth_percent="0.85"/>
+            app:layout_constraintStart_toStartOf="@+id/textView37"
+            app:layout_constraintWidth_percent="0.85" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

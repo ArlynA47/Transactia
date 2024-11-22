@@ -50,6 +50,7 @@
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="79dp"
+            android:layout_marginTop="-10dp"
             android:background="@drawable/bottombox"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -61,8 +62,8 @@
                 android:layout_marginBottom="-79dp"
                 android:backgroundTint="@android:color/darker_gray"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/greentransactiatext" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -71,27 +72,27 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/Filtersitems"
             android:layout_width="0dp"
-            app:layout_constraintWidth_percent="0.88"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.40"
-            android:background="@drawable/acctx"
+            android:background="@drawable/greenfilter"
             android:paddingVertical="20dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.40"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/filterbt">
+            app:layout_constraintTop_toTopOf="@+id/filterbt"
+            app:layout_constraintWidth_percent="0.88">
 
             <Spinner
                 android:id="@+id/spinner1"
                 android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.88"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.16"
-                android:background="@drawable/acctx"
+                android:background="@drawable/filterdp"
                 android:spinnerMode="dropdown"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHeight_percent="0.16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.88" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gd1"
@@ -103,14 +104,15 @@
             <Spinner
                 android:id="@+id/spinner2"
                 android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.88"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.16"
-                android:background="@drawable/acctx"
+                android:background="@drawable/filterdp"
                 android:spinnerMode="dropdown"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="@color/extrawhite"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/gd1" />
+                app:layout_constraintHeight_percent="0.16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gd1"
+                app:layout_constraintWidth_percent="0.88" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gd2"
@@ -122,10 +124,8 @@
             <EditText
                 android:id="@+id/loctx"
                 android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.88"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.16"
-                android:background="@drawable/acctx"
+                android:background="@drawable/filterdp"
                 android:focusable="false"
                 android:focusableInTouchMode="true"
                 android:hint="Location *"
@@ -135,9 +135,11 @@
                 android:textColor="@color/black"
                 android:textColorHint="#BDBDBD"
                 android:textCursorDrawable="@drawable/cursor_black"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/gd2" />
+                app:layout_constraintHeight_percent="0.16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gd2"
+                app:layout_constraintWidth_percent="0.88" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gd4"
@@ -156,30 +158,30 @@
             <TextView
                 android:id="@+id/Applybt"
                 android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.30"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.13"
-                android:background="@drawable/button"
+                android:background="@drawable/gradientbt"
                 android:gravity="center"
                 android:text="Apply"
                 android:textAlignment="gravity"
-                android:textColor="@color/black"
+                android:textColor="@color/extrawhite"
+                app:layout_constraintBottom_toTopOf="@+id/gd3"
                 app:layout_constraintEnd_toStartOf="@id/gd5"
-                app:layout_constraintBottom_toTopOf="@+id/gd3" />
+                app:layout_constraintHeight_percent="0.13"
+                app:layout_constraintWidth_percent="0.30" />
 
             <TextView
                 android:id="@+id/Clearbt"
                 android:layout_width="0dp"
-                app:layout_constraintWidth_percent="0.30"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.13"
-                android:background="@drawable/button"
+                android:background="@drawable/whitebt"
                 android:gravity="center"
                 android:text="Clear"
                 android:textAlignment="gravity"
                 android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/gd3"
+                app:layout_constraintHeight_percent="0.13"
                 app:layout_constraintStart_toStartOf="@id/gd4"
-                app:layout_constraintBottom_toTopOf="@+id/gd3" />
+                app:layout_constraintWidth_percent="0.30" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/gd3"

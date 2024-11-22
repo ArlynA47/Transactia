@@ -28,7 +28,7 @@
             android:paddingStart="30dp"
             android:text="About"
             android:textColor="#33443C"
-            android:textSize="34sp"
+            android:textSize="@dimen/title"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

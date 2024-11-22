@@ -54,25 +54,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/cancelbt"
             android:layout_width="120dp"
             android:layout_height="40dp"
             android:layout_marginStart="70dp"
             android:layout_marginTop="28dp"
-            android:backgroundTint="#808080"
+            android:background="@drawable/button"
             android:text="CANCEL"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/savebt"
             android:layout_width="120dp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="150dp"
-            android:backgroundTint="#33443C"
+            android:background="@drawable/gradientbt"
             android:text="SAVE"
             android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/cancelbt"
@@ -96,12 +96,12 @@
             android:paddingStart="30dp"
             android:text="Update User Details"
             android:textColor="#33443C"
-            android:textSize="30sp"
+            android:textSize="@dimen/title"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.75"  />
+            app:layout_constraintVertical_bias="0.75" />
 
         <TextView
             android:id="@+id/savetxx"

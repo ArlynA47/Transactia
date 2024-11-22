@@ -145,7 +145,8 @@ public class SearchFragment extends Fragment {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView textView = (TextView) view;
-                textView.setTextColor(Color.BLACK); // Set text color to black for selected item
+                textView.setTextColor(ContextCompat.getColor(getContext(), R.color.extrawhite));
+
                 return view;
             }
 
@@ -153,7 +154,7 @@ public class SearchFragment extends Fragment {
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView textView = (TextView) view;
-                textView.setTextColor(Color.BLACK); // Set text color to black for dropdown items
+                textView.setTextColor(ContextCompat.getColor(getContext(), R.color.extrawhite));
                 return view;
             }
         };
@@ -166,7 +167,7 @@ public class SearchFragment extends Fragment {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView textView = (TextView) view;
-                textView.setTextColor(Color.BLACK); // Set text color to black for selected item
+                textView.setTextColor(ContextCompat.getColor(getContext(), R.color.extrawhite));
                 return view;
             }
 
@@ -174,7 +175,8 @@ public class SearchFragment extends Fragment {
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 View view = super.getDropDownView(position, convertView, parent);
                 TextView textView = (TextView) view;
-                textView.setTextColor(Color.BLACK); // Set text color to black for dropdown items
+                textView.setTextColor(ContextCompat.getColor(getContext(), R.color.extrawhite));
+
                 return view;
             }
         };
