@@ -111,42 +111,42 @@ public class RateTrader extends AppCompatActivity {
 
     private void clickStar(int starNum) {
 
-        star1.setImageResource(R.drawable.startuc);
-        star2.setImageResource(R.drawable.startuc);
-        star3.setImageResource(R.drawable.startuc);
-        star4.setImageResource(R.drawable.startuc);
-        star5.setImageResource(R.drawable.startuc);
+        star1.setImageResource(R.drawable.staruf);
+        star2.setImageResource(R.drawable.staruf);
+        star3.setImageResource(R.drawable.staruf);
+        star4.setImageResource(R.drawable.staruf);
+        star5.setImageResource(R.drawable.staruf);
 
         switch (starNum) {
             case 1:
                 ratingLabel.setText("1 Star Rating");
-                    star1.setImageResource(R.drawable.startc);
+                    star1.setImageResource(R.drawable.starf);
                 break;
             case 2:
                 ratingLabel.setText("2 Star Rating");
-                star1.setImageResource(R.drawable.startc);
-                star2.setImageResource(R.drawable.startc);
+                star1.setImageResource(R.drawable.starf);
+                star2.setImageResource(R.drawable.starf);
                 break;
             case 3:
                 ratingLabel.setText("3 Star Rating");
-                star1.setImageResource(R.drawable.startc);
-                star2.setImageResource(R.drawable.startc);
-                star3.setImageResource(R.drawable.startc);
+                star1.setImageResource(R.drawable.starf);
+                star2.setImageResource(R.drawable.starf);
+                star3.setImageResource(R.drawable.starf);
                 break;
             case 4:
                 ratingLabel.setText("4 Star Rating");
-                star1.setImageResource(R.drawable.startc);
-                star2.setImageResource(R.drawable.startc);
-                star3.setImageResource(R.drawable.startc);
-                star4.setImageResource(R.drawable.startc);
+                star1.setImageResource(R.drawable.starf);
+                star2.setImageResource(R.drawable.starf);
+                star3.setImageResource(R.drawable.starf);
+                star4.setImageResource(R.drawable.starf);
                 break;
             case 5:
                 ratingLabel.setText("5 Star Rating");
-                star1.setImageResource(R.drawable.startc);
-                star2.setImageResource(R.drawable.startc);
-                star3.setImageResource(R.drawable.startc);
-                star4.setImageResource(R.drawable.startc);
-                star5.setImageResource(R.drawable.startc);
+                star1.setImageResource(R.drawable.starf);
+                star2.setImageResource(R.drawable.starf);
+                star3.setImageResource(R.drawable.starf);
+                star4.setImageResource(R.drawable.starf);
+                star5.setImageResource(R.drawable.starf);
                 break;
         }
 

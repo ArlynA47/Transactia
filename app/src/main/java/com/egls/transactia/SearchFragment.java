@@ -112,6 +112,9 @@ public class SearchFragment extends Fragment {
             } else if (checkedId == Usersbt.getId()) {
                 Usersbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
                 selectedType = 2;
+
+                listingTypeFltr.setVisibility(View.GONE);
+                listingCategFltr.setVisibility(View.GONE);
             }
         });
 

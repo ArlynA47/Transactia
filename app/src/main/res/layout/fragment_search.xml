@@ -211,7 +211,7 @@
                 android:id="@+id/Usersbt"
                 android:layout_width="109dp"
                 android:layout_height="match_parent"
-                android:enabled="false"
+                android:buttonTint="@color/maincolor"
                 android:text="Users"
                 android:textColor="@color/black"
                 android:textColorLink="@color/maincolor" />
