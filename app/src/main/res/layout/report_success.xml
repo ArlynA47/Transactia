@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/reportpop"
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="450dp"
         android:backgroundTint="@color/extrawhite"
         android:background="@drawable/txrd"
         android:visibility="visible"
@@ -21,18 +21,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
+        <ImageView
+            android:id="@+id/profileUser2"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="11dp"
+            android:background="@drawable/circle_shape"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/chik"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView71" />
+
         <TextView
             android:id="@+id/textView71"
-            android:layout_width="0dp"
+            android:layout_width="241dp"
             android:layout_height="39dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="11dp"
-            android:text="Report Violation"
+            android:text="Thank you for your report!"
             android:textStyle="bold"
             android:textColor="@color/maincolor"
             android:textSize="@dimen/text_size_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/violation"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -40,25 +54,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="top"
-            android:textColor="#F44336"
-            android:text="Violation"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_small"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/grey"
+            android:text="We value your commitment to maintaining a safe and respectful community."
+            android:textSize="11sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintWidth_percent="0.8"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView71" />
+            app:layout_constraintTop_toBottomOf="@+id/profileUser2" />
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/p2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="top"
-            android:textColor="@color/grey"
-            android:text="Violation"
-            android:layout_marginTop="10dp"
-            android:textSize="@dimen/text_size_small"
+            android:layout_marginTop="7dp"
+            android:textColor="#5B5959"
+            android:text="Our moderation team will carefully review the information you’ve provided. If further action is required, appropriate steps will be taken promptly."
+            android:textSize="11sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintWidth_percent="0.8"
@@ -66,28 +81,44 @@
             app:layout_constraintTop_toBottomOf="@+id/violation" />
 
         <TextView
-            android:id="@+id/reportbackbt"
-            android:layout_width="80dp"
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:gravity="top"
+            android:textColor="@color/grey"
+            android:text="Thank you for helping us keep our platform safe and welcoming for everyone."
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintWidth_percent="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/p2" />
+
+        <TextView
+            android:id="@+id/viewReports"
+            android:layout_width="wrap_content"
             android:layout_height="27dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="8dp"
+            android:paddingHorizontal="15dp"
             android:background="@drawable/button"
             android:gravity="center"
-            android:text="Cancel"
-            android:textColor="@color/black"
+            android:text="View my reports"
+            android:textColor="@color/grey"
             android:textSize="@dimen/text_size_small"
-            app:layout_constraintEnd_toStartOf="@+id/reportcfbt"
-            app:layout_constraintBottom_toBottomOf="@+id/reportcfbt" />
+            app:layout_constraintEnd_toStartOf="@+id/ok"
+            app:layout_constraintBottom_toBottomOf="@+id/ok" />
 
         <TextView
-            android:id="@+id/reportcfbt"
+            android:id="@+id/ok"
             android:layout_width="80dp"
             android:layout_height="27dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="25dp"
             android:background="@drawable/gradientbt"
             android:gravity="center"
-            android:text="Confirm"
+            android:text="OK"
             android:textColor="@color/extrawhite"
             android:textSize="@dimen/text_size_small"
             app:layout_constraintEnd_toEndOf="parent"

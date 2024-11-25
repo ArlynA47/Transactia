@@ -28,12 +28,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -42,11 +45,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 public class Request extends AppCompatActivity {
+
+    FragmentContainerView fragmentContainerView;
+    View reportPromptLayout, reportSuccessLayout, dark_overlay;
+    ConstraintLayout reportPrompt, reportSuccess;
+
+    TextView reportcfbt, reportbackbt, violation, description, viewReports, ok;
 
     String fireBUserID;
     boolean newRequest;
@@ -110,6 +120,21 @@ public class Request extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);  // Apply padding to avoid overlap
             return insets;
         });
+
+        fragmentContainerView = findViewById(R.id.fragmentContainerView);
+        // Initialize views
+        reportPromptLayout = findViewById(R.id.layout_reportprompttt); // layout where the report prompt is defined
+        reportPrompt = findViewById(R.id.reportpromptt); // layout that triggers the report prompt visibility
+        reportcfbt = findViewById(R.id.reportcfbt);
+        reportbackbt = findViewById(R.id.reportbackbt);
+        violation = findViewById(R.id.violation);
+        description = findViewById(R.id.description);
+
+        dark_overlay = findViewById(R.id.dark_overlay);
+
+        reportSuccessLayout = findViewById(R.id.layout_reportSuccess);
+        viewReports = findViewById(R.id.viewReports);
+        ok = findViewById(R.id.ok);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -314,6 +339,28 @@ public class Request extends AppCompatActivity {
         if(!newRequest) {
             loadTransactionDetails(transactionid);
         }
+
+        // Set click listener for reportPrompt
+        reportPrompt.setOnClickListener(v -> {
+            // Make report prompt visible and bring it to the front
+            pickCategory();
+        });
+
+        viewReports.setOnClickListener(v -> {
+            reportSuccessLayout.setVisibility(View.GONE);
+            dark_overlay.setVisibility(View.GONE);
+            Intent intentReport = new Intent(Request.this, My_Reports.class);
+            startActivity(intentReport);
+            finish();
+
+        });
+        ok.setOnClickListener(v -> {
+            dark_overlay.setVisibility(View.GONE);
+            reportSuccessLayout.setVisibility(View.GONE);
+            finish();
+        });
+
+        // ON CREATE END
     }
 
     private void fetchListingDetails(FirebaseFirestore db, String listingId, boolean isReceiverListing) {
@@ -649,8 +696,6 @@ public class Request extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(Request.this, MyRequests.class);
-        startActivity(intent);
         finish();
     }
 
@@ -667,11 +712,31 @@ public class Request extends AppCompatActivity {
 
     private void loadMoreFragment() {
         SearchFragment fragment = new SearchFragment();
-        fragment.isFromRequest = true;
+        fragment.isFromRequest = true; // Pass your data
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainerView, fragment, "MY_FRAGMENT_TAG")
+                .replace(R.id.fragmentContainerView, fragment, "MY_FRAGMENT_TAG") // Load fragment
                 .commit();
     }
+
+    private void hideMoreFragment() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("MY_FRAGMENT_TAG");
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .hide(fragment) // Hides fragment but keeps it in memory
+                    .commit();
+        }
+    }
+
+    private void showMoreFragment() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag("MY_FRAGMENT_TAG");
+        if (fragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .show(fragment) // Makes the fragment visible again
+                    .commit();
+        }
+    }
+
+
 
 
     private void createTransactionRequest() {
@@ -759,7 +824,113 @@ public class Request extends AppCompatActivity {
     }
 
 
+    private void pickCategory() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        // Step 2: Fetch Categories (sub-collections under the type)
+        db.collection("Violations").document("Listing").collection("Categories").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                List<String> categories = new ArrayList<>();
+                for (DocumentSnapshot document : task.getResult()) {
+                    categories.add(document.getId());
+                }
+
+                // Show dialog for selecting a category
+                showSelectionDialog("Select Category", categories, selectedCategory -> pickSubCategory("Listing", selectedCategory));
+            }
+        });
+    }
+
+    private void pickSubCategory(String type, String category) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Step 3: Fetch SubCategories (documents in SubCategories collection)
+        db.collection("Violations").document(type)
+                .collection("Categories").document(category)
+                .collection("SubCategories").get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        List<String> subCategories = new ArrayList<>();
+                        List<String> descriptions = new ArrayList<>();
+                        for (DocumentSnapshot document : task.getResult()) {
+                            subCategories.add(document.getId());
+                            descriptions.add(document.getString("desc"));
+                        }
+
+                        // Show dialog for selecting a sub-category
+                        showSelectionDialog("Select Sub-Category", subCategories, selectedSubCategory -> {
+                            int index = subCategories.indexOf(selectedSubCategory);
+                            String description = descriptions.get(index);
+                            showViolationDetails(selectedSubCategory, description);
+                        });
+                    }
+                });
+    }
+
+    private void showSelectionDialog(String title, List<String> options, Traderprofile.OnOptionSelectedListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+        builder.setTitle(title)
+                .setItems(options.toArray(new String[0]), (dialog, which) -> {
+                    String selectedOption = options.get(which);
+                    listener.onOptionSelected(selectedOption);
+                })
+                .show();
+    }
+
+    private void showViolationDetails(String subCategory, String description) {
+        // Example data for reporter and reported user IDs
+        String reporterId = fireBUserID; // ID of the user reporting
+        String reportedListingId = listingId; // Replace this with the actual reported user ID
+        // Timestamp for the report
+
+        hideMoreFragment();
+        dark_overlay.setVisibility(View.VISIBLE);
+        reportPromptLayout.setVisibility(View.VISIBLE);
+        reportPromptLayout.bringToFront();
+
+        violation.setText(subCategory);
+        this.description.setText(description);
+
+        reportcfbt.setOnClickListener(v -> {
+            reportPromptLayout.setVisibility(View.GONE);
+            saveViolationReport(subCategory, description, reporterId, reportedListingId);
+        });
+        reportbackbt.setOnClickListener(v -> {
+            reportPromptLayout.setVisibility(View.GONE);
+            dark_overlay.setVisibility(View.GONE);
+            showMoreFragment();
+        });
+
+    }
+
+    private void saveViolationReport(String subCategory, String description, String reporterId, String reportedListingId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Data to be saved
+        Map<String, Object> reportData = new HashMap<>();
+        reportData.put("violationType", subCategory);
+        reportData.put("description", description);
+        reportData.put("reporterId", reporterId);
+        reportData.put("reportedListingId", reportedListingId);
+        reportData.put("reportedUserId", ownerUserId);
+        reportData.put("timestamp", FieldValue.serverTimestamp());
+        reportData.put("status", "Pending");
+
+        // Save to Firestore under Reports/User
+        db.collection("Reports").document("Listing").collection("ListingReports").add(reportData)
+                .addOnSuccessListener(documentReference -> {
+                    reportSuccessLayout.setVisibility(View.VISIBLE);
+                    reportSuccessLayout.bringToFront();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to submit report: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    // Interface for handling dialog selections
+    interface OnOptionSelectedListener {
+        void onOptionSelected(String selectedOption);
+    }
 
 
 }

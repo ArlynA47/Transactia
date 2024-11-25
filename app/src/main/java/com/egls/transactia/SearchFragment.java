@@ -113,13 +113,15 @@ public class SearchFragment extends Fragment {
         searchType.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == listingbt.getId()) {
                 // Set the button tint for the selected listingbt
-                listingbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
+                listingbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#5CC70D")));
+                Usersbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
                 selectedType = 1;
                 isListingSearch = true;
                 InitialSearch();
 
             } else if (checkedId == Usersbt.getId()) {
-                Usersbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
+                Usersbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#5CC70D")));
+                listingbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
                 selectedType = 2;
 
                 listingTypeFltr.setVisibility(View.GONE);
@@ -899,6 +901,13 @@ public class SearchFragment extends Fragment {
     }
 
 
+    public void hideRv() {
+        searchrv.setVisibility(View.GONE);
+    }
+
+    public void showRv() {
+        searchrv.setVisibility(View.VISIBLE);
+    }
 
 
 }
