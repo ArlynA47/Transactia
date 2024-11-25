@@ -118,11 +118,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
-                android:layout_marginTop="10dp"
                 android:text="LOGOUT"
                 android:textColor="@color/white"
+                android:textSize="@dimen/text_size_large"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/logout"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -153,6 +155,7 @@
                 android:layout_marginTop="14dp"
                 android:text="About Transactia"
                 android:textColor="#33443C"
+                android:textSize="@dimen/text_size_medium"
                 app:layout_constraintStart_toEndOf="@+id/information"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -163,6 +166,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
                 android:text="Learn more about Transactia!"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toEndOf="@+id/information"
                 app:layout_constraintTop_toBottomOf="@+id/textView47" />
 
@@ -238,6 +242,7 @@
                 android:layout_marginTop="14dp"
                 android:text="Update User Detail"
                 android:textColor="#33443C"
+                android:textSize="@dimen/text_size_medium"
                 app:layout_constraintStart_toEndOf="@+id/updateuser"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -248,6 +253,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
                 android:text="Edit and update your personal details."
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toEndOf="@+id/updateuser"
                 app:layout_constraintTop_toBottomOf="@+id/textView39" />
 
@@ -288,6 +294,7 @@
                 android:layout_marginTop="14dp"
                 android:text="Password Reset"
                 android:textColor="#33443C"
+                android:textSize="@dimen/text_size_medium"
                 app:layout_constraintStart_toEndOf="@+id/passreset"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -298,6 +305,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
                 android:text="Reset and update your password."
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toEndOf="@+id/passreset"
                 app:layout_constraintTop_toBottomOf="@+id/textView41" />
 
@@ -339,6 +347,7 @@
                 android:layout_marginTop="14dp"
                 android:text="My Reports"
                 android:textColor="#33443C"
+                android:textSize="@dimen/text_size_medium"
                 app:layout_constraintStart_toEndOf="@+id/myreports"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -349,6 +358,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
                 android:text="View your account's user reports."
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toEndOf="@+id/myreports"
                 app:layout_constraintTop_toBottomOf="@+id/textView45" />
 
@@ -390,6 +400,7 @@
                 android:layout_marginTop="14dp"
                 android:text="Archive"
                 android:textColor="#33443C"
+                android:textSize="@dimen/text_size_medium"
                 app:layout_constraintStart_toEndOf="@+id/archimg"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -400,6 +411,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
                 android:text="View your archived listings."
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toEndOf="@+id/archimg"
                 app:layout_constraintTop_toBottomOf="@+id/archtitle" />
 
@@ -420,8 +432,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="19dp"
             android:text="Your Account"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_size_large"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
 
@@ -432,7 +444,7 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="16dp"
             android:text="More Information"
-            android:textColor="@color/black"
+            android:textColor="@color/grey"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/archive" />

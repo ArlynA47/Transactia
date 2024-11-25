@@ -8,6 +8,7 @@ import android.content.Intent; // Import this for the Intent
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.InputType;
 import android.util.Patterns;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
 
     TextView forgotPass;
-
+    ImageView eyereveal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         signupbt = findViewById(R.id.signupbt); // Initialize the sign-up button
         loginbt =  findViewById(R.id.loginbt);
         forgotPass = findViewById(R.id.forgotpass);
-
+        eyereveal = findViewById(R.id.eyereveal);
         usernameEditText = findViewById(R.id.usernametx);
         passwordEditText = findViewById(R.id.passtx);
 
@@ -205,8 +206,23 @@ public class MainActivity extends AppCompatActivity {
                 usernameEditText.setError("Please enter correct email");
             }
         });
+        eyereveal.setTag("hidden");
 
+eyereveal.setOnClickListener(v -> {
 
+    if (eyereveal.getTag().equals("hidden")) {
+        // Show the password
+        passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        eyereveal.setImageResource(R.drawable.eye); // Change to "visible" icon
+        eyereveal.setTag("visible"); // Update the tag
+    } else {
+        // Hide the password
+        passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        eyereveal.setImageResource(R.drawable.eyeclose); // Change to "hidden" icon
+        eyereveal.setTag("hidden"); // Update the tag
+    }
+
+});
         forgotPass.setOnClickListener(v -> {
             // Create an intent to start the FindAcc activity
             Intent intent = new Intent(MainActivity.this, findacc.class);
