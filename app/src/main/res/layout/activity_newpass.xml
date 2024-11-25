@@ -10,14 +10,17 @@
     tools:context=".newpass">
 
     <LinearLayout
-        android:layout_width="349dp"
-        android:layout_height="396dp"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="131dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         android:background="@drawable/round"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHeight_percent="0.48"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintWidth_percent=".90">
 
         <TextView
             android:id="@+id/textView2"
@@ -27,9 +30,8 @@
             android:layout_marginTop="40dp"
             android:text="New Password"
             android:textColor="#33443C"
-            android:textSize="35sp"
-            android:textStyle="bold"
-            />
+            android:textSize="36sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/newpasss"
@@ -44,7 +46,7 @@
             android:inputType="textPassword"
             android:paddingStart="8dp"
             android:textColor="@color/black"
-            android:textCursorDrawable="@drawable/cursor_black"/>
+            android:textCursorDrawable="@drawable/cursor_black" />
 
         <EditText
             android:id="@+id/recheck"
@@ -59,19 +61,44 @@
             android:inputType="textPassword"
             android:paddingStart="8dp"
             android:textColor="@color/black"
-            android:textCursorDrawable="@drawable/cursor_black"/>
+            android:textCursorDrawable="@drawable/cursor_black" />
 
         <Button
             android:id="@+id/confirm"
             android:layout_width="181dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="140dp"
+            android:layout_marginStart="110dp"
             android:layout_marginTop="100dp"
             android:backgroundTint="#33443C"
             android:text="Confirm"
             android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="17sp"
+            android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_begin="378dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="533dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

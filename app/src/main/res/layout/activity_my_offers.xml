@@ -11,29 +11,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/extrawhite"
+        android:visibility="visible"
         tools:context=".MyOffers">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/savepop"
             android:layout_width="0dp"
-            app:layout_constraintWidth_percent="0.75"
             android:layout_height="200dp"
             android:background="@drawable/acctx"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.75">
 
             <TextView
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
                 android:layout_marginTop="37dp"
                 android:text="Save Changes"
                 android:textColor="@color/black"
                 android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,11 +43,13 @@
                 android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
+                android:layout_marginStart="27dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="30dp"
                 android:text="Are you sure you wanted to save these"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
@@ -53,44 +57,47 @@
                 android:id="@+id/textView28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
+                android:layout_marginStart="27dp"
                 android:layout_marginTop="-1dp"
+                android:layout_marginEnd="28dp"
                 android:text="changes? Unsaved changes will be lost"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
             <android.widget.Button
                 android:id="@+id/cancelbt"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="70dp"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="50dp"
                 android:layout_marginTop="28dp"
                 android:background="@drawable/button"
                 android:text="CANCEL"
                 android:textColor="@color/black"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
             <android.widget.Button
                 android:id="@+id/savebt"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="28dp"
                 android:background="@drawable/gradientbt"
                 android:text="SAVE"
                 android:textColor="@color/extrawhite"
+                android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toEndOf="@+id/cancelbt"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/textView28" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:backgroundTint="@color/extrawhite"
-            >
+            android:backgroundTint="@color/extrawhite">
 
             <TextView
                 android:id="@+id/textView14"
@@ -113,8 +120,8 @@
                 android:layout_marginTop="56dp"
                 android:text="CHANGE"
                 android:textColor="@color/grey"
-                app:layout_constraintStart_toEndOf="@+id/textView14"
-                app:layout_constraintBottom_toBottomOf="@+id/textView14" />
+                app:layout_constraintBottom_toBottomOf="@+id/textView14"
+                app:layout_constraintStart_toEndOf="@+id/textView14" />
 
             <TextView
                 android:id="@+id/savetx"
@@ -124,16 +131,16 @@
                 android:text="SAVE"
                 android:textColor="@color/lightgreen"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@+id/textView14" />
+                app:layout_constraintBottom_toBottomOf="@+id/textView14"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="182dp"
                 android:layout_marginTop="17dp"
-                android:elevation="8dp"
                 android:background="@drawable/listbox"
+                android:elevation="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView14">
@@ -186,7 +193,7 @@
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/skills"
                     app:layout_constraintLeft_toLeftOf="@+id/skills"
-                    app:layout_constraintRight_toRightOf="@+id/skills"/>
+                    app:layout_constraintRight_toRightOf="@+id/skills" />
 
                 <TextView
                     android:id="@+id/textView24"
@@ -217,6 +224,7 @@
                 android:text="Listing Details"
                 android:textColor="@color/black"
                 android:textSize="20sp"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="@+id/searchBar"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
 
@@ -227,6 +235,7 @@
                 android:text="Enter your Offer Details"
                 android:textColor="@color/lightgreen"
                 android:textSize="12sp"
+                android:visibility="visible"
                 app:layout_constraintStart_toStartOf="@+id/searchBar"
                 app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
@@ -238,7 +247,7 @@
                 android:text="Please fill in all the required fields *"
                 android:textColor="#EB3A3A"
                 android:textSize="12sp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/searchBar"
                 app:layout_constraintTop_toBottomOf="@id/textView27" />
 
@@ -251,6 +260,7 @@
                 android:hint="Listing Title *"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
+                android:visibility="visible"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/errorTv" />
@@ -262,9 +272,10 @@
                 android:layout_marginTop="12dp"
                 android:background="@drawable/offerstx"
                 android:hint="Listing Description *"
+                android:inputType="textMultiLine"
                 android:padding="8dp"
                 android:textColorHint="@color/grey"
-                android:inputType="textMultiLine"
+                android:visibility="visible"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/searchBar" />
@@ -276,9 +287,10 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/offerstx"
                 android:hint="Listing Value"
+                android:inputType="numberDecimal"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
-                android:inputType="numberDecimal"
+                android:visibility="visible"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/requestNote" />
@@ -289,8 +301,8 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/offerstx"
-                android:hint="In exchange of"
                 android:focusable="false"
+                android:hint="In exchange of"
                 android:paddingStart="8dp"
                 android:textColorHint="@color/grey"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -339,8 +351,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:visibility="gone"
             android:indeterminate="true"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
