@@ -1,5 +1,7 @@
 package com.egls.transactia;
 
+import com.google.firebase.firestore.FieldValue;
+
 import java.util.Map;
 
 public class UserDetails {
@@ -14,6 +16,8 @@ public class UserDetails {
     private double ratings; // New field
     private long numberofratings;
     private String userId;// New field
+    private Object dateJoined;  // Use Object to handle FieldValue and Timestamp interchangeably
+
 
 
     // Default constructor for Firestore serialization
@@ -22,7 +26,7 @@ public class UserDetails {
 
     // Constructor with all fields, including the new locationMap
     public UserDetails( String name, String sex, String bio, String contactInfo, String birthdate,
-                       String location, Map<String, String> locationMap, String imageUrl, double ratings, long numberofratings, String userId) {
+                       String location, Map<String, String> locationMap, String imageUrl, double ratings, long numberofratings, String userId, Object dateJoined) {
         this.name = name;
         this.sex = sex;
         this.bio = bio;
@@ -34,12 +38,13 @@ public class UserDetails {
         this.ratings = ratings;
         this.numberofratings = numberofratings;
         this.userId = userId;
+        this.dateJoined = dateJoined;
     }
 
     // Constructor without ratings and number of ratings (for compatibility)
     public UserDetails(String name, String sex, String bio, String contactInfo, String birthdate,
                        String location, Map<String, String> locationMap, String profileImageUrl) {
-        this(name, sex, bio, contactInfo, birthdate, location, locationMap, profileImageUrl, 0.0, 0, "");
+        this(name, sex, bio, contactInfo, birthdate, location, locationMap, profileImageUrl, 0.0, 0, "", FieldValue.serverTimestamp());
     }
 
     // Getters and setters
@@ -130,5 +135,13 @@ public class UserDetails {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getdateJoined() {
+        return userId;
+    }
+
+    public void setdateJoined(Object dateJoined) {
+        this.dateJoined = dateJoined;
     }
 }

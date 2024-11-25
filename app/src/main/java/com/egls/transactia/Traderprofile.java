@@ -499,7 +499,7 @@ public class Traderprofile extends AppCompatActivity {
         reportData.put("reporterId", reporterId);
         reportData.put("reportedUserId", reportedUserId);
         reportData.put("timestamp", FieldValue.serverTimestamp());
-        reportData.put("status", "pending");
+        reportData.put("status", "Pending");
 
         // Save to Firestore under Reports/User
         db.collection("Reports").document("User").collection("UserReports").add(reportData)
