@@ -44,7 +44,7 @@
                 app:layout_constraintWidth_percent="0.50" />
 
             <TextView
-                android:id="@+id/timestamptx"
+                android:id="@+id/titletx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Timestamp"
@@ -63,7 +63,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/pfpdef"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/timestamptx" />
+                app:layout_constraintTop_toBottomOf="@+id/titletx" />
 
             <TextView
                 android:id="@+id/UserName"

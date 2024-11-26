@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#81A969"
-    android:backgroundTint="#33443C">
+    android:backgroundTint="#33443C"
+    app:layout_constraintStart_toStartOf="parent">
 
     <ImageView
         android:id="@+id/tgwhite"
@@ -32,15 +33,24 @@
         android:layout_marginTop="104dp"
         app:srcCompat="@drawable/transactiatitle" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contain"
         android:layout_width="320dp"
         android:layout_height="400dp"
-        android:layout_marginStart="45dp"
-
+        android:layout_marginStart="36sp"
         android:layout_marginTop="250dp"
         android:background="@drawable/round"
-        android:visibility="visible">
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/tggreen"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tgwhite">
 
 
         <TextView
@@ -208,10 +218,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
 </RelativeLayout>

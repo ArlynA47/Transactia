@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +45,7 @@ public class MyNeedsAdapter extends RecyclerView.Adapter<MyNeedsAdapter.MyViewHo
             categTxt = itemView.findViewById(R.id.categ_txt);
             listingImage = itemView.findViewById(R.id.listingImage);
             deleteImage = itemView.findViewById(R.id.delete_image);
-            timestamptx = itemView.findViewById(R.id.timestamptx);
+            timestamptx = itemView.findViewById(R.id.titletx);
             cardView = itemView.findViewById(R.id.cardView);
         }
     }

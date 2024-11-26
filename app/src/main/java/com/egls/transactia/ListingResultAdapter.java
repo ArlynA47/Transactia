@@ -13,11 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -151,7 +148,7 @@ public class ListingResultAdapter extends RecyclerView.Adapter<ListingResultAdap
         public ViewHolder(View itemView) {
             super(itemView);
             ltype = itemView.findViewById(R.id.ltype);
-            timestamptx = itemView.findViewById(R.id.timestamptx);
+            timestamptx = itemView.findViewById(R.id.titletx);
             UserName = itemView.findViewById(R.id.UserName);
             UserLoc = itemView.findViewById(R.id.UserLoc);
             title_txt = itemView.findViewById(R.id.title_txt);
