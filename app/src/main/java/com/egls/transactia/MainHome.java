@@ -199,7 +199,7 @@ public class MainHome extends AppCompatActivity {
         homeMain2 = findViewById(R.id.homemain2);
         add2 = findViewById(R.id.add2);
         message = findViewById(R.id.message);
-        prof2 = findViewById(R.id.prof2);
+        prof2 = findViewById(R.id.sendmsgbt);
 
         // Set up click listeners for fragment switching and image updating
         homeMain2.setOnClickListener(view -> {

@@ -294,7 +294,7 @@
                 android:text="SUBMIT"
                 android:textAlignment="gravity"
                 android:textColor="@color/maincolor"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/text_size_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft" />

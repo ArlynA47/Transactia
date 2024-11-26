@@ -30,15 +30,27 @@
             android:id="@+id/verification_status_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=" Please verify your email address to proceed."
+            android:text=" Please verify your email "
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/extrawhite"
+            android:textSize="@dimen/title"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/verification_status_text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="address to proceed."
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/extrawhite"
+            android:textSize="@dimen/title"
             android:textStyle="bold" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="159dp" />
+            android:layout_height="109dp" />
 
         <ImageView
             android:id="@+id/loading"

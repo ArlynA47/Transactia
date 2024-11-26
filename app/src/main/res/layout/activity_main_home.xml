@@ -71,7 +71,7 @@
             app:srcCompat="@drawable/message" />
 
         <ImageView
-            android:id="@+id/prof2"
+            android:id="@+id/sendmsgbt"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintHeight_percent="0.90"
@@ -122,8 +122,8 @@
             android:text="Profile"
             android:textColor="#33443C"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@+id/prof2"
-            app:layout_constraintRight_toRightOf="@+id/prof2" />
+            app:layout_constraintLeft_toLeftOf="@+id/sendmsgbt"
+            app:layout_constraintRight_toRightOf="@+id/sendmsgbt" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.fragment.app.FragmentContainerView

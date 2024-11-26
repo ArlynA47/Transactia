@@ -28,31 +28,33 @@
 
             <TextView
                 android:id="@+id/backbt"
-                android:layout_width="125dp"
+                android:layout_width="115dp"
                 android:layout_height="35dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="25dp"
+                android:layout_marginEnd="17dp"
                 android:background="@drawable/button"
                 android:gravity="center"
                 android:text="BACK"
                 android:textAlignment="gravity"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintEnd_toStartOf="@+id/conbt"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView62" />
 
             <TextView
                 android:id="@+id/conbt"
-                android:layout_width="125dp"
+                android:layout_width="115dp"
                 android:layout_height="35dp"
                 android:layout_marginTop="25dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="30dp"
                 android:background="@drawable/gradientbt"
                 android:gravity="center"
                 android:text="CONFIRM"
                 android:textAlignment="gravity"
                 android:textColor="@color/extrawhite"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView62" />
 
@@ -214,7 +216,7 @@
                     android:layout_marginTop="20dp"
                     android:text="Exchange for:"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_medium"
                     android:textStyle="italic"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/listingDescription" />
@@ -238,7 +240,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Value:"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_medium"
                     android:textStyle="italic"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/Exchangefor" />
@@ -273,8 +275,9 @@
                     android:layout_marginTop="10dp"
                     android:text="Enter your transaction conditions"
                     android:textColor="@color/lightgreen"
-                    android:textSize="@dimen/text_size_small"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textSize="@dimen/text_size_medium"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:layout_editor_absoluteX="10dp" />
 
                 <TextView
                     android:id="@+id/errorTv"
@@ -416,12 +419,12 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp"
-                android:background="@drawable/button"
+                android:background="@drawable/gradientbt"
                 android:gravity="center"
                 android:text="SEND REQUEST"
                 android:textAlignment="gravity"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textColor="@color/extrawhite"
+                android:textSize="@dimen/text_size_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
                 app:layout_constraintStart_toStartOf="@+id/guidelineLeft"

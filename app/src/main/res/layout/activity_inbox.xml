@@ -28,24 +28,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Rest of your views -->
-        <ImageView
-            android:id="@+id/homemain2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent=".12"
-            app:srcCompat="@drawable/addfile_message" />
 
         <ImageView
             android:id="@+id/add2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintHeight_percent="1"
-            app:layout_constraintStart_toEndOf="@+id/homemain2"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.12"
+            app:layout_constraintWidth_percent="0.14"
             app:srcCompat="@drawable/camera_message" />
 
         <ImageView
@@ -56,42 +47,47 @@
             app:layout_constraintHeight_percent="1"
             app:layout_constraintStart_toEndOf="@+id/add2"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.12"
+            app:layout_constraintWidth_percent="0.14"
             app:srcCompat="@drawable/gallery_message" />
 
         <ImageView
-            android:id="@+id/prof2"
+            android:id="@+id/sendmsgbt"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="6dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.14"
-            app:srcCompat="@drawable/like_message"
-            tools:srcCompat="@drawable/like_message" />
+            app:layout_constraintHeight_percent=".8"
+            app:layout_constraintTop_toBottomOf="@+id/top_line"
+            app:layout_constraintWidth_percent=".09"
+            app:srcCompat="@drawable/sendgreen"
+            tools:srcCompat="@drawable/sendgreen" />
 
         <EditText
             android:id="@+id/messagebox"
             android:layout_width="0dp"
             android:layout_height="0dp"
 
+            android:layout_marginStart="4dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="2dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/toast_background"
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/prof2"
+            app:layout_constraintEnd_toStartOf="@+id/sendmsgbt"
             app:layout_constraintHeight_percent=".69"
             app:layout_constraintStart_toEndOf="@+id/message"
             app:layout_constraintTop_toBottomOf="@+id/top_line"
-            app:layout_constraintWidth_percent="0.44" />
+            app:layout_constraintVertical_bias="0.333"
+            app:layout_constraintWidth_percent="0.60" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="405dp"
-        android:layout_height="111dp"
+        android:layout_width="match_parent"
+        android:layout_height="89dp"
         android:background="@drawable/bottombox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -124,10 +120,10 @@
             android:id="@+id/Endusername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="41dp"
+            android:layout_marginTop="31dp"
             android:layout_marginEnd="38dp"
             android:text="Louie Hawk"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_large"
             app:layout_constraintEnd_toStartOf="@+id/infobt"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -172,6 +172,7 @@
             android:gravity="center"
             android:text="Completed"
             android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
             app:layout_constraintStart_toStartOf="@+id/constraintLayout6"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
@@ -184,6 +185,7 @@
             android:gravity="center"
             android:text="User Reports"
             android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
             app:layout_constraintEnd_toEndOf="@+id/constraintLayout6"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
