@@ -15,7 +15,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.egls.transactia.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -166,11 +165,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
         public TransactionViewHolder(@NonNull View itemView) {
             super(itemView);
-            timestamptx = itemView.findViewById(R.id.timestamptx);
+            timestamptx = itemView.findViewById(R.id.titletx);
             transactionName = itemView.findViewById(R.id.transactionname);
             userName = itemView.findViewById(R.id.UserName);
             userLoc = itemView.findViewById(R.id.UserLoc);
-            profile1 = itemView.findViewById(R.id.profile1);
+            profile1 = itemView.findViewById(R.id.itempic);
             profile2 = itemView.findViewById(R.id.profile2);
             cardView = itemView.findViewById(R.id.cardView);
         }

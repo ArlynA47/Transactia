@@ -33,7 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:id="@+id/timestamptx"
+                    android:id="@+id/titletx"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Timestamp"
@@ -43,7 +43,7 @@
                     app:layout_constraintWidth_percent="0.50" />
 
                 <ImageView
-                    android:id="@+id/profile1"
+                    android:id="@+id/itempic"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginTop="10dp"
@@ -52,7 +52,7 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/pfpdef"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/timestamptx" />
+                    app:layout_constraintTop_toBottomOf="@+id/titletx" />
 
                 <ImageView
                     android:id="@+id/profile2"
@@ -63,8 +63,8 @@
                     android:clipToOutline="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/pfpdef"
-                    app:layout_constraintStart_toStartOf="@+id/profile1"
-                    app:layout_constraintBottom_toBottomOf="@+id/profile1" />
+                    app:layout_constraintStart_toStartOf="@+id/itempic"
+                    app:layout_constraintBottom_toBottomOf="@+id/itempic" />
 
                 <TextView
                     android:id="@+id/transactionname"
@@ -76,10 +76,10 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/profile1"
+                    app:layout_constraintBottom_toBottomOf="@+id/itempic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/profile2"
-                    app:layout_constraintTop_toTopOf="@+id/profile1"
+                    app:layout_constraintTop_toTopOf="@+id/itempic"
                     app:layout_constraintVertical_bias="0.0" />
 
 
@@ -96,7 +96,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:id="@+id/traderlabel"
+                    android:id="@+id/timestamptx"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Transaction with "
@@ -114,8 +114,8 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="@dimen/text_size_small"
-                    app:layout_constraintStart_toEndOf="@+id/traderlabel"
-                    app:layout_constraintTop_toTopOf="@+id/traderlabel" />
+                    app:layout_constraintStart_toEndOf="@+id/timestamptx"
+                    app:layout_constraintTop_toTopOf="@+id/timestamptx" />
                 <TextView
                     android:id="@+id/UserLoc"
                     android:layout_width="0dp"
@@ -127,8 +127,8 @@
                     android:inputType="textMultiLine"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:textSize="@dimen/text_size_small"
-                    app:layout_constraintStart_toStartOf="@+id/traderlabel"
-                    app:layout_constraintTop_toBottomOf="@+id/traderlabel" />
+                    app:layout_constraintStart_toStartOf="@+id/timestamptx"
+                    app:layout_constraintTop_toBottomOf="@+id/timestamptx" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
