@@ -44,8 +44,8 @@ public class Update_User_Details extends AppCompatActivity {
 
     FirebaseUser user;
 
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private Uri imageUri;
+    private int PICK_IMAGE_REQUEST = 1;
+    private Uri imageUri, valImageUri;
     private FirebaseStorage storage;
 
     String fireBUserID;  // Firestore user ID (must be passed to the activity)
@@ -70,6 +70,9 @@ public class Update_User_Details extends AppCompatActivity {
     Drawable defaultBgET;
     // Set up button for updating user details
     TextView updateBtn;
+
+    // for valid id
+    ImageView valIdImg, showGallery;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -98,6 +101,9 @@ public class Update_User_Details extends AppCompatActivity {
 
         defaultBgET = nametx.getBackground();
 
+        valIdImg = findViewById(R.id.selectedImageView);
+        showGallery = findViewById(R.id.ShowGal);
+
         // Set up gender AutoCompleteTextView
         ArrayAdapter<String> adapterItems = new ArrayAdapter<>(this, R.layout.genderlist, item);
         sextx.setAdapter(adapterItems);
@@ -105,7 +111,13 @@ public class Update_User_Details extends AppCompatActivity {
         // Load user details
         loadUserDetails();
 
-        addIMG.setOnClickListener(v -> openGallery());
+        addIMG.setOnClickListener(v -> {
+            openGallery(1);
+        });
+
+        showGallery.setOnClickListener(v -> {
+            openGallery(2);
+        });
 
         // Set the OnClickListener for sextx and call the new method
         sextx.setOnClickListener(v -> handleSexClick());
@@ -222,22 +234,29 @@ public class Update_User_Details extends AppCompatActivity {
         }
     }
     // Function to open gallery
-    private void openGallery() {
+    private void openGallery(int requestCode) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestCode);
     }
 
     // Handle the result of the gallery selection
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-            pfp.setImageURI(imageUri); // Display the selected image in pfp ImageView
+        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            if (requestCode == 1) { // For pfp ImageView
+                imageUri = data.getData();
+                pfp.setImageURI(imageUri);
+            } else if (requestCode == 2) { // For valIdImg ImageView
+                valImageUri = data.getData();
+                valIdImg.setImageURI(valImageUri);
+            }
         }
     }
+
 
     // Show Image on full screen
     private void imgFullScreen() {
@@ -466,35 +485,54 @@ public class Update_User_Details extends AppCompatActivity {
             updates.put("locationMap", locationMap);
         }
 
+        // Handle profile picture upload
         if (imageUri != null) {
-            // Upload image and get URL
-            StorageReference storageRef = storage.getReference().child("images/pfp/" + fireBUserID + "/image.jpg");
-            storageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
-                storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+            StorageReference pfpStorageRef = storage.getReference().child("images/pfp/" + fireBUserID + "/image.jpg");
+            pfpStorageRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+                pfpStorageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
                     updates.put("imageUrl", downloadUri.toString());
-                    userRef.update(updates).addOnSuccessListener(aVoid -> {
-                        progressBar.setVisibility(View.GONE);
-                        finish();
-                    }).addOnFailureListener(e -> {
-                        CustomToast.show(this, "Error updating user details: " + e.getMessage());
-                        progressBar.setVisibility(View.GONE);
-                    });
+                    // Check and handle valid ID image upload
+                    handleValidIDUpload(userRef, updates, progressBar);
                 });
             }).addOnFailureListener(e -> {
-                CustomToast.show(this, "Error uploading image: " + e.getMessage());
+                CustomToast.show(this, "Error uploading profile image: " + e.getMessage());
                 progressBar.setVisibility(View.GONE);
             });
         } else {
-            // Update Firestore without image
-            userRef.update(updates).addOnSuccessListener(aVoid -> {
-                progressBar.setVisibility(View.GONE);
-                finish();
-            }).addOnFailureListener(e -> {
-                CustomToast.show(this, "Error updating user details: " + e.getMessage());
-                progressBar.setVisibility(View.GONE);
-            });
+            // Handle valid ID upload without profile picture
+            handleValidIDUpload(userRef, updates, progressBar);
         }
     }
+
+    private void handleValidIDUpload(DocumentReference userRef, Map<String, Object> updates, ProgressBar progressBar) {
+        if (valImageUri != null) {
+            StorageReference valIDStorageRef = storage.getReference().child("images/ValidID/" + fireBUserID + "/image.jpg");
+            valIDStorageRef.putFile(valImageUri).addOnSuccessListener(taskSnapshot -> {
+                valIDStorageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
+                    updates.put("validIdUrl", downloadUri.toString());
+                    updateFirestore(userRef, updates, progressBar);
+                });
+            }).addOnFailureListener(e -> {
+                CustomToast.show(this, "Error uploading valid ID: " + e.getMessage());
+                progressBar.setVisibility(View.GONE);
+            });
+        } else {
+            // Update Firestore if no new valid ID is attached
+            updateFirestore(userRef, updates, progressBar);
+        }
+    }
+
+    private void updateFirestore(DocumentReference userRef, Map<String, Object> updates, ProgressBar progressBar) {
+        userRef.update(updates).addOnSuccessListener(aVoid -> {
+            CustomToast.show(this, "Account details updated successfullly!");
+            progressBar.setVisibility(View.GONE);
+            finish();
+        }).addOnFailureListener(e -> {
+            CustomToast.show(this, "Error updating user details: " + e.getMessage());
+            progressBar.setVisibility(View.GONE);
+        });
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -56,6 +56,19 @@
                     android:textSize="@dimen/text_size_medium"
                     app:layout_constraintStart_toEndOf="@+id/profileUser"
                     app:layout_constraintTop_toTopOf="@+id/profileUser" />
+
+                <ImageView
+                    android:id="@+id/verified"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="10dp"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/verified"
+                    app:layout_constraintTop_toTopOf="@+id/UserName"
+                    app:layout_constraintStart_toEndOf="@+id/UserName"
+                     />
+
                 <TextView
                     android:id="@+id/UserLoc"
                     android:layout_width="0dp"

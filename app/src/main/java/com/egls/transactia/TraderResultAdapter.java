@@ -52,6 +52,13 @@ public class TraderResultAdapter extends RecyclerView.Adapter<TraderResultAdapte
 
         double ratingUser =  user.getRatings();
 
+        String status = user.getStatus();
+
+        if(status.equals("Verified")) {
+            holder.verified.setVisibility(View.VISIBLE);
+        } else {
+            holder.verified.setVisibility(View.GONE);
+        }
 
         holder.star1.setImageResource(R.drawable.staruf);
         holder.star2.setImageResource(R.drawable.staruf);
@@ -114,6 +121,7 @@ public class TraderResultAdapter extends RecyclerView.Adapter<TraderResultAdapte
         ImageView profileUser;
         TextView location, name, rateLabel;
         ImageView star1, star2, star3, star4, star5;
+        ImageView verified;
 
         public TraderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -126,6 +134,7 @@ public class TraderResultAdapter extends RecyclerView.Adapter<TraderResultAdapte
             star3 = itemView.findViewById(R.id.star3);
             star4 = itemView.findViewById(R.id.star4);
             star5 = itemView.findViewById(R.id.star5);
+            verified = itemView.findViewById(R.id.verified);
         }
     }
 }

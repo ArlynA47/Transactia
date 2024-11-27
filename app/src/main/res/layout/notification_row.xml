@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -14,8 +13,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="2dp"
-        android:layout_marginBottom="2dp"
-        app:cardBackgroundColor="@color/maincolor">
+        app:cardBackgroundColor="@color/extrawhite">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -28,49 +26,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
-                android:paddingVertical="10dp"
+                android:paddingVertical="5dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/listingcl">
 
                 <TextView
                     android:id="@+id/titletx"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="157dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="157dp"
                     android:text="Title"
-                    android:textColor="@color/extrawhite"
-                    android:textSize="@dimen/text_size_large"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.50" />
-
-                <ImageView
-                    android:id="@+id/itempic"
-                    android:layout_width="65dp"
-                    android:layout_height="65dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/circle_shape"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/pfpdef"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/titletx" />
-
-                <TextView
-                    android:id="@+id/descriptiontx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="TextView"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_small"
-                    app:layout_constraintStart_toEndOf="@+id/itempic"
-                    app:layout_constraintTop_toBottomOf="@+id/titletx" />
-
+                   />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -82,20 +52,27 @@
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="10dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/usercl">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/timestamptx"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Timestamp"
-                    android:textColor="@color/fadewhite"
+                    android:textColor="@color/grey"
                     android:textSize="@dimen/text_size_small"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout><View
+            android:id="@+id/top_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#AFA6A5A5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

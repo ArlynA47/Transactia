@@ -76,6 +76,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
     // Save the default backgrounds to revert back (if no error)
     Drawable defaultBgET;
 
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -458,7 +459,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                             // Get the image's download URL
                             storageRef.getDownloadUrl().addOnSuccessListener(downloadUri -> {
                                 // Create a new UserDetails object including image URL
-                                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, locationMap, downloadUri.toString());
+                                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, locationMap, downloadUri.toString(), "not verified");
 
                                 // Save user details along with image URL to Firestore
                                 saveUserDetailsToFirestore(db, userDetails);
@@ -475,7 +476,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                         });
             } else {
                 // If no image is provided, set null as the image URL
-                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, locationMap, null);
+                UserDetails userDetails = new UserDetails(name, sex, bio, contactInfo, birthdate, location, locationMap, null, "Not Verified");
 
                 // Show the progress bar for saving user details
                 progressBar.setVisibility(View.VISIBLE);

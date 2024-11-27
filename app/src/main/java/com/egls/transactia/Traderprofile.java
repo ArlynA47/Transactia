@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -44,11 +45,11 @@ public class Traderprofile extends AppCompatActivity {
     View reportPromptLayout, reportSuccessLayout, dark_overlay;
     ConstraintLayout reportPrompt, reportSuccess;
     View msgNav;
-    TextView reportcfbt, reportbackbt, violation, description, viewReports, ok;
+    TextView reportcfbt, reportbackbt, violation, description, viewReports, ok, dateJoined;
 
     String userID;
 
-    ImageView star1, star2, star3, star4, star5;
+    ImageView star1, star2, star3, star4, star5, verified;
 
     RecyclerView offerrv, needrv;
 
@@ -79,6 +80,9 @@ public class Traderprofile extends AppCompatActivity {
         reportbackbt = findViewById(R.id.reportbackbt);
         violation = findViewById(R.id.violation);
         description = findViewById(R.id.description);
+
+        verified = findViewById(R.id.verified);
+        dateJoined = findViewById(R.id.dateJoined);
 
         dark_overlay = findViewById(R.id.dark_overlay);
 
@@ -125,6 +129,7 @@ public class Traderprofile extends AppCompatActivity {
         msgNav.setOnClickListener(v -> {
             // Navigate to Inbox activity
             Intent intent = new Intent(Traderprofile.this, Inbox.class);
+            intent.putExtra("otheruser", userID);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         });
@@ -153,8 +158,21 @@ public class Traderprofile extends AppCompatActivity {
                         String birthdate = userSnapshot.getString("birthdate");
                         String contactInfo = userSnapshot.getString("contactInfo");
                         String bio = userSnapshot.getString("bio");
+                        String status = userSnapshot.getString("status");
+                        Timestamp dateJoinedStr = userSnapshot.getTimestamp("dateJoined");
                         Long numOfRatings = userSnapshot.contains("numberofratings") ? userSnapshot.getLong("numberofratings") : null;
                         Double ratings = userSnapshot.contains("ratings") ? userSnapshot.getDouble("ratings") : null;
+
+                        // Set the timestamp, format it if necessary
+                        if (dateJoinedStr != null) {
+                            long timestampMillis = dateJoinedStr.getSeconds() * 1000; // Firestore Timestamp to milliseconds
+                            Date date = new Date(timestampMillis);
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
+                            String formattedDate = dateFormat.format(date);
+                            dateJoined.setText("Date Joined: "+formattedDate);
+                        } else {
+                            dateJoined.setText("");
+                        }
 
                         // Check for null
                         if (numOfRatings == null) {
@@ -169,6 +187,12 @@ public class Traderprofile extends AppCompatActivity {
 
                         String rateLabel = String.format(Locale.getDefault(), "%.1f Stars | %d Ratings",
                                 ratings, numOfRatings);
+
+                        if(status.equals("Verified")) {
+                            verified.setVisibility(View.VISIBLE);
+                        } else {
+                            verified.setVisibility(View.GONE);
+                        }
 
                         Map<String, String> locationMap = (Map<String, String>) userSnapshot.get("locationMap");
 

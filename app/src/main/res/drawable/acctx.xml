@@ -3,7 +3,7 @@
     android:shape="rectangle">
     <corners android:radius="8dp"/> <!-- Set your desired corner radius here -->
     <solid android:color="@color/extrawhite"/> <!-- Background color -->
-    <stroke android:color="@color/grey" android:width="1sp">
+    <stroke android:color="#E9949292" android:width="0.7sp">
 
     </stroke>
 </shape>

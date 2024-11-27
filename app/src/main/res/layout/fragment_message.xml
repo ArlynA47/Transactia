@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="69dp"
             android:layout_marginTop="-10dp"
-            android:background="@drawable/bottombox"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -37,19 +36,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.75" />
+
+            <View
+                android:id="@+id/top_line"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#AFA6A5A5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/trytoinbox"
-            android:layout_width="363dp"
-            android:layout_height="92dp"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="18dp"
-            android:background="@drawable/bottombox"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/conversationsRecyclerView"
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.96"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout12">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginVertical="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

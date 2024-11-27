@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    tools:context=".ProfileFragment"
+    android:background="@color/extrawhite">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout7"
@@ -104,6 +105,20 @@
                 app:layout_constraintStart_toEndOf="@+id/profileUser"
                 app:layout_constraintTop_toTopOf="@+id/profileUser" />
 
+
+            <ImageView
+                android:id="@+id/verified"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="10dp"
+                android:clipToOutline="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/verified"
+                app:layout_constraintTop_toTopOf="@+id/UserName"
+                app:layout_constraintStart_toEndOf="@+id/UserName"
+                />
+
+
             <TextView
                 android:id="@+id/UserLoc"
                 android:layout_width="0dp"
@@ -138,6 +153,142 @@
                 app:layout_constraintTop_toBottomOf="@+id/UserGender" />
 
             <TextView
+                android:id="@+id/dateJoined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="30dp"
+                android:textStyle="bold"
+                android:paddingTop="4dp"
+                android:text="Date Joined"
+                android:textAlignment="textStart"
+                android:textColor="@color/grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profileUser"
+                app:layout_constraintWidth_percent="0.9" />
+
+            <TextView
+                android:id="@+id/rateLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Rating"
+                android:textAlignment="center"
+                android:textColor="#FFC107"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/rateLayout"
+                app:layout_constraintTop_toTopOf="@+id/rateLayout" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rateLayout"
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="@+id/dateJoined"
+                app:layout_constraintTop_toBottomOf="@+id/dateJoined"
+                app:layout_constraintWidth_percent="0.40"
+                >
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="28dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.40" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.60" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/gd5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.80" />
+
+                <ImageView
+                    android:id="@+id/star1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:clipToOutline="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/staruf"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/gd2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <ImageView
+                    android:id="@+id/star2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:clipToOutline="true"
+                    android:background="@drawable/starbg"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/staruf"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/gd3"
+                    app:layout_constraintStart_toStartOf="@+id/gd2"
+                    />
+
+                <ImageView
+                    android:id="@+id/star3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:clipToOutline="true"
+                    android:background="@drawable/starbg"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/staruf"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/gd4"
+                    app:layout_constraintStart_toStartOf="@+id/gd3"
+                    />
+                <ImageView
+                    android:id="@+id/star4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:clipToOutline="true"
+                    android:background="@drawable/starbg"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/staruf"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/gd5"
+                    app:layout_constraintStart_toStartOf="@+id/gd4"
+                    />
+
+                <ImageView
+                    android:id="@+id/star5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:clipToOutline="true"
+                    android:background="@drawable/starbg"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/staruf"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/gd5"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
                 android:id="@+id/UserBio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -149,30 +300,17 @@
                 android:textColor="@color/grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profileUser"
+                app:layout_constraintTop_toBottomOf="@+id/rateLayout"
                 app:layout_constraintWidth_percent="0.9" />
             <View
                 android:id="@+id/middle_line"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="#AFA6A5A5"
-                android:layout_marginTop="30dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/UserBio"
+                app:layout_constraintTop_toTopOf="@+id/UserBio"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/needrv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="55dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6"
-            app:layout_constraintWidth_percent="0.9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

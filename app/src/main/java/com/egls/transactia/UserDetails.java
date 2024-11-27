@@ -10,23 +10,22 @@ public class UserDetails {
     private String bio;
     private String contactInfo;
     private String birthdate;
-    private String location;  // Keep the original location string
-    private Map<String, String> locationMap;  // New location map for hierarchical data
+    private String location;  // Original location string
+    private Map<String, String> locationMap;  // Hierarchical location map
     private String imageUrl;
-    private double ratings; // New field
-    private long numberofratings;
-    private String userId;// New field
-    private Object dateJoined;  // Use Object to handle FieldValue and Timestamp interchangeably
-
-
+    private String status;
+    private double ratings;  // Ratings field
+    private long numberofratings;  // Number of ratings
+    private String userId;  // User ID
+    private Object dateJoined;  // Field for FieldValue or Timestamp
 
     // Default constructor for Firestore serialization
-    public UserDetails() {
-    }
+    public UserDetails() {}
 
-    // Constructor with all fields, including the new locationMap
-    public UserDetails( String name, String sex, String bio, String contactInfo, String birthdate,
-                       String location, Map<String, String> locationMap, String imageUrl, double ratings, long numberofratings, String userId, Object dateJoined) {
+    // Full constructor with all fields
+    public UserDetails(String name, String sex, String bio, String contactInfo, String birthdate,
+                       String location, Map<String, String> locationMap, String imageUrl, String status, double ratings,
+                       long numberofratings,Object dateJoined, String userId) {
         this.name = name;
         this.sex = sex;
         this.bio = bio;
@@ -35,16 +34,17 @@ public class UserDetails {
         this.location = location;
         this.locationMap = locationMap;
         this.imageUrl = imageUrl;
+        this.status = status;
         this.ratings = ratings;
         this.numberofratings = numberofratings;
         this.userId = userId;
         this.dateJoined = dateJoined;
     }
 
-    // Constructor without ratings and number of ratings (for compatibility)
+    // Compatibility constructor without ratings and number of ratings
     public UserDetails(String name, String sex, String bio, String contactInfo, String birthdate,
-                       String location, Map<String, String> locationMap, String profileImageUrl) {
-        this(name, sex, bio, contactInfo, birthdate, location, locationMap, profileImageUrl, 0.0, 0, "", FieldValue.serverTimestamp());
+                       String location, Map<String, String> locationMap, String profileImageUrl, String status) {
+        this(name, sex, bio, contactInfo, birthdate, location, locationMap, profileImageUrl, status, 0.0, 0,FieldValue.serverTimestamp(), "");
     }
 
     // Getters and setters
@@ -113,6 +113,14 @@ public class UserDetails {
         this.imageUrl = imageUrl;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public double getRatings() {
         return ratings;
     }
@@ -137,11 +145,11 @@ public class UserDetails {
         this.userId = userId;
     }
 
-    public String getdateJoined() {
-        return userId;
+    public Object getDateJoined() {
+        return dateJoined;
     }
 
-    public void setdateJoined(Object dateJoined) {
+    public void setDateJoined(Object dateJoined) {
         this.dateJoined = dateJoined;
     }
 }

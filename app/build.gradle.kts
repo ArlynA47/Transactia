@@ -43,6 +43,7 @@ dependencies {
 
     // Add Glide dependencies
     implementation("com.github.bumptech.glide:glide:4.15.0")
+    implementation(libs.firebase.messaging)
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.0")
 
     testImplementation(libs.junit)

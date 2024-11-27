@@ -74,6 +74,7 @@ public class hfrag extends Fragment {
                 getActivity().findViewById(R.id.fragmentContainerHome).setVisibility(View.GONE);
                 if (getActivity() instanceof MainHome) {
                     ((MainHome) getActivity()).hideViewRequestSent(); // Call the method in the activity
+                    ((MainHome) getActivity()).fetchNotifications();
                 }
             }
         });

@@ -236,7 +236,6 @@ public class SearchFragment extends Fragment {
             showLocationPickerDialog();
         });
 
-
         applybt.setOnClickListener(v -> ApplyFilters());
         clearbt.setOnClickListener(v -> ClearFilters());
 

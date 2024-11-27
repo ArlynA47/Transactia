@@ -47,7 +47,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout15"
         android:layout_width="0dp"
-        android:layout_height="370dp"
+        android:layout_height="410dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="3dp"
         app:layout_constraintEnd_toEndOf="@+id/guidelineRight"
@@ -93,6 +93,18 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toEndOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/profileUser2" />
+
+        <ImageView
+            android:id="@+id/verified"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/verified"
+            app:layout_constraintTop_toTopOf="@+id/endusername"
+            app:layout_constraintStart_toEndOf="@+id/endusername"
+            />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -240,6 +252,18 @@
             app:layout_constraintTop_toBottomOf="@+id/rateLayout" />
 
         <TextView
+            android:id="@+id/dateJoined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Location"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userloc" />
+
+        <TextView
             android:id="@+id/endusergender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -249,7 +273,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_medium"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userloc" />
+            app:layout_constraintTop_toBottomOf="@+id/dateJoined" />
 
         <TextView
             android:id="@+id/enduserphonenumber"
@@ -308,7 +332,7 @@
         android:id="@+id/enduserbio"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
+        android:layout_marginHorizontal="40dp"
         android:layout_marginTop="20dp"
         android:text="biokahufshidfahihfisahfa"
         android:textAlignment="center"

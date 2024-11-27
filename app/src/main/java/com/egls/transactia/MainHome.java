@@ -1,7 +1,10 @@
 package com.egls.transactia;
 
+import android.Manifest;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -12,6 +15,7 @@ import android.widget.ProgressBar;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,17 +27,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class MainHome extends AppCompatActivity {
 
-        ConstraintLayout mainLay;
+    private static final int PERMISSION_REQUEST_CODE = 1;
+
+    ConstraintLayout mainLay;
         ConstraintLayout viewSentRequests, myReceivedRequests, viewInProgress;
 
 
@@ -105,6 +115,11 @@ public class MainHome extends AppCompatActivity {
                         // Save the credentials into sqlite db
                         dbHelper.saveUserDetails(emailAuth, passAuth);
                         AuthenticateUser();
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+                        }
+                        fetchAndSaveToken();
+
                     }
                 } else {
                     dbHelper = new UserDatabaseHelper(MainHome.this);
@@ -113,11 +128,45 @@ public class MainHome extends AppCompatActivity {
                         emailAuth = userDetails[0];
                         passAuth = userDetails[1];
                         AuthenticateUser();
+                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+                        }
+                        fetchAndSaveToken();
+
                     }
                 }
 
-
         }
+
+    private void fetchAndSaveToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String token = task.getResult();
+                        FirestoreHelper.saveTokenToFirestore(token); // Use the helper method
+                    } else {
+                        Log.e("FCM Token", "Failed to fetch token", task.getException());
+                    }
+                });
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, proceed with sending notifications
+                // You can now send notifications.
+            } else {
+                // Permission denied, show a message to the user explaining why the permission is necessary
+                // Handle the case where the user denies the permission
+            }
+        }
+    }
+
 
     @Override
     protected void onResume() {
@@ -491,6 +540,33 @@ public class MainHome extends AppCompatActivity {
         });
     }
 
+    public void fetchNotifications()
+    {
+        switchrvTransaction();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<Notification> notificationList = new ArrayList<>();
+        NotificationAdapter adapter = new NotificationAdapter(notificationList);
+
+        rvTransaction.setAdapter(null);
+
+        rvTransaction.setLayoutManager(new LinearLayoutManager(this));
+        rvTransaction.setAdapter(adapter);
+
+        db.collection("UserNotifications")
+                .whereEqualTo("userId", fireBUserID)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    notificationList.clear();
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        Notification notification = doc.toObject(Notification.class);
+                        notificationList.add(notification);
+                    }
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching notifications: " + e.getMessage()));
+
+    }
     public void switchrvExchange() {
         recyclerView.setVisibility(View.VISIBLE);
         rvTransaction.setVisibility(View.GONE);
