@@ -69,6 +69,9 @@ public class Request extends AppCompatActivity {
     ImageView ownerImage, listingImage;
 
 
+    TextView seeListing;
+
+
     String ownerUserId, ownerImageUrl, ownerNameStr, ownerLocationStr;
     String listingId,
     listingTitleStr, listingTypeStr,
@@ -108,6 +111,11 @@ public class Request extends AppCompatActivity {
     String selectedTransactionId;
     String transactionid;
 
+    String senderName;
+
+    boolean isMyListing;
+    String ownerStr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,16 +138,19 @@ public class Request extends AppCompatActivity {
         violation = findViewById(R.id.violation);
         description = findViewById(R.id.description);
 
+        seeListing = findViewById(R.id.seeListing);
+
         dark_overlay = findViewById(R.id.dark_overlay);
 
         reportSuccessLayout = findViewById(R.id.layout_reportSuccess);
-        viewReports = findViewById(R.id.viewReports);
         ok = findViewById(R.id.ok);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         fireBUserID = user.getUid();
+
+        fetchUserName(fireBUserID);
 
         ownerImage = findViewById(R.id.imageView2);
         listingImage = findViewById(R.id.imageView);
@@ -194,6 +205,31 @@ public class Request extends AppCompatActivity {
         inexchange.setOnFocusChangeListener((v, hasFocus) -> {
             fetchInExchangeOptions(fireBUserID, ownerUserId);
         });
+
+
+        seeListing.setOnClickListener(v -> {
+            if(ownerStr.equals(fireBUserID)) {
+                // If the search result is the user's own listing
+                Intent intentList = new Intent(this, MyNeeds.class);
+                intentList.putExtra("newListing", false);
+                intentList.putExtra("listingId", selectedListingId);
+                startActivity(intentList);
+
+            } else {
+                Intent intentList = new Intent(this, Request.class);
+
+                intentList.putExtra("newRequest", true);
+
+                // Add user details to the intent
+                intentList.putExtra("ownerUserId", ownerStr); // Add owner User ID
+                intentList.putExtra("listingId", selectedListingId); // Pass the listing ID (document ID)
+
+                // Start the Request activity
+                startActivity(intentList);
+            }
+        });
+
+
 
         listvalue.addTextChangedListener(new TextWatcher() {
             private String current = "";
@@ -344,15 +380,6 @@ public class Request extends AppCompatActivity {
         reportPrompt.setOnClickListener(v -> {
             // Make report prompt visible and bring it to the front
             pickCategory();
-        });
-
-        viewReports.setOnClickListener(v -> {
-            reportSuccessLayout.setVisibility(View.GONE);
-            dark_overlay.setVisibility(View.GONE);
-            Intent intentReport = new Intent(Request.this, My_Reports.class);
-            startActivity(intentReport);
-            finish();
-
         });
         ok.setOnClickListener(v -> {
             dark_overlay.setVisibility(View.GONE);
@@ -599,10 +626,12 @@ public class Request extends AppCompatActivity {
                 .addOnSuccessListener(querySnapshot -> {
                     List<String> titleAndTypeList = new ArrayList<>();
                     List<String> listingIdList = new ArrayList<>();
+                    List<String> owner = new ArrayList<>();
 
                     // Add "Clear Selection" option at the beginning of the list
                     titleAndTypeList.add("Clear Selection");
                     listingIdList.add(null); // Placeholder for no selection
+                    owner.add(null);
 
                     // Iterate through the listings fetched
                     for (QueryDocumentSnapshot document : querySnapshot) {
@@ -624,6 +653,7 @@ public class Request extends AppCompatActivity {
                         // Add the formatted title and listing ID to the lists
                         titleAndTypeList.add(titleAndType);
                         listingIdList.add(listingId);
+                        owner.add(userId);
                     }
 
                     // Show dialog with options for inExchange
@@ -633,18 +663,22 @@ public class Request extends AppCompatActivity {
                                 if (which == 0) { // First item is "Clear Selection"
                                     selectedTitleAndType = null;
                                     selectedListingId = null;
+                                    ownerStr = null;
 
                                     // Clear the inExchange field
                                     inexchange.setText("");
                                     CustomToast.show(this, "Selection cleared.");
+                                    seeListing.setVisibility(View.GONE);
                                 } else {
                                     // Regular selection
                                     selectedTitleAndType = titleAndTypeList.get(which);
                                     selectedListingId = listingIdList.get(which);
+                                    ownerStr = owner.get(which);
 
                                     // Assign selected values to inExchange field
                                     inexchange.setText(selectedTitleAndType);
                                     handleMissingInfo(); // Perform validation or further actions
+                                        seeListing.setVisibility(View.VISIBLE);
                                 }
                             })
                             .show();
@@ -764,6 +798,7 @@ public class Request extends AppCompatActivity {
                 new TransactionManager.OnTransactionCompleteListener() {
                     @Override
                     public void onTransactionSuccess() {
+                        sendNotification();
                         progressBar.setVisibility(View.GONE);
                         CustomToast.show(Request.this, "Transaction created successfully!");
 
@@ -821,6 +856,47 @@ public class Request extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    private void sendNotification() {
+        // Get a reference to Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+// Create a map to represent the notification
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("message", senderName + " sent you a transaction request for the listing '"+ receiverListing + "'. The transaction is named '"+ transactionTitle + "'.");
+        notification.put("status", "unread");
+        notification.put("timestamp", FieldValue.serverTimestamp());  // Automatically set timestamp to the current server time
+        notification.put("title", "Transaction Request");
+        notification.put("userId", ownerUserId);  // Replace with the actual user ID
+
+// Add the notification to the UserNotifications collection
+        db.collection("UserNotifications")
+                .add(notification)
+                .addOnSuccessListener(documentReference -> {
+                    // Notify that the document was added successfully
+                    Log.d("Notification", "Notification added with ID: " + documentReference.getId());
+                })
+                .addOnFailureListener(e -> {
+                    // Handle error if document could not be added
+                    Log.w("Notification", "Error adding notification", e);
+                });
+
+    }
+
+    private void fetchUserName(String userId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("UserDetails").document(userId)
+                .get()
+                .addOnSuccessListener(userSnapshot -> {
+                    if (userSnapshot.exists()) {
+                        senderName = userSnapshot.getString("name");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UserDetails", "Error fetching user details: " + e.getMessage());
+                });
     }
 
 

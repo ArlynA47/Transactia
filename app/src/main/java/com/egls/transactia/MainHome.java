@@ -560,6 +560,7 @@ public class MainHome extends AppCompatActivity {
                     notificationList.clear();
                     for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                         Notification notification = doc.toObject(Notification.class);
+                        notification.setDocumentId(doc.getId()); // Store the document ID
                         notificationList.add(notification);
                     }
                     adapter.notifyDataSetChanged();

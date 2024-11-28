@@ -76,10 +76,15 @@ public class Inbox extends AppCompatActivity {
 
         fetchUserDetails(otherUserId);
 
+        // Generate conversation ID
+        conversationId = generateConversationId(currentUserId, otherUserId);
+
         infobt = findViewById(R.id.infobt);
 
         infobt.setOnClickListener(v -> {
             Intent intent = new Intent(this, Enduserinfo.class);
+            intent.putExtra("conversationId", conversationId);
+            intent.putExtra("userId", otherUserId);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         });
@@ -93,9 +98,6 @@ public class Inbox extends AppCompatActivity {
         chatAdapter = new ChatAdapter(this, messageList, currentUserId);
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatRecyclerView.setAdapter(chatAdapter);
-
-        // Generate conversation ID
-        conversationId = generateConversationId(currentUserId, otherUserId);
 
         sendmsgbt.setOnClickListener(v -> sendMessage());
 

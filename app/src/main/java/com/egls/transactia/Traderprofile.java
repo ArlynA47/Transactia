@@ -87,7 +87,6 @@ public class Traderprofile extends AppCompatActivity {
         dark_overlay = findViewById(R.id.dark_overlay);
 
         reportSuccessLayout = findViewById(R.id.layout_reportSuccess);
-        viewReports = findViewById(R.id.viewReports);
         ok = findViewById(R.id.ok);
 
         star1 = findViewById(R.id.star1);
@@ -111,14 +110,6 @@ public class Traderprofile extends AppCompatActivity {
             pickCategory();
         });
 
-        viewReports.setOnClickListener(v -> {
-            reportSuccessLayout.setVisibility(View.GONE);
-            dark_overlay.setVisibility(View.GONE);
-            Intent intentReport = new Intent(Traderprofile.this, My_Reports.class);
-            startActivity(intentReport);
-            finish();
-
-        });
         ok.setOnClickListener(v -> {
             dark_overlay.setVisibility(View.GONE);
             reportSuccessLayout.setVisibility(View.GONE);

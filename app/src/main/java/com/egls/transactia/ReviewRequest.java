@@ -47,6 +47,7 @@ public class ReviewRequest extends AppCompatActivity {
     TextView acceptreqbt, declinereqbt, completebt, rateUser;
     boolean isAccepted, isCompleted;
     String fireBUserID;
+    String senderID, myName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class ReviewRequest extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         fireBUserID = user.getUid();
+        fetchUserName(fireBUserID);
 
         acceptreqbt = findViewById(R.id.acceptreqbt);
         declinereqbt = findViewById(R.id.declinereqbt);
@@ -105,7 +107,7 @@ public class ReviewRequest extends AppCompatActivity {
             declinereqbt.setOnClickListener(v -> {
                 // Build the dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
-                builder.setTitle("Cancel Transaction Request")
+                builder.setTitle("Decline Transaction Request")
                         .setMessage("Are you sure you want to decline this transaction request?")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             cancelTransactionRequest(transactionid);
@@ -262,6 +264,7 @@ public class ReviewRequest extends AppCompatActivity {
                                                                 // Both users have marked the transaction as completed
                                                                 transactionRef.update("status", "Completed", "timestamp", FieldValue.serverTimestamp())
                                                                         .addOnSuccessListener(aVoid1 -> {
+                                                                            sendCompNotification();
                                                                             CustomToast.show(ReviewRequest.this, "Transaction marked as Completed!");
                                                                             CompletedTransaction();
                                                                         })
@@ -320,6 +323,7 @@ public class ReviewRequest extends AppCompatActivity {
                         document.getReference()
                                 .update(updates)
                                 .addOnSuccessListener(aVoid -> {
+                                    sendNotification();
                                     CustomToast.show(ReviewRequest.this, "Transaction request accepted.");
                                 })
                                 .addOnFailureListener(e -> {
@@ -331,6 +335,69 @@ public class ReviewRequest extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     CustomToast.show(ReviewRequest.this, "Error querying transaction: " + e.getMessage());
+                });
+    }
+
+    private void sendNotification() {
+        // Get a reference to Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Create a map to represent the notification
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("message", myName + " has accepted your transaction request for '"+ transactionTitle + "'.");
+        notification.put("status", "unread");
+        notification.put("timestamp", FieldValue.serverTimestamp());  // Automatically set timestamp to the current server time
+        notification.put("title", "Transaction Request Accepted");
+        notification.put("userId", senderID);  // Replace with the actual user ID
+
+        // Add the notification to the UserNotifications collection
+        db.collection("UserNotifications")
+                .add(notification)
+                .addOnSuccessListener(documentReference -> {
+
+                })
+                .addOnFailureListener(e -> {
+
+                });
+
+    }
+
+    private void sendCompNotification() {
+        // Get a reference to Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Create a map to represent the notification
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("message", myName + " marked the transaction '"+ transactionTitle + "' as completed.");
+        notification.put("status", "unread");
+        notification.put("timestamp", FieldValue.serverTimestamp());  // Automatically set timestamp to the current server time
+        notification.put("title", "Transaction Marked as Comleted");
+        notification.put("userId", senderID);  // Replace with the actual user ID
+
+        // Add the notification to the UserNotifications collection
+        db.collection("UserNotifications")
+                .add(notification)
+                .addOnSuccessListener(documentReference -> {
+
+                })
+                .addOnFailureListener(e -> {
+
+                });
+
+    }
+
+    private void fetchUserName(String userId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("UserDetails").document(userId)
+                .get()
+                .addOnSuccessListener(userSnapshot -> {
+                    if (userSnapshot.exists()) {
+                        myName = userSnapshot.getString("name");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UserDetails", "Error fetching user details: " + e.getMessage());
                 });
     }
 
@@ -375,7 +442,7 @@ public class ReviewRequest extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         DocumentSnapshot transactionSnapshot = queryDocumentSnapshots.getDocuments().get(0); // Get the first document
-                        String senderID = transactionSnapshot.getString("senderID");
+                        senderID = transactionSnapshot.getString("senderID");
                         String receiverID = transactionSnapshot.getString("receiverID");
                         String senderListing = transactionSnapshot.getString("senderListing");
                         String receiverListing = transactionSnapshot.getString("receiverListing");

@@ -304,11 +304,23 @@
                     android:textSize="@dimen/text_size_small"
                     app:layout_constraintTop_toBottomOf="@+id/errorTv" />
 
+                <TextView
+                    android:id="@+id/seeListing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="View Listing"
+                    android:textColor="@color/mediumgreen"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/inexchange"
+                    app:layout_constraintTop_toBottomOf="@id/inexchange" />
+
                 <RadioGroup
                     android:id="@+id/paymentOption"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="35dp"
                     android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@+id/inexchange">
 

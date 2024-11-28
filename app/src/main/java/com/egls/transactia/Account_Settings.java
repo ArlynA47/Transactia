@@ -31,7 +31,6 @@ public class Account_Settings extends AppCompatActivity {
         });
 
         // Find the ConstraintLayouts by their IDs
-        ConstraintLayout myreportss = findViewById(R.id.myreportss);
         ConstraintLayout aboutus = findViewById(R.id.aboutus);
         ConstraintLayout updateuserdets = findViewById(R.id.updateuserdets);
         ConstraintLayout passwordreset = findViewById(R.id.passwordreset); // Assuming you have this layout
@@ -40,16 +39,9 @@ public class Account_Settings extends AppCompatActivity {
         ConstraintLayout archive = findViewById(R.id.archive);
         Button cancel2 = passpop.findViewById(R.id.cancel2); // Find the cancel2 button inside passpop
 
-        // Set click listener for myreportss
-        myreportss.setOnClickListener(v -> {
-            Intent intent = new Intent(Account_Settings.this, My_Reports.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
-        });
-
         // Set click listener for aboutus
         aboutus.setOnClickListener(v -> {
-            Intent intent = new Intent(Account_Settings.this, Abou_Transactia.class);
+            Intent intent = new Intent(Account_Settings.this, About_Transactia.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         });

@@ -8,6 +8,7 @@ public class Notification {
     private String status;
     private Timestamp timestamp;
     private String userId;
+    private String documentId; // For Firestore document ID
 
     // Empty constructor for Firestore deserialization
     public Notification() {}
@@ -18,6 +19,15 @@ public class Notification {
         this.status = status;
         this.timestamp = timestamp;
         this.userId = userId;
+    }
+
+    // Getters and setters
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     // Getters and Setters

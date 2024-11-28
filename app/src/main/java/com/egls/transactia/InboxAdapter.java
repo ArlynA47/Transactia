@@ -44,7 +44,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Conversation conversation = conversations.get(position);
 
-        holder.lastMessage.setText(conversation.getLastMessage());
+        holder.lastMessage.setText(limitWords(conversation.getLastMessage(), 5));
 
         Timestamp timestmp = conversation.getTimestamp();
 
@@ -95,6 +95,22 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.ViewHolder> 
             intent.putExtra("otheruser", otherUser);
             context.startActivity(intent);
         });
+    }
+
+    // Method to limit the number of words
+    private String limitWords(String description, int maxWords) {
+        String[] words = description.split("\\s+"); // Split the description into words
+        if (words.length <= maxWords) {
+            return description; // Return the full description if within limit
+        }
+
+        // Join the first maxWords words and return
+        StringBuilder limitedDescription = new StringBuilder();
+        for (int i = 0; i < maxWords; i++) {
+            limitedDescription.append(words[i]).append(" ");
+        }
+
+        return limitedDescription.toString().trim()+"..."; // Remove trailing space and return
     }
 
     @Override

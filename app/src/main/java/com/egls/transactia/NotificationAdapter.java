@@ -1,6 +1,7 @@
 package com.egls.transactia;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,11 +42,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Notification notification = notificationList.get(position);
 
         holder.titleTextView.setText(notification.getTitle());
-        //holder.messageTextView.setText(notification.getMessage());
 
-        // Set the timestamp, format it if necessary
+        // Format the timestamp
         if (notification.getTimestamp() != null) {
-            long timestampMillis = notification.getTimestamp().getSeconds() * 1000; // Firestore Timestamp to milliseconds
+            long timestampMillis = notification.getTimestamp().getSeconds() * 1000;
             Date date = new Date(timestampMillis);
             SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
             String formattedDate = dateFormat.format(date);
@@ -52,12 +54,43 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.timestampTextView.setText("");
         }
 
+        // Highlight unread notifications
         if (notification.getStatus().equals("unread")) {
-            holder.titleTextView.setTypeface(null, Typeface.BOLD); // Light red for unread
+            holder.titleTextView.setTypeface(null, Typeface.BOLD);
         } else {
-            holder.titleTextView.setTypeface(null, Typeface.NORMAL);; // Light red for unread
+            holder.titleTextView.setTypeface(null, Typeface.NORMAL);
         }
+
+        // Set the onClickListener
+        holder.cardView.setOnClickListener(v -> {
+            // Retrieve the document ID (Firestore handles it)
+            String documentId = notification.getDocumentId(); // Ensure `Notification` model includes this
+
+            // Pass data to View Notification Activity
+            Intent intent = new Intent(v.getContext(), ViewNotification.class);
+            intent.putExtra("title", notification.getTitle());
+            intent.putExtra("message", notification.getMessage());
+            intent.putExtra("documentId", documentId);
+            v.getContext().startActivity(intent);
+
+            // Update the notification status to "read"
+            updateNotificationStatus(documentId);
+        });
     }
+
+    private void updateNotificationStatus(String documentId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("UserNotifications").document(documentId)
+                .update("status", "read")
+                .addOnSuccessListener(aVoid -> {
+                    // Status updated successfully
+                })
+                .addOnFailureListener(e -> {
+                    // Handle the error
+                });
+    }
+
+
 
     @Override
     public int getItemCount() {

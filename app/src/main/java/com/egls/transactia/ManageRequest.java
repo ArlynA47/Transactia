@@ -34,6 +34,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -51,6 +52,8 @@ public class ManageRequest extends AppCompatActivity {
     boolean isAccepted, isCompleted;
     String fireBUserID;
 
+    String senderName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,7 @@ public class ManageRequest extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         fireBUserID = user.getUid();
+        fetchUserName(fireBUserID);
 
         transactionTitle = findViewById(R.id.transactionTitle);
         transactiontimestamp = findViewById(R.id.transactiontimestamp);
@@ -230,6 +234,45 @@ public class ManageRequest extends AppCompatActivity {
         });
     }
 
+    private void sendCompNotification() {
+        // Get a reference to Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Create a map to represent the notification
+        Map<String, Object> notification = new HashMap<>();
+        notification.put("message", senderName + " marked the transaction '"+ transactionTitle + "' as completed.");
+        notification.put("status", "unread");
+        notification.put("timestamp", FieldValue.serverTimestamp());  // Automatically set timestamp to the current server time
+        notification.put("title", "Transaction Marked as Comleted");
+        notification.put("userId", listingOwnerParam);  // Replace with the actual user ID
+
+        // Add the notification to the UserNotifications collection
+        db.collection("UserNotifications")
+                .add(notification)
+                .addOnSuccessListener(documentReference -> {
+
+                })
+                .addOnFailureListener(e -> {
+
+                });
+
+    }
+
+    private void fetchUserName(String userId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("UserDetails").document(userId)
+                .get()
+                .addOnSuccessListener(userSnapshot -> {
+                    if (userSnapshot.exists()) {
+                        senderName = userSnapshot.getString("name");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("UserDetails", "Error fetching user details: " + e.getMessage());
+                });
+    }
+
     private void markTransactionAsCompleted(String transactionId, String currentUserId) {
         checkIfUserMarkedCompleted(transactionId, currentUserId, new OnCheckCompleteListener() {
             @Override
@@ -261,6 +304,7 @@ public class ManageRequest extends AppCompatActivity {
                                                                 // Both users have marked the transaction as completed
                                                                 transactionRef.update("status", "Completed", "timestamp", FieldValue.serverTimestamp())
                                                                         .addOnSuccessListener(aVoid1 -> {
+                                                                            sendCompNotification();
                                                                             CustomToast.show(ManageRequest.this, "Transaction marked as Completed!");
                                                                             CompletedTransaction();
                                                                         })

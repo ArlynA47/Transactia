@@ -293,7 +293,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:paddingTop="4dp"
                 android:text="Bio"
                 android:textAlignment="textStart"
@@ -308,7 +308,8 @@
                 android:layout_height="1dp"
                 android:background="#AFA6A5A5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/UserBio"
+                app:layout_constraintBottom_toTopOf="@+id/UserBio"
+                android:layout_marginBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
