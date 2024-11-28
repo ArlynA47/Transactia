@@ -117,7 +117,7 @@ public class SearchFragment extends Fragment {
                 Usersbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
                 selectedType = 1;
                 isListingSearch = true;
-                InitialSearch();
+                StartSearch();
 
             } else if (checkedId == Usersbt.getId()) {
                 Usersbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#5CC70D")));
@@ -263,7 +263,12 @@ public class SearchFragment extends Fragment {
             public void afterTextChanged(Editable editable) {
 
                 if(searchBar.getText().toString().trim().isEmpty() || searchBar.getText().toString().trim()==null) {
-                    InitialSearch();
+
+                    if(isListingSearch) {
+                        InitialSearch();
+                    } else {
+                        startUserSearch();
+                    }
                 } else {
                     if(isListingSearch) {
                         StartSearch();
@@ -844,11 +849,11 @@ public class SearchFragment extends Fragment {
         Query query = userDetailsRef;
 
         // Step 1: Apply search bar filter for partial name matching
-        String searchText = searchBar.getText().toString().trim().toLowerCase();
+        String searchText = searchBar.getText().toString().trim();
         if (!searchText.isEmpty()) {
-            String endText = searchText + "\uf8ff"; // Firestore unicode for range matching
-            query = query.whereGreaterThanOrEqualTo("name", searchText)
-                    .whereLessThan("name", endText);
+            Log.d("UserSearch", "Search text: " + searchText);
+            // Ensure `name` field in Firestore is indexed and stored in lowercase
+            query = query.orderBy("name").startAt(searchText).endAt(searchText + "\uf8ff");
         }
 
         // Step 2: Apply location filters if specified
@@ -867,12 +872,11 @@ public class SearchFragment extends Fragment {
 
         // Execute the query and fetch the results
         query.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+            if (task.isSuccessful() && task.getResult() != null) {
                 List<UserDetails> userResults = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     UserDetails user = document.toObject(UserDetails.class);
-                    String userId = document.getId(); // Firestore's document ID
-                    user.setUserId(userId); //
+                    user.setUserId(document.getId());
                     userResults.add(user);
                 }
 
@@ -891,13 +895,11 @@ public class SearchFragment extends Fragment {
     }
 
     private void updateUserRecyclerView(List<UserDetails> userResults) {
-
-        searchrv.setAdapter(null);
         // Update the RecyclerView with the search results
         TraderResultAdapter adapter = new TraderResultAdapter(userResults);
         searchrv.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
     }
+
 
 
     public void hideRv() {

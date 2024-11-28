@@ -202,6 +202,7 @@ public class Request extends AppCompatActivity {
         inexchange.setOnClickListener(v -> {
             fetchInExchangeOptions(fireBUserID, ownerUserId);
         });
+
         inexchange.setOnFocusChangeListener((v, hasFocus) -> {
             fetchInExchangeOptions(fireBUserID, ownerUserId);
         });
@@ -369,10 +370,11 @@ public class Request extends AppCompatActivity {
 
         });
 
-        fetchListingDetails(db, listingId,true);
-        fetchUserDetails(db, ownerUserId);
+        // Load listing and user details
+        fetchListingAndUserDetails(db, listingId, ownerUserId, true);
 
-        if(!newRequest) {
+        // Load transaction details if not a new request
+        if (!newRequest) {
             loadTransactionDetails(transactionid);
         }
 
@@ -387,12 +389,20 @@ public class Request extends AppCompatActivity {
             finish();
         });
 
+        ownerImage.setOnClickListener(v -> {
+            Intent intentprof = new Intent(this, Traderprofile.class);
+            intentprof.putExtra("userId", ownerUserId);
+            startActivity(intentprof);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        });
+
         // ON CREATE END
     }
 
-    private void fetchListingDetails(FirebaseFirestore db, String listingId, boolean isReceiverListing) {
-
+    private void fetchListingAndUserDetails(FirebaseFirestore db, String listingId, String ownerUserId, boolean isReceiverListing) {
         progressBar.setVisibility(View.VISIBLE);
+
+        // Fetch Listing Details
         db.collection("Listings").document(listingId)
                 .get()
                 .addOnSuccessListener(listingSnapshot -> {
@@ -406,9 +416,7 @@ public class Request extends AppCompatActivity {
                         String priceValue = listingSnapshot.getString("listingValue");
                         Timestamp timestamp = listingSnapshot.getTimestamp("createdTimestamp");
 
-                        // Populate listing-specific views
                         if (isReceiverListing) {
-
                             listingImageUrl = listingImage;
                             listingTitleStr = listingTitle;
                             listingTypeStr = listingType;
@@ -416,63 +424,64 @@ public class Request extends AppCompatActivity {
                             listingCategoryStr = listingCategory;
                             listingInExchangeStr = inExchange;
 
-
-                            refListingType = listingTypeStr;
-
-                            if(timestamp!=null) {
-                                long timestampMillis = timestamp.getSeconds() * 1000; // Firestore Timestamp to milliseconds
-                                Date date = new Date(timestampMillis);
+                            if (timestamp != null) {
+                                long timestampMillis = timestamp.getSeconds() * 1000;
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
-                                String formattedDate = dateFormat.format(date);
-                                timestampStr = formattedDate;
+                                timestampStr = dateFormat.format(new Date(timestampMillis));
                             }
 
                             listingValueStr = priceValue;
                         }
                     }
+
+                    // Fetch User Details after successfully fetching Listing Details
+                    db.collection("UserDetails").document(ownerUserId)
+                            .get()
+                            .addOnSuccessListener(userSnapshot -> {
+                                if (userSnapshot.exists()) {
+                                    String profileImage = userSnapshot.getString("imageUrl");
+                                    String name = userSnapshot.getString("name");
+                                    Map<String, String> locationMap = (Map<String, String>) userSnapshot.get("locationMap");
+
+                                    String location = "";
+                                    if (locationMap != null) {
+                                        location = String.format("%s, %s, %s",
+                                                locationMap.get("city"),
+                                                locationMap.get("state"),
+                                                locationMap.get("country"));
+                                    }
+
+                                    ownerImageUrl = profileImage;
+                                    ownerNameStr = name;
+                                    ownerLocationStr = location;
+                                }
+
+                                // Update the UI after all data is fetched
+                                setValues();
+                                progressBar.setVisibility(View.GONE);
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("UserDetails", "Error fetching user details: " + e.getMessage());
+                                progressBar.setVisibility(View.GONE);
+                            });
                 })
-                .addOnFailureListener(e -> Log.e("ListingDetails", "Error fetching listing: " + e.getMessage()));
+                .addOnFailureListener(e -> {
+                    Log.e("ListingDetails", "Error fetching listing details: " + e.getMessage());
+                    progressBar.setVisibility(View.GONE);
+                });
     }
 
-    private void fetchUserDetails(FirebaseFirestore db, String userId) {
-        db.collection("UserDetails").document(userId)
-                .get()
-                .addOnSuccessListener(userSnapshot -> {
-                    if (userSnapshot.exists()) {
-                        String profileImage = userSnapshot.getString("imageUrl");
-                        String name = userSnapshot.getString("name");
-                        Map<String, String> locationMap = (Map<String, String>) userSnapshot.get("locationMap");
-
-                        // Format the location string
-                        String location = "";
-                        if (locationMap != null) {
-                            location = String.format("%s, %s, %s",
-                                    locationMap.get("city"),
-                                    locationMap.get("state"),
-                                    locationMap.get("country"));
-                        }
-
-                        // Populate user-specific views
-                        ownerImageUrl = profileImage;
-                        ownerNameStr = name;
-                        ownerLocationStr = location;
-                        setValues();
-                        progressBar.setVisibility(View.GONE);
-                    }
-                })
-                .addOnFailureListener(e -> Log.e("UserDetails", "Error fetching user details: " + e.getMessage()));
-    }
 
     private void loadTransactionDetails(String transactionId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Query the Transactions collection where the transactionId matches
+        // Query Transactions collection
         db.collection("Transactions")
                 .whereEqualTo("transactionid", transactionId)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
-                        DocumentSnapshot transactionSnapshot = queryDocumentSnapshots.getDocuments().get(0); // Get the first document
+                        DocumentSnapshot transactionSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                         String senderID = transactionSnapshot.getString("senderID");
                         String receiverID = transactionSnapshot.getString("receiverID");
                         String senderListing = transactionSnapshot.getString("senderListing");
@@ -481,16 +490,16 @@ public class Request extends AppCompatActivity {
                         String paymentMode = transactionSnapshot.getString("paymentMode");
                         String senderNote = transactionSnapshot.getString("senderNote");
 
+                        // Set payment option
+                        if ("No payment".equals(paymentMode)) {
+                            paymentOption.check(nopaymentbt.getId());
+                        } else if ("Pay me".equals(paymentMode)) {
+                            paymentOption.check(paymebt.getId());
+                        } else if ("Pay trader".equals(paymentMode)) {
+                            paymentOption.check(paytraderbt.getId());
+                        }
 
-                            if(paymentMode.equals("No payment")) {
-                                paymentOption.check(nopaymentbt.getId());
-                            } else if(paymentMode.equals("Pay me")) {
-                                paymentOption.check(paymebt.getId());
-                            } else if(paymentMode.equals("Pay trader")) {
-                                paymentOption.check(paytraderbt.getId());
-                            }
-
-                        if(senderListing!=null) {
+                        if (senderListing != null) {
                             selectedListingId = senderListing;
                             setListingDetails(senderListing, senderID, receiverID);
                         }
@@ -503,6 +512,7 @@ public class Request extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Log.e("TransactionDetails", "Error fetching transaction: " + e.getMessage()));
     }
+
 
     private void setListingDetails(String listingId, String currentUserId, String traderId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -864,7 +874,7 @@ public class Request extends AppCompatActivity {
 
 // Create a map to represent the notification
         Map<String, Object> notification = new HashMap<>();
-        notification.put("message", senderName + " sent you a transaction request for the listing '"+ receiverListing + "'. The transaction is named '"+ transactionTitle + "'.");
+        notification.put("message", senderName + " sent you a transaction request for the listing "+ listingTitle + ". The transaction is named "+ transactionTitle + ".");
         notification.put("status", "unread");
         notification.put("timestamp", FieldValue.serverTimestamp());  // Automatically set timestamp to the current server time
         notification.put("title", "Transaction Request");

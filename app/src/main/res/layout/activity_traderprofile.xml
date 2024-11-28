@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.80" />
+            app:layout_constraintGuide_begin="263dp" />
 
         <TextView
             android:id="@+id/endusername"
@@ -275,35 +275,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dateJoined" />
 
-        <TextView
-            android:id="@+id/enduserphonenumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="09111122324"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_medium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/endusergender" />
-
-        <TextView
-            android:id="@+id/completedtrans"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Completed Transactions"
-            android:textColor="@color/lightgreen"
-            android:textSize="@dimen/text_size_small"
-            app:layout_constraintStart_toStartOf="@+id/endusergender"
-            app:layout_constraintTop_toBottomOf="@+id/endusergender" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/reportpromptt"
             android:layout_width="83dp"
             android:layout_height="25dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="@+id/enduserphonenumber"
-            app:layout_constraintTop_toBottomOf="@+id/enduserphonenumber">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/endusergender">
 
             <TextView
                 android:id="@+id/reportprompt"

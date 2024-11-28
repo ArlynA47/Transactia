@@ -49,6 +49,9 @@ public class ReviewRequest extends AppCompatActivity {
     String fireBUserID;
     String senderID, myName;
 
+    ImageView imageView2;
+    int homscr = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,8 @@ public class ReviewRequest extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         fireBUserID = user.getUid();
         fetchUserName(fireBUserID);
+
+        imageView2 = findViewById(R.id.imageView2);
 
         acceptreqbt = findViewById(R.id.acceptreqbt);
         declinereqbt = findViewById(R.id.declinereqbt);
@@ -79,6 +84,7 @@ public class ReviewRequest extends AppCompatActivity {
 
         transactionid = getIntent().getStringExtra("transactionid");
         loadTransactionDetails(transactionid);
+
 
         isCompleted = getIntent().getBooleanExtra("isCompleted", false);
 
@@ -176,6 +182,13 @@ public class ReviewRequest extends AppCompatActivity {
             markTransactionAsRated(transactionid, fireBUserID);
         });
 
+        imageView2.setOnClickListener(v -> {
+            Intent intentprof = new Intent(this, Traderprofile.class);
+            intentprof.putExtra("userId", senderID);
+            startActivity(intentprof);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        });
+
     }
 
 
@@ -206,6 +219,17 @@ public class ReviewRequest extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public void onBackPressed() {
+        // Access the existing instance of MainHome
+        MainHome mainHomeActivity = (MainHome) MainHome.getInstance(); // Create a static instance accessor in MainHome
+        if (mainHomeActivity != null) {
+            mainHomeActivity.whatHomeScreen(homscr); // Set the value you want
+            finish();
+        }
+        super.onBackPressed(); // Navigate back
+    }
+
 
     public interface OnCheckCompleteListener {
         void onCheckComplete(boolean hasMarked); // True if the user has marked, false otherwise
@@ -219,6 +243,7 @@ public class ReviewRequest extends AppCompatActivity {
                 if (hasMarked) {
                     completebt.setText("Marked as Completed");
                     completebt.setTextColor(ContextCompat.getColor(ReviewRequest.this, R.color.lightgreen));
+                    homscr = 4;
                     completebt.setEnabled(false);
                 } else {
                     completebt.setText("Mark as Completed");
@@ -266,6 +291,7 @@ public class ReviewRequest extends AppCompatActivity {
                                                                         .addOnSuccessListener(aVoid1 -> {
                                                                             sendCompNotification();
                                                                             CustomToast.show(ReviewRequest.this, "Transaction marked as Completed!");
+                                                                            homscr = 4;
                                                                             CompletedTransaction();
                                                                         })
                                                                         .addOnFailureListener(e -> {
@@ -344,7 +370,7 @@ public class ReviewRequest extends AppCompatActivity {
 
         // Create a map to represent the notification
         Map<String, Object> notification = new HashMap<>();
-        notification.put("message", myName + " has accepted your transaction request for '"+ transactionTitle + "'.");
+        notification.put("message", myName + " has accepted your transaction request for "+ transactionTitle + ".");
         notification.put("status", "unread");
         notification.put("timestamp", FieldValue.serverTimestamp());  // Automatically set timestamp to the current server time
         notification.put("title", "Transaction Request Accepted");
@@ -368,7 +394,7 @@ public class ReviewRequest extends AppCompatActivity {
 
         // Create a map to represent the notification
         Map<String, Object> notification = new HashMap<>();
-        notification.put("message", myName + " marked the transaction '"+ transactionTitle + "' as completed.");
+        notification.put("message", myName + " marked the transaction "+ transactionTitle + " as completed.");
         notification.put("status", "unread");
         notification.put("timestamp", FieldValue.serverTimestamp());  // Automatically set timestamp to the current server time
         notification.put("title", "Transaction Marked as Comleted");

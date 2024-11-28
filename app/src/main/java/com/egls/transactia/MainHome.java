@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -37,6 +39,12 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+
+import java.util.concurrent.Executor;
 
 
 public class MainHome extends AppCompatActivity {
@@ -114,7 +122,12 @@ public class MainHome extends AppCompatActivity {
                         passAuth = userDetails[1];
                         // Save the credentials into sqlite db
                         dbHelper.saveUserDetails(emailAuth, passAuth);
-                        AuthenticateUser();
+
+                        // Delay the intent by 2 seconds (2000 milliseconds)
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            AuthenticateUser();
+                        }, 2000); // 2000 milliseconds = 2 seconds
+
                         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
                         }
@@ -122,21 +135,48 @@ public class MainHome extends AppCompatActivity {
 
                     }
                 } else {
-                    dbHelper = new UserDatabaseHelper(MainHome.this);
-                    String[] userDetails = dbHelper.getUserDetails();
-                    if (userDetails != null) {
-                        emailAuth = userDetails[0];
-                        passAuth = userDetails[1];
-                        AuthenticateUser();
-                        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
-                        }
-                        fetchAndSaveToken();
-
-                    }
+                    BioMetAuth();
                 }
 
+
+
         }
+
+        private void BioMetAuth() {
+            // Check biometric compatibility
+            BiometricManager biometricManager = BiometricManager.from(this);
+            switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+                case BiometricManager.BIOMETRIC_SUCCESS:
+                    showBiometricPrompt();
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                    ContinueHome();
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                    finish();
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                    ContinueHome();
+                    break;
+                default:
+                    finish();
+            }
+        }
+
+        private void ContinueHome() {
+            dbHelper = new UserDatabaseHelper(MainHome.this);
+            String[] userDetails = dbHelper.getUserDetails();
+            if (userDetails != null) {
+                emailAuth = userDetails[0];
+                passAuth = userDetails[1];
+                AuthenticateUser();
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+                }
+                fetchAndSaveToken();
+
+            }
+    }
 
     private void fetchAndSaveToken() {
         FirebaseMessaging.getInstance().getToken()
@@ -150,6 +190,40 @@ public class MainHome extends AppCompatActivity {
                 });
     }
 
+
+    private void showBiometricPrompt() {
+        Executor executor = ContextCompat.getMainExecutor(this);
+        BiometricPrompt biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                CustomToast.show(MainHome.this, "Authentication error: " + errString);
+                BioMetAuth();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                CustomToast.show(MainHome.this, "Authentication succeeded!");
+                ContinueHome();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                CustomToast.show(MainHome.this, "Authentication failed");
+                BioMetAuth();
+            }
+        });
+
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Fingerprint Authentication")
+                .setSubtitle("Authenticate using your fingerprint")
+                .setNegativeButtonText("Cancel")
+                .build();
+
+        biometricPrompt.authenticate(promptInfo);
+    }
 
 
     @Override
@@ -180,6 +254,10 @@ public class MainHome extends AppCompatActivity {
                 showMyOffers();
             } else if(homeScreenNum==3) {
                 fetchTransactions();
+            } else if (homeScreenNum==4) {
+                fetchCompletedTransactions();
+            } else if(homeScreenNum==5) {
+                fetchNotifications();
             }
 
         }
@@ -586,9 +664,5 @@ public class MainHome extends AppCompatActivity {
     public void whatHomeScreen(int hsnum) {
         homeScreenNum = hsnum;
     }
-
-
-
-
 
 }

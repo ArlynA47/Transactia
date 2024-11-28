@@ -106,11 +106,13 @@ public class MainActivity extends AppCompatActivity {
             // Get references to UI elements
             ProgressBar progressBar = findViewById(R.id.progressBar);
 
+            UserDatabaseHelper udbh = new UserDatabaseHelper(this);
+
             // Get email and password
             String email = usernameEditText.getText().toString().trim();
             String pass = passwordEditText.getText().toString().trim();
 
-            dbh.saveUnauthenticatedUser(email, pass);
+            udbh.saveUnauthenticatedUser(email, pass);
 
 
             // Check if email is valid
@@ -215,11 +217,13 @@ eyereveal.setOnClickListener(v -> {
         passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         eyereveal.setImageResource(R.drawable.eye); // Change to "visible" icon
         eyereveal.setTag("visible"); // Update the tag
+        passwordEditText.setSelection(passwordEditText.getText().length());
     } else {
         // Hide the password
         passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         eyereveal.setImageResource(R.drawable.eyeclose); // Change to "hidden" icon
         eyereveal.setTag("hidden"); // Update the tag
+        passwordEditText.setSelection(passwordEditText.getText().length());
     }
 
 });

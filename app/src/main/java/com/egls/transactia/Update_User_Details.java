@@ -73,6 +73,7 @@ public class Update_User_Details extends AppCompatActivity {
 
     // for valid id
     ImageView valIdImg, showGallery;
+    String valIDSTR;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -110,6 +111,21 @@ public class Update_User_Details extends AppCompatActivity {
 
         // Load user details
         loadUserDetails();
+
+        pfp.setOnClickListener(v -> {
+            imgFullScreen(imageUri.toString());
+        });
+
+        valIdImg.setOnClickListener(v -> {
+
+            if(valImageUri!=null) {
+                imgFullScreen(valImageUri.toString());
+            } else if(valIDSTR!=null) {
+                imgFullScreen(valIDSTR);
+            }
+
+
+        });
 
         addIMG.setOnClickListener(v -> {
             openGallery(1);
@@ -259,10 +275,10 @@ public class Update_User_Details extends AppCompatActivity {
 
 
     // Show Image on full screen
-    private void imgFullScreen() {
-        if (imageUri != null) {
+    private void imgFullScreen(String imgURL) {
+        if (imgURL != null) {
             Intent fullScreenIntent = new Intent(Update_User_Details.this, FullScreenImageActivity.class);
-            fullScreenIntent.putExtra("imageUri", imageUri.toString());
+            fullScreenIntent.putExtra("imageUri", imgURL);
             startActivity(fullScreenIntent);
         }
     }
@@ -424,9 +440,16 @@ public class Update_User_Details extends AppCompatActivity {
                     loctx.setText(document.getString("location"));
 
                     String imageUrl = document.getString("imageUrl");
+                    String idUrl = document.getString("validIdUrl");
                     if (imageUrl != null) {
                         // Load profile image with Glide
                         Glide.with(this).load(imageUrl).into(pfp);
+                    }
+
+                    if (idUrl != null) {
+                        // Load profile image with Glide
+                        Glide.with(this).load(idUrl).into(valIdImg);
+                        valIDSTR = idUrl;
                     }
                 } else {
                     errorTv.setText("User details not found.");

@@ -54,6 +54,10 @@ public class ManageRequest extends AppCompatActivity {
 
     String senderName;
 
+    int homscr = 3;
+
+    ImageView imageView2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +73,8 @@ public class ManageRequest extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         fireBUserID = user.getUid();
         fetchUserName(fireBUserID);
+
+        imageView2 = findViewById(R.id.imageView2);
 
         transactionTitle = findViewById(R.id.transactionTitle);
         transactiontimestamp = findViewById(R.id.transactiontimestamp);
@@ -158,6 +164,12 @@ public class ManageRequest extends AppCompatActivity {
             checkCompletion(transactionid, fireBUserID);
         }
 
+        imageView2.setOnClickListener(v -> {
+            Intent intentprof = new Intent(this, Traderprofile.class);
+            intentprof.putExtra("userId", listingOwnerParam);
+            startActivity(intentprof);
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+        });
 
 
     }
@@ -171,8 +183,6 @@ public class ManageRequest extends AppCompatActivity {
         completebt.setVisibility(View.VISIBLE);
         completebt.setEnabled(false);
         completebt.setText("Transaction Completed");
-        completebt.setTextColor(ContextCompat.getColor(ManageRequest.this, R.color.lightgreen));
-
 
         rateUser.setOnClickListener(v -> {
             markTransactionAsRated(transactionid, fireBUserID);
@@ -221,6 +231,7 @@ public class ManageRequest extends AppCompatActivity {
                     completebt.setText("Marked as Completed");
                     completebt.setTextColor(ContextCompat.getColor(ManageRequest.this, R.color.lightgreen));
                     completebt.setEnabled(false);
+                    homscr = 4;
                 } else {
                     completebt.setText("Mark as Completed");
                     completebt.setEnabled(true);
@@ -234,13 +245,28 @@ public class ManageRequest extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        // Access the existing instance of MainHome
+        MainHome mainHomeActivity = (MainHome) MainHome.getInstance(); // Create a static instance accessor in MainHome
+        if (mainHomeActivity != null) {
+
+            if(homscr==4) {
+                mainHomeActivity.whatHomeScreen(homscr); // Set the value you want
+            }
+
+            finish();
+        }
+        super.onBackPressed(); // Navigate back
+    }
+
     private void sendCompNotification() {
         // Get a reference to Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // Create a map to represent the notification
         Map<String, Object> notification = new HashMap<>();
-        notification.put("message", senderName + " marked the transaction '"+ transactionTitle + "' as completed.");
+        notification.put("message", senderName + " marked the transaction "+ transactionTitle + " as completed.");
         notification.put("status", "unread");
         notification.put("timestamp", FieldValue.serverTimestamp());  // Automatically set timestamp to the current server time
         notification.put("title", "Transaction Marked as Comleted");
@@ -306,6 +332,7 @@ public class ManageRequest extends AppCompatActivity {
                                                                         .addOnSuccessListener(aVoid1 -> {
                                                                             sendCompNotification();
                                                                             CustomToast.show(ManageRequest.this, "Transaction marked as Completed!");
+                                                                            homscr = 4;
                                                                             CompletedTransaction();
                                                                         })
                                                                         .addOnFailureListener(e -> {

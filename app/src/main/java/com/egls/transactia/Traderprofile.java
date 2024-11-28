@@ -46,6 +46,7 @@ public class Traderprofile extends AppCompatActivity {
     ConstraintLayout reportPrompt, reportSuccess;
     View msgNav;
     TextView reportcfbt, reportbackbt, violation, description, viewReports, ok, dateJoined;
+    ImageView profileUser2;
 
     String userID;
 
@@ -55,6 +56,8 @@ public class Traderprofile extends AppCompatActivity {
 
     String fireBUserID;
     FirebaseUser user;
+
+    String imageUri;
 
 
     @Override
@@ -80,6 +83,7 @@ public class Traderprofile extends AppCompatActivity {
         reportbackbt = findViewById(R.id.reportbackbt);
         violation = findViewById(R.id.violation);
         description = findViewById(R.id.description);
+        profileUser2 = findViewById(R.id.profileUser2);
 
         verified = findViewById(R.id.verified);
         dateJoined = findViewById(R.id.dateJoined);
@@ -102,6 +106,16 @@ public class Traderprofile extends AppCompatActivity {
         Intent intentStart = getIntent();
         userID = intentStart.getStringExtra("userId");
         fetchUserDetails(userID);
+
+        if(fireBUserID.equals(userID)) {
+            msgNav.setVisibility(View.GONE);
+        }
+
+
+        profileUser2.setOnClickListener(v -> {
+            // Make report prompt visible and bring it to the front
+            imgFullScreen();
+        });
 
 
         // Set click listener for reportPrompt
@@ -210,7 +224,6 @@ public class Traderprofile extends AppCompatActivity {
                         ((TextView) findViewById(R.id.endusername)).setText(name);
                         ((TextView) findViewById(R.id.endusergender)).setText(sexAndAge);
                         ((TextView) findViewById(R.id.userloc)).setText(location);
-                        ((TextView) findViewById(R.id.enduserphonenumber)).setText(contactInfo);
                         ((TextView) findViewById(R.id.enduserbio)).setText(bio);
                         ((TextView) findViewById(R.id.rateLabel)).setText(rateLabel);
 
@@ -221,10 +234,21 @@ public class Traderprofile extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("UserDetails", "Error fetching user details: " + e.getMessage()));
     }
 
+    private void imgFullScreen() {
+
+        Intent fullScreenIntent = new Intent(Traderprofile.this, FullScreenImageActivity.class);
+        if (imageUri != null) {
+            // Pass imageUri for newly selected images
+            fullScreenIntent.putExtra("imageUri", imageUri.toString());
+        }
+        startActivity(fullScreenIntent);
+    }
+
     private void loadImageIntoView(String imageUrl, int imageViewId) {
         if (imageUrl != null && !imageUrl.isEmpty()) {
             ImageView imageView = findViewById(imageViewId);
             Glide.with(this).load(imageUrl).into(imageView);
+            imageUri = imageUrl;
         }
     }
 

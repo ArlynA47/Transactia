@@ -103,17 +103,11 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.88" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/gd1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.20" />
-
             <Spinner
                 android:id="@+id/spinner2"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/filterdp"
                 android:popupBackground="@color/maincolor"
                 android:spinnerMode="dropdown"
@@ -121,15 +115,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.16"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/gd1"
+                app:layout_constraintTop_toBottomOf="@+id/spinner1"
                 app:layout_constraintWidth_percent="0.88" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/gd2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.40" />
 
             <EditText
                 android:id="@+id/loctx"
@@ -148,7 +135,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.16"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/gd2"
+                app:layout_constraintTop_toBottomOf="@+id/spinner2"
                 app:layout_constraintWidth_percent="0.88" />
 
             <androidx.constraintlayout.widget.Guideline

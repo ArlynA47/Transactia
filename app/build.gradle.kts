@@ -41,6 +41,9 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.storage)
 
+    // Biometric dependency
+    implementation("androidx.biometric:biometric:1.2.0-alpha05")
+
     // Add Glide dependencies
     implementation("com.github.bumptech.glide:glide:4.15.0")
     implementation(libs.firebase.messaging)
@@ -49,4 +52,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+
 }

@@ -35,4 +35,14 @@ public class ViewNotification extends AppCompatActivity {
         message.setText(intent.getStringExtra("message"));
 
     }
+
+    @Override
+    public void onBackPressed() {
+        // Access the existing instance of MainHome
+        MainHome mainHomeActivity = (MainHome) MainHome.getInstance(); // Create a static instance accessor in MainHome
+        if (mainHomeActivity != null) {
+            mainHomeActivity.whatHomeScreen(5); // Set the value you want
+        }
+        super.onBackPressed(); // Navigate back
+    }
 }
