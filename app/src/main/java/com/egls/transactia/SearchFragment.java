@@ -118,6 +118,10 @@ public class SearchFragment extends Fragment {
                 Usersbt.setButtonTintList(ColorStateList.valueOf(Color.parseColor("#33443C")));
                 selectedType = 1;
                 isListingSearch = true;
+
+                listingTypeFltr.setVisibility(View.VISIBLE);
+                listingCategFltr.setVisibility(View.VISIBLE);
+
                 StartSearch();
 
             } else if (checkedId == Usersbt.getId()) {
