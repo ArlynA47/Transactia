@@ -120,7 +120,12 @@ public class ReviewRequest extends AppCompatActivity {
 
                             // Delay the intent by 2 seconds (2000 milliseconds)
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                finish();
+                                // Access the existing instance of MainHome
+                                MainHome mainHomeActivity = (MainHome) MainHome.getInstance(); // Create a static instance accessor in MainHome
+                                if (mainHomeActivity != null) {
+                                    mainHomeActivity.whatHomeScreen(homscr); // Set the value you want
+                                    finish();
+                                }
                             }, 2000); // 2000 milliseconds = 2 seconds
                         })
                         .setNegativeButton("Cancel", (dialog, which) -> {
@@ -140,7 +145,12 @@ public class ReviewRequest extends AppCompatActivity {
                             updateTransactionStatus(transactionid);
                             // Delay the intent by 2 seconds (2000 milliseconds)
                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                finish();
+                                // Access the existing instance of MainHome
+                                MainHome mainHomeActivity = (MainHome) MainHome.getInstance(); // Create a static instance accessor in MainHome
+                                if (mainHomeActivity != null) {
+                                    mainHomeActivity.whatHomeScreen(homscr); // Set the value you want
+                                    finish();
+                                }
                             }, 2000); // 2000 milliseconds = 2 seconds
                         })
                         .setNegativeButton("Cancel", (dialog, which) -> {

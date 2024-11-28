@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="14dp"
-                android:text="About Transactia"
+                android:text="Platform Policy Guidelines"
                 android:textColor="#33443C"
                 android:textSize="@dimen/text_size_medium"
                 app:layout_constraintStart_toEndOf="@+id/information"
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:text="Learn more about Transactia!"
+                android:text="Review Transactia's Guidelines!"
                 android:textSize="@dimen/text_size_small"
                 app:layout_constraintStart_toEndOf="@+id/information"
                 app:layout_constraintTop_toBottomOf="@+id/textView47" />

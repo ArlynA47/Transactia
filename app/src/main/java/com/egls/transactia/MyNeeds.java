@@ -94,6 +94,7 @@ public class MyNeeds extends AppCompatActivity {
     boolean newListing;
     boolean isNeed;
     String listingId = null;
+    int homscr;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -148,8 +149,10 @@ public class MyNeeds extends AppCompatActivity {
         if(newListing) {
             isNeed = intent1.getBooleanExtra("isNeed", true);
             if(isNeed) {
+                homscr = 1;
                 inNeedPage();
             } else {
+                homscr = 2;
                 inOfferPage();
             }
         } else {
@@ -323,7 +326,12 @@ public class MyNeeds extends AppCompatActivity {
         builder.setTitle("Confirm Exit")
                 .setMessage("Your changes will not be saved.")
                 .setPositiveButton("Confirm", (dialog, which) -> {
-                    finish();
+                    // Access the existing instance of MainHome
+                    MainHome mainHomeActivity = (MainHome) MainHome.getInstance(); // Create a static instance accessor in MainHome
+                    if (mainHomeActivity != null) {
+                        mainHomeActivity.whatHomeScreen(homscr); // Set the value you want
+                        finish();
+                    }
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     dialog.dismiss(); // Close the dialog
