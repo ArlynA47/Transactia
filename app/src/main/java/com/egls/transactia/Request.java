@@ -740,7 +740,18 @@ public class Request extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+        builder.setTitle("Confirm Exit")
+                .setMessage("Your changes will not be saved.")
+                .setPositiveButton("Confirm", (dialog, which) -> {
+                    finish();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss(); // Close the dialog
+                });
+
+        // Show the dialog
+        builder.show();
     }
 
 

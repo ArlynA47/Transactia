@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -287,6 +288,7 @@ public class MyNeeds extends AppCompatActivity {
             // Set red border when validation fails
             listingdesc.setBackgroundResource(R.drawable.edittext_red_border);
             listingdesc.requestFocus();
+            listvalue.clearFocus();
             errorTv.setVisibility(View.VISIBLE);
             return false;
         } else {
@@ -312,6 +314,23 @@ public class MyNeeds extends AppCompatActivity {
             imageUri = data.getData();
             selectedImageView.setImageURI(imageUri); // Display the selected image in pfp ImageView
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+        builder.setTitle("Confirm Exit")
+                .setMessage("Your changes will not be saved.")
+                .setPositiveButton("Confirm", (dialog, which) -> {
+                    finish();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss(); // Close the dialog
+                });
+
+        // Show the dialog
+        builder.show();
     }
 
     // Show Image on full screen

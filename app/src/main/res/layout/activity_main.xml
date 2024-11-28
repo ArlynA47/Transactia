@@ -24,6 +24,7 @@
         android:layout_centerVertical="true"
         android:src="@drawable/transactiagreen" />
 
+
     <ImageView
         android:id="@+id/transac"
         android:layout_width="match_parent"
@@ -44,13 +45,13 @@
         android:id="@+id/contain"
         android:layout_width="320dp"
         android:layout_height="400dp"
-        android:layout_marginStart="36sp"
         android:layout_marginTop="250dp"
         android:background="@drawable/round"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/tggreen"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tgwhite">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_centerHorizontal="true">
 
 
         <TextView

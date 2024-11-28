@@ -198,9 +198,19 @@ public class MainHome extends AppCompatActivity {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
-                CustomToast.show(MainHome.this, "Authentication error: " + errString);
-                BioMetAuth();
+
+                // Check if the user canceled the authentication
+                if (errorCode == BiometricPrompt.ERROR_USER_CANCELED) {
+                    CustomToast.show(MainHome.this, "Authentication canceled by the user");
+                    // Handle any specific flow for cancellation here, e.g., prompt for retry, show a different UI, etc.
+                    // For example, you could return to the home screen or prompt again:
+                    finishAffinity();  // Or handle as needed
+                } else {
+                    CustomToast.show(MainHome.this, "Authentication error: " + errString);
+                    BioMetAuth();  // Or handle as needed
+                }
             }
+
 
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
@@ -215,6 +225,7 @@ public class MainHome extends AppCompatActivity {
                 CustomToast.show(MainHome.this, "Authentication failed");
                 BioMetAuth();
             }
+
         });
 
         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()

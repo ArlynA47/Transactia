@@ -117,6 +117,11 @@ public class ReviewRequest extends AppCompatActivity {
                         .setMessage("Are you sure you want to decline this transaction request?")
                         .setPositiveButton("Yes", (dialog, which) -> {
                             cancelTransactionRequest(transactionid);
+
+                            // Delay the intent by 2 seconds (2000 milliseconds)
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                finish();
+                            }, 2000); // 2000 milliseconds = 2 seconds
                         })
                         .setNegativeButton("Cancel", (dialog, which) -> {
                             dialog.dismiss(); // Close the dialog
@@ -124,19 +129,19 @@ public class ReviewRequest extends AppCompatActivity {
 
                 // Show the dialog
                 builder.show();
-
-                // Delay the intent by 2 seconds (2000 milliseconds)
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    finish();
-                }, 2000); // 2000 milliseconds = 2 seconds
             });
 
             acceptreqbt.setOnClickListener(v -> {
                 // Build the dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
                 builder.setTitle("Accept Transaction Request")
+                        .setMessage("Are you sure you want to accept this transaction request?")
                         .setPositiveButton("Confirm", (dialog, which) -> {
                             updateTransactionStatus(transactionid);
+                            // Delay the intent by 2 seconds (2000 milliseconds)
+                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                finish();
+                            }, 2000); // 2000 milliseconds = 2 seconds
                         })
                         .setNegativeButton("Cancel", (dialog, which) -> {
                             dialog.dismiss(); // Close the dialog
@@ -144,11 +149,6 @@ public class ReviewRequest extends AppCompatActivity {
 
                 // Show the dialog
                 builder.show();
-
-                // Delay the intent by 2 seconds (2000 milliseconds)
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    finish();
-                }, 2000); // 2000 milliseconds = 2 seconds
             });
 
 

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -164,6 +165,23 @@ public class UserAccountDetailSignup extends AppCompatActivity {
             return insets;
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.CustomAlertDialogTheme));
+        builder.setTitle("Confirm Exit")
+                .setMessage("Your changes will not be saved.")
+                .setPositiveButton("Confirm", (dialog, which) -> {
+                    finish();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss(); // Close the dialog
+                });
+
+        // Show the dialog
+        builder.show();
     }
 
     // Separate methods to handle each field's action
@@ -496,8 +514,7 @@ public class UserAccountDetailSignup extends AppCompatActivity {
                 .set(userDetails)
                 .addOnSuccessListener(aVoid -> {
                     CustomToast.show(this, "User details saved successfully!");
-                    Intent intent = new Intent(UserAccountDetailSignup.this, MainHome.class);
-                    intent.putExtra("newLogin", true);
+                    Intent intent = new Intent(UserAccountDetailSignup.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 })
