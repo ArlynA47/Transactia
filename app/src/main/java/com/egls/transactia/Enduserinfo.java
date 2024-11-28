@@ -155,6 +155,8 @@ public class Enduserinfo extends AppCompatActivity {
                                 .delete()
                                 .addOnSuccessListener(unused -> {
                                     Toast.makeText(this, "Conversation deleted", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(Enduserinfo.this, Inbox.class);
+                                    startActivity(intent);
                                     finish(); // Close the activity
                                 })
                                 .addOnFailureListener(e -> Log.e("DeleteConversation", "Failed to delete conversation: " + e.getMessage()));
