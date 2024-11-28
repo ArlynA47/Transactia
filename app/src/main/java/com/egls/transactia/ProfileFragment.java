@@ -69,6 +69,12 @@ public class ProfileFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         fireBUserID = user.getUid();
 
+        profileUser.setOnClickListener(v -> {
+            Intent intentprof = new Intent(getActivity(), Traderprofile.class);
+            intentprof.putExtra("userId", fireBUserID);
+            startActivity(intentprof);
+        });
+
         loadUserDetails(); // Call method to load user details
 
         ImageView accsets = view.findViewById(R.id.accsets);

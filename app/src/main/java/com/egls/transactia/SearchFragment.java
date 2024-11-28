@@ -33,6 +33,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -297,7 +298,7 @@ public class SearchFragment extends Fragment {
         Query query = listingsRef;
 
         // Step 2: Apply "storedIn" filter to search for listings with "Active" status
-        query = query.whereEqualTo("storedIn", "Active");
+        query = query.whereIn("storedIn", Arrays.asList("Active", "Flagged")); // OR logic for "storedIn"
 
         // Step 3: Execute Listings query first to narrow results, then filter users based on location
         query.get().addOnCompleteListener(task -> {
@@ -371,7 +372,7 @@ public class SearchFragment extends Fragment {
         }
 
         // Step 2: Apply "storedIn" filter to search for listings with "Active" status
-        query = query.whereEqualTo("storedIn", "Active");
+        query = query.whereIn("storedIn", Arrays.asList("Active", "Flagged")); // OR logic for "storedIn"
 
         // Apply listing type filter if specified
         if (slt != null && !slt.equals("All Types")) {

@@ -37,6 +37,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -511,7 +512,7 @@ public class MainHome extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Listings")
                 .whereEqualTo("listingType", lType)
-                .whereEqualTo("storedIn", "Active")
+                .whereIn("storedIn", Arrays.asList("Active", "Flagged", "Notified"))  // OR logic for "storedIn"
                 .whereEqualTo("userId", fireBUserID)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

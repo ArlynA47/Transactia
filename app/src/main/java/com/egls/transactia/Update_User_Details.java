@@ -67,13 +67,15 @@ public class Update_User_Details extends AppCompatActivity {
 
     boolean isLocChanged = false;
 
+    String verifiedUser;
+
     Drawable defaultBgET;
     // Set up button for updating user details
     TextView updateBtn;
 
     // for valid id
     ImageView valIdImg, showGallery;
-    String valIDSTR;
+    String valIDSTR, pfpSTR;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -113,7 +115,10 @@ public class Update_User_Details extends AppCompatActivity {
         loadUserDetails();
 
         pfp.setOnClickListener(v -> {
-            imgFullScreen(imageUri.toString());
+            if(pfpSTR!=null) {
+                imgFullScreen(pfpSTR);
+            }
+
         });
 
         valIdImg.setOnClickListener(v -> {
@@ -124,8 +129,9 @@ public class Update_User_Details extends AppCompatActivity {
                 imgFullScreen(valIDSTR);
             }
 
-
         });
+
+
 
         addIMG.setOnClickListener(v -> {
             openGallery(1);
@@ -173,6 +179,14 @@ public class Update_User_Details extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void indicateStatus() {
+        if(verifiedUser.equals("Verified")) {
+            ((TextView) findViewById(R.id.idlabl)).setText("Verified");
+        } else {
+            ((TextView) findViewById(R.id.idlabl)).setText("Pending Verification");
+        }
     }
 
     // Separate methods to handle each field's action
@@ -439,17 +453,21 @@ public class Update_User_Details extends AppCompatActivity {
                     birthdateTx.setText(document.getString("birthdate"));
                     loctx.setText(document.getString("location"));
 
+                    verifiedUser = document.getString("status");
+
                     String imageUrl = document.getString("imageUrl");
                     String idUrl = document.getString("validIdUrl");
                     if (imageUrl != null) {
                         // Load profile image with Glide
                         Glide.with(this).load(imageUrl).into(pfp);
+                        pfpSTR = imageUrl;
                     }
 
                     if (idUrl != null) {
                         // Load profile image with Glide
                         Glide.with(this).load(idUrl).into(valIdImg);
                         valIDSTR = idUrl;
+                        indicateStatus();
                     }
                 } else {
                     errorTv.setText("User details not found.");
