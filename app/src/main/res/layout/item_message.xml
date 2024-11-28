@@ -12,23 +12,48 @@
         >
 
         <TextView
+            android:id="@+id/messageTimestamp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/grey"
+            app:layout_constraintTop_toBottomOf="@id/sentMessage"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="4dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/messageTimestamp2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/grey"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/receivedMessage" />
+
+        <TextView
             android:id="@+id/receivedMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_small"
-            android:textColor="@color/extrawhite"
             android:background="@drawable/receivedmessage"
-            android:padding="8dp"
+            android:maxWidth="280dp"
+            android:padding="10dp"
+            android:textAlignment="viewStart"
+            android:textColor="@color/extrawhite"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/sentMessage"
             android:layout_width="wrap_content"
+            android:maxWidth="280dp"
             android:layout_height="wrap_content"
             android:background="@drawable/mymessage"
-            android:padding="8dp"
+            android:padding="10dp"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_small"
             android:visibility="gone"
