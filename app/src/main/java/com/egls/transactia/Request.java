@@ -205,6 +205,7 @@ public class Request extends AppCompatActivity {
 
         inexchange.setOnFocusChangeListener((v, hasFocus) -> {
             fetchInExchangeOptions(fireBUserID, ownerUserId);
+
         });
 
 
@@ -424,6 +425,7 @@ public class Request extends AppCompatActivity {
                             listingCategoryStr = listingCategory;
                             listingInExchangeStr = inExchange;
 
+
                             if (timestamp != null) {
                                 long timestampMillis = timestamp.getSeconds() * 1000;
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
@@ -629,7 +631,7 @@ public class Request extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("Listings")
-                .whereEqualTo("listingType", refListingType)
+                .whereEqualTo("listingType", listingTypeStr)
                 .whereEqualTo("storedIn", "Active")
                 .whereIn("userId", Arrays.asList(currentUserId, traderId)) // Fetch listings for both users
                 .get()
@@ -688,7 +690,7 @@ public class Request extends AppCompatActivity {
                                     // Assign selected values to inExchange field
                                     inexchange.setText(selectedTitleAndType);
                                     handleMissingInfo(); // Perform validation or further actions
-                                        seeListing.setVisibility(View.VISIBLE);
+                                    seeListing.setVisibility(View.VISIBLE);
                                 }
                             })
                             .show();

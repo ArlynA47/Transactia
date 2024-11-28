@@ -38,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -544,7 +545,7 @@ public class MyNeeds extends AppCompatActivity {
 
         db.collection("Listings")
                 .whereEqualTo("listingType", counterListingType)
-                .whereEqualTo("storedIn", "Active")
+                .whereIn("storedIn", Arrays.asList("Active", "Flagged"))
                 .whereEqualTo("userId", currentUserId)
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
