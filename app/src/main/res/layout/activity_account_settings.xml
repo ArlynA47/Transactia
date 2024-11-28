@@ -171,7 +171,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView47" />
 
             <ImageView
-                android:id="@+id/nextuud"
+                android:id="@+id/nextat"
                 android:layout_width="60dp"
                 android:layout_height="0dp"
                 app:layout_constraintHeight_percent="0.6"
@@ -314,7 +314,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView41" />
 
             <ImageView
-                android:id="@+id/nextuud"
+                android:id="@+id/nextpr"
                 android:layout_width="60dp"
                 android:layout_height="0dp"
                 app:layout_constraintHeight_percent="0.6"
@@ -370,7 +370,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/archtitle" />
 
             <ImageView
-                android:id="@+id/nextuud"
+                android:id="@+id/nexta"
                 android:layout_width="60dp"
                 android:layout_height="0dp"
                 app:layout_constraintHeight_percent="0.6"
