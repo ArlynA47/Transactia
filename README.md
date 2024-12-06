@@ -1,4 +1,5 @@
 **Transactia: Your Barter and Trading Network**
+
 Welcome to Transactia, a project designed to create a vibrant and efficient platform for bartering and trading goods and services. This system serves as a showcase of our skills and knowledge in Software Engineering 1 and IT Project Management, as part of our coursework in the Bachelor of Science in Information Technology program, Section NW3B, during the first semester of our third year.
 
 _**Team Members**_
@@ -8,6 +9,7 @@ _**Team Members**_
 4. Christian De Guzman - Quality Assurance
 
 _**Project Overview**_
+
 Transactia is a mobile application developed in Java using Android Studio. It enables users to trade items and services seamlessly within a networked community. Our system emphasizes user-friendliness, robust functionality, and secure transactions.
 
 _**Key features include:**_
